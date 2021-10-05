@@ -7,7 +7,7 @@ from agency.mixins import AgencyLoginRequiredMixin
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
-from django.http.request import HttpRequest as REQ
+from django.http.request import HttpRequest as req
 from django.http.response import HttpResponseBase as RESBASE
 from django.template.loader import render_to_string
 from django.urls.base import reverse_lazy
@@ -232,7 +232,7 @@ class EmployerRequiredMixin(GroupRequiredMixin):
 class EmployerDocAccessMixin(EmployerRequiredMixin):
     permission_denied_message = '''Access permission denied'''
 
-    def dispatch(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
+    def dispatch(self, request: req, *args: Any, **kwargs: Any) -> RESBASE:
         handler = super().dispatch(request, *args, **kwargs)
         access_granted = False
 
@@ -289,7 +289,7 @@ class EmployerDocAccessMixin(EmployerRequiredMixin):
 class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin):
     permission_denied_message = '''Access permission denied'''
 
-    def dispatch(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
+    def dispatch(self, request: req, *args: Any, **kwargs: Any) -> RESBASE:
         handler = super().dispatch(request, *args, **kwargs)
         access_granted = False
 
@@ -345,7 +345,7 @@ class AgencyAccessToEmployerDocAppMixin(AgencyLoginRequiredMixin):
 class OwnerAccessToEmployerDocAppMixin(AgencyAccessToEmployerDocAppMixin):
     permission_denied_message = '''Access permission denied'''
 
-    def dispatch(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
+    def dispatch(self, request: req, *args: Any, **kwargs: Any) -> RESBASE:
         handler = super().dispatch(request, *args, **kwargs)
         if self.authority == AG_OWNERS:
             return handler

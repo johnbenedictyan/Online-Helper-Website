@@ -1,11 +1,11 @@
 from typing import Any, Dict, Optional
 
-from django.http.request import HttpRequest as REQ
+from django.http.request import HttpRequest as req
 
 from accounts.models import PotentialEmployer
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from django.http.response import HttpResponse as RES
+from django.http.response import HttpResponse as res
 from django.http.response import HttpResponseBase as RESBASE
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
@@ -88,7 +88,7 @@ class ViewShortlist(CreateView):
     template_name = "shortlist.html"
     current_shortlist = []
 
-    def dispatch(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
+    def dispatch(self, request: req, *args: Any, **kwargs: Any) -> RESBASE:
         self.current_shortlist = self.request.session.get('shortlist', [])
         return super().dispatch(request, *args, **kwargs)
 
@@ -101,7 +101,7 @@ class ViewShortlist(CreateView):
         })
         return context
 
-    def form_valid(self, form) -> RES:
+    def form_valid(self, form) -> res:
         form.instance.potential_employer = PotentialEmployer.objects.get(
             user=self.request.user
         )

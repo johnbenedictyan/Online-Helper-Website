@@ -2,7 +2,7 @@ from typing import Optional
 
 from django.conf import settings
 from django.db.models.query import QuerySet as QS
-from django.http.response import HttpResponse as RES
+from django.http.response import HttpResponse as res
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView
@@ -76,7 +76,7 @@ class AgencyOwnerCreate(OMStaffRequiredMixin, SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('admin_panel')
     success_message = 'Agency owner created'
 
-    def form_valid(self, form) -> RES:
+    def form_valid(self, form) -> res:
         form.instance.agency = Agency.objects.get(
             pk=self.kwargs.get(
                 self.pk_url_kwarg

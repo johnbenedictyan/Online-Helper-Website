@@ -10,8 +10,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models.query import QuerySet as QS
 from django.forms.forms import BaseForm
 from django.http import FileResponse, HttpResponseRedirect, JsonResponse
-from django.http.request import HttpRequest as REQ
-from django.http.response import HttpResponse as RES
+from django.http.request import HttpRequest as req
+from django.http.response import HttpResponse as res
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import resolve, reverse, reverse_lazy
 from django.views.generic import RedirectView
@@ -98,7 +98,7 @@ class EmployerCreateView(
         })
         return kwargs
 
-    def form_valid(self, form) -> RES:
+    def form_valid(self, form) -> res:
         if self.authority == AG_SALES:
             form.instance.agency_employee = self.request.user.agency_employee
         return super().form_valid(form)
@@ -154,7 +154,7 @@ class EmployerSponsorCreateView(
         })
         return context
 
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         self.object = self.get_object()
         if not is_applicant_sponsor(self.object.applicant_type):
             return HttpResponseRedirect(
@@ -187,7 +187,7 @@ class EmployerSponsorCreateView(
         })
         return kwargs
 
-    def form_valid(self, form) -> RES:
+    def form_valid(self, form) -> res:
         form.instance.employer = self.get_object()
         return super().form_valid(form)
 
@@ -220,7 +220,7 @@ class EmployerJointApplicantCreateView(
         })
         return context
 
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         self.object = self.get_object()
         if not is_applicant_joint_applicant(self.object.applicant_type):
             return HttpResponseRedirect(
@@ -253,7 +253,7 @@ class EmployerJointApplicantCreateView(
         })
         return kwargs
 
-    def form_valid(self, form) -> RES:
+    def form_valid(self, form) -> res:
         form.instance.employer = self.get_object()
         return super().form_valid(form)
 
@@ -286,7 +286,7 @@ class EmployerIncomeDetailsCreateView(
         })
         return context
 
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         self.object = self.get_object()
         if hasattr(self.object, 'rn_income_employer'):
             return HttpResponseRedirect(
@@ -315,7 +315,7 @@ class EmployerIncomeDetailsCreateView(
         })
         return kwargs
 
-    def form_valid(self, form) -> RES:
+    def form_valid(self, form) -> res:
         form.instance.employer = self.get_object()
         return super().form_valid(form)
 
@@ -377,7 +377,7 @@ class DocServiceFeeScheduleCreateView(
         })
         return context
 
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         self.object = self.get_object()
         if hasattr(self.object, 'rn_servicefeeschedule_ed'):
             return HttpResponseRedirect(
@@ -401,7 +401,7 @@ class DocServiceFeeScheduleCreateView(
         })
         return kwargs
 
-    def form_valid(self, form) -> RES:
+    def form_valid(self, form) -> res:
         form.instance.employer_doc = self.get_object()
         return super().form_valid(form)
 
@@ -436,7 +436,7 @@ class DocServAgmtEmpCtrCreateView(
         })
         return context
 
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         self.object = self.get_object()
         if hasattr(self.object, 'rn_serviceagreement_ed'):
             return HttpResponseRedirect(
@@ -460,7 +460,7 @@ class DocServAgmtEmpCtrCreateView(
         })
         return kwargs
 
-    def form_valid(self, form) -> RES:
+    def form_valid(self, form) -> res:
         form.instance.employer_doc = self.get_object()
         return super().form_valid(form)
 
@@ -499,7 +499,7 @@ class DocSafetyAgreementCreateView(
         })
         return context
 
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         self.object = self.get_object()
         if hasattr(self.object, 'rn_safetyagreement_ed'):
             return HttpResponseRedirect(
@@ -523,7 +523,7 @@ class DocSafetyAgreementCreateView(
         })
         return kwargs
 
-    def form_valid(self, form) -> RES:
+    def form_valid(self, form) -> res:
         form.instance.employer_doc = self.get_object()
 
         return super().form_valid(form)
@@ -558,7 +558,7 @@ class DocUploadCreateView(
         })
         return context
 
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         self.object = self.get_object()
         if hasattr(self.object, 'rn_docupload_ed'):
             return HttpResponseRedirect(
@@ -581,7 +581,7 @@ class DocUploadCreateView(
         })
         return kwargs
 
-    def form_valid(self, form) -> RES:
+    def form_valid(self, form) -> res:
         form.instance.employer_doc = self.get_object()
         return super().form_valid(form)
 
@@ -667,7 +667,7 @@ class EmployerSponsorUpdateView(
         })
         return context
 
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         self.object = self.get_object()
         if not is_applicant_sponsor(self.object.employer.applicant_type):
             return HttpResponseRedirect(
@@ -724,7 +724,7 @@ class EmployerDocJointApplicantUpdateView(
         })
         return context
 
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         self.object = self.get_object()
         if not is_applicant_joint_applicant(
             self.object.employer.applicant_type
@@ -1091,7 +1091,7 @@ class SignatureUpdateByAgentView(
     model_field_name = None
     form_fields = None
 
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         self.object = self.get_object()
         ed = self.object.employer_doc
         missing_details = ed.get_missing_case_dets_pre_signing_1()
@@ -1153,7 +1153,7 @@ class HtmlToRenderPdfAgencyView(
     model = EmployerDoc
     pk_url_kwarg = 'level_1_pk'
 
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         self.object = self.get_object()
         context = self.get_context_data()
 
@@ -1177,7 +1177,7 @@ class HtmlToRenderPdfEmployerView(
     model = EmployerDoc
     pk_url_kwarg = 'level_1_pk'
 
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         self.object = self.get_object()
         context = self.get_context_data()
 
@@ -1206,7 +1206,7 @@ class UploadedPdfAgencyView(
     def get_object(self, queryset: Optional[QS] = ...) -> T:
         return self.model.objects.get(pk=self.kwargs.get(self.pk_url_kwarg))
 
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         self.object = self.get_object()
         try:
             return FileResponse(
@@ -1308,7 +1308,7 @@ class EmployerHouseholdDetailsFormView(
             **self.get_form_kwargs()
         )
 
-    def form_valid(self, form) -> RES:
+    def form_valid(self, form) -> res:
         form.save()
         if form.data.get('submitFlag') == 'True':
             return super().form_valid(form)
@@ -1389,7 +1389,7 @@ class MaidInventoryFormView(AgencyAccessToEmployerDocAppMixin,
             **self.get_form_kwargs()
         )
 
-    def form_valid(self, form) -> RES:
+    def form_valid(self, form) -> res:
         form.save()
         if form.data.get('submitFlag') == 'True':
             return super().form_valid(form)
@@ -1450,7 +1450,7 @@ class SignatureFormView(EmployerDocAccessMixin, FormView):
                 )
             })
 
-    def form_valid(self, form) -> RES:
+    def form_valid(self, form) -> res:
         case_type = self.object.get_case_type()
         signature_obj = self.object.rn_signatures_ed
         signature_obj.employer_signature_1 = form.cleaned_data.get(
@@ -1509,7 +1509,7 @@ class HandoverFormView(FormView):
         })
         return context
 
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         self.object = self.get_object()
         ed = self.object.employer_doc
         missing_details = ed.get_missing_case_dets_pre_signing_2()
@@ -1534,7 +1534,7 @@ class HandoverFormView(FormView):
     def get_success_url(self) -> str:
         return reverse_lazy('dashboard_case_list')
 
-    def form_valid(self, form) -> RES:
+    def form_valid(self, form) -> res:
         self.object = self.get_object()
         self.object.employer_signature_2 = form.cleaned_data.get(
             'employer_signature'
@@ -1566,7 +1566,7 @@ class ArchiveCase(RedirectView):
 
 
 class CaseStatusAPIView(View):
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         data = {}
         try:
             case_status = CaseStatus.objects.get(
@@ -1632,7 +1632,7 @@ class ChallengeFormView(SuccessMessageMixin, FormView):
             pk=self.kwargs.get(self.pk_url_kwarg)
         )
 
-    def get(self, request: REQ, *args: str, **kwargs: Any) -> RES:
+    def get(self, request: req, *args: str, **kwargs: Any) -> res:
         self.object = self.get_object()
         return super().get(request, *args, **kwargs)
 
@@ -1650,7 +1650,7 @@ class ChallengeFormView(SuccessMessageMixin, FormView):
         else:
             return super().get_success_url()
 
-    def form_valid(self, form: BaseForm) -> RES:
+    def form_valid(self, form: BaseForm) -> res:
         index_uuid = str(uuid.uuid5(
             uuid.UUID(settings.ACCOUNT_UUID_NAMESPACE),
             str(self.request.user.pk)

@@ -1,7 +1,7 @@
 from typing import Any, Dict
 
 from django.core.exceptions import ImproperlyConfigured
-from django.http.request import HttpRequest as REQ
+from django.http.request import HttpRequest as req
 from django.http.response import HttpResponseBase as RESBASE
 from django.urls import reverse_lazy
 from onlinemaid.constants import (AG_ADMINS, AG_MANAGERS, AG_OWNERS,
@@ -21,7 +21,7 @@ class OMStaffRequiredMixin(SuperUserRequiredMixin):
 class AgencyLoginRequiredMixin(LoginRequiredMixin):
     login_url = reverse_lazy('agency_sign_in')
 
-    def dispatch(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
+    def dispatch(self, request: req, *args: Any, **kwargs: Any) -> RESBASE:
         # Superuser should not have the permssion to access agency views.
         # It will also mess up the get authority mixin
         if request.user.is_superuser:
@@ -96,7 +96,7 @@ class GetAuthorityMixin:
             'agency_id': agency_id
         }
 
-    def dispatch(self, request: REQ, *args: Any, **kwargs: Any) -> RESBASE:
+    def dispatch(self, request: req, *args: Any, **kwargs: Any) -> RESBASE:
         if not self.authority and self.authority != '':
             raise ImproperlyConfigured(
                 '{0} is missing the authority attribute'

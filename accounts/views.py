@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordResetView
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models.query import QuerySet as QS
-from django.http.response import HttpResponse as RES
+from django.http.response import HttpResponse as res
 from django.urls import reverse, reverse_lazy
 from django.views.generic.base import RedirectView
 from django.views.generic.detail import DetailView
@@ -213,7 +213,7 @@ class UserEmailUpdate(LoginRequiredMixin, UpdateView):
             pk=self.request.user.pk
         )
 
-    def form_valid(self, form) -> RES:
+    def form_valid(self, form) -> res:
         for auth_name in AUTHORITY_GROUPS:
             if self.request.user.groups.filter(name=auth_name).exists():
                 authority = auth_name
