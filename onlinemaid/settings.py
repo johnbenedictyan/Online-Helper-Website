@@ -347,3 +347,5 @@ ACCOUNT_UUID_NAMESPACE = os.environ.get('ACCOUNT_UUID_NAMESPACE')
 
 # Django Other Settings
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+ADMIN_ID = os.environ.get('ADMIN_ID')

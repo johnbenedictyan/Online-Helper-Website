@@ -60,7 +60,7 @@ if USE_2FA:
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path(f'{settings.ADMIN_ID}/', admin.site.urls),
     path('accounts/', include(accounts_urls)),
     path('advertisements/', include(advertisement_urls)),
     path('agencies/', include(agency_urls)),

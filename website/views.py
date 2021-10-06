@@ -4,7 +4,7 @@ from typing import Any, Dict
 
 from agency.mixins import OMStaffRequiredMixin
 from agency.models import Agency
-from django.views.generic.base import TemplateView
+from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.list import ListView
 from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
 from maid.filters import MiniMaidFilter
@@ -111,3 +111,8 @@ class AdminPanelEnquiryListView(OMStaffRequiredMixin, ListView):
     model = GeneralEnquiry
     paginate_by = 50
     context_object_name = 'enquiries'
+
+
+class FakeAdminPanel(RedirectView):
+    http_method_names = ['get']
+    pattern_name = 'home'

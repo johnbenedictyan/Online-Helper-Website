@@ -1,15 +1,12 @@
 
 from django.urls import include, path
 
-
 from .views import (AboutUsView, AdminPanelEnquiryListView, AdminPanelView,
                     ContactUsView, Error403View, Error404View, Error500View,
-                    FAQView, HomeView, HowItWorksView, LoaderIOView,
-                    PrivacyPolicyView, RobotsTxt, SitemapView,
+                    FakeAdminPanel, FAQView, HomeView, HowItWorksView,
+                    LoaderIOView, PrivacyPolicyView, RobotsTxt, SitemapView,
                     TermsAndConditionsAgencyView, TermsAndConditionsUserView,
                     UsefulLinksView)
-
-
 
 urlpatterns = [
     path(
@@ -61,6 +58,11 @@ urlpatterns = [
         'useful-links/',
         UsefulLinksView.as_view(),
         name='useful_links'
+    ),
+    path(
+        'admin/',
+        FakeAdminPanel.as_view(),
+        name='fake_admin_panel'
     ),
     path(
         'admin-panel/',
