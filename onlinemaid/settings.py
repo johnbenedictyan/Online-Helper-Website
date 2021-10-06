@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 # Python libraries
 import os
 import sys
+import sentry_sdk
+
+from sentry_sdk.integrations.django import DjangoIntegration
 from pathlib import Path
 
 # 3rd party libraries
@@ -292,20 +295,26 @@ ENCRYPTION_KEY = os.environ.get('ENCRYPTION_KEY')
 SITE_ID = 1
 
 # Sentry
-# SENTRY_DSN = os.environ.get('SENTRY_DSN')
-# sentry_sdk.init(
-#     dsn=SENTRY_DSN,
-#     integrations=[
-#         DjangoIntegration(
-#             transaction_style='function_name'
-#         )
-#     ],
-#     traces_sample_rate=1.0,
+if not DEBUG:
+    sentry_sdk.init(
+    dsn="https://427df046aa204ab9974ee95bc992c5ae@o525150.ingest.sentry.io/5638723",
+    integrations=[DjangoIntegration()],
 
-#     # If you wish to associate users to errors (assuming you are using
-#     # django.contrib.auth) you may enable sending PII data.
-#     send_default_pii=True
-# )
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production,
+    traces_sample_rate=1.0,
+
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True,
+
+    # By default the SDK will try to use the SENTRY_RELEASE
+    # environment variable, or infer a git commit
+    # SHA as release, however you may want to set
+    # something more human-readable.
+    # release="myapp@1.0.0",
+)
 
 # Pagination
 MAID_PAGINATE_BY = 12
