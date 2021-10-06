@@ -148,10 +148,12 @@ def meta_formatter(request):
         'enquiry_list': 'Enquiry | #1 Maid Platform in Singapore | Online Maid'
     }
 
-    if request.resolver_match.url_name in url_name_title_map.keys():
-        meta_title = url_name_title_map[request.resolver_match.url_name]
-    else:
-        meta_title = url_name_title_map['home']
+    meta_title = ''
+    if request.resolver_match:
+        if request.resolver_match.url_name in url_name_title_map.keys():
+            meta_title = url_name_title_map[request.resolver_match.url_name]
+        else:
+            meta_title = url_name_title_map['home']
 
     return {
         'meta_title': meta_title
