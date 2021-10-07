@@ -11,3 +11,18 @@
     </div>
 </div>
 {% endblock main_content %}
+{% block js %}
+<script src="https://browser.sentry-cdn.com/6.13.3/bundle.min.js"
+    integrity="sha384-sGMbmxgVprpEFMz6afNDyADd4Kav86v5Tvo2Y6w5t8tHUn1P1at3lCjN7IQo2c7E" crossorigin="anonymous">
+</script>
+{% endblock js %}
+{% if sentry_event_id %}
+<script>
+    Sentry.init({
+        dsn: "https://427df046aa204ab9974ee95bc992c5ae@o525150.ingest.sentry.io/5638723"
+    });
+    Sentry.showReportDialog({
+        eventId: "{{ sentry_event_id }}"
+    });
+</script>
+{% endif %}
