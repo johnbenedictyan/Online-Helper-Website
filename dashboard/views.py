@@ -1504,7 +1504,7 @@ class DataProviderView(View):
 
         data = {
             'name': 'Sales',
-            'data': chart_data
+            'data': {}
         }
         return JsonResponse(data, status=200)
 
@@ -1558,6 +1558,6 @@ class DashboardGeneralEnquiryDelete(DashboardBaseDeleteView):
     template_name = 'delete/delete.html'
 
 
-class DashboardShortlisedEnquiryDelete(DashboardBaseDeleteView):
+class DashboardShortlistedEnquiryDelete(DashboardBaseDeleteView):
     model = ShortlistedEnquiry
     template_name = 'delete/delete.html'
