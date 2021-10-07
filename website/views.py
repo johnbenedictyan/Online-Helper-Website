@@ -9,8 +9,7 @@ from django.views.generic.list import ListView
 from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
 from maid.filters import MiniMaidFilter
 from payment.models import SubscriptionProduct
-
-
+from sentry_sdk import last_event_id
 
 
 class BaseTemplateView(TemplateView):
@@ -70,6 +69,13 @@ class Error404View(BaseTemplateView):
 
 class Error500View(BaseTemplateView):
     template_name = '500.html'
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        kwargs = super().get_context_data(**kwargs)
+        kwargs.update({
+            'sentry_event_id': last_event_id()
+        })
+        return kwargs
 
 
 class RobotsTxt(BaseTemplateView):
