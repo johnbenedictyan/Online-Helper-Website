@@ -85,7 +85,7 @@ class SignOutView(LoginRequiredMixin, RedirectView):
         messages.success(
             self.request,
             'Log out successful',
-            extra_tags='sucess'
+            extra_tags='success'
         )
         return super().get_redirect_url(*args, **kwargs)
 
