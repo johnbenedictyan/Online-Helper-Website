@@ -8,7 +8,7 @@ from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.list import ListView
 from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
 from maid.filters import MiniMaidFilter
-from payment.models import SubscriptionProduct
+# from payment.models import SubscriptionProduct
 from sentry_sdk import last_event_id
 
 
@@ -102,7 +102,7 @@ class AdminPanelView(OMStaffRequiredMixin, ListView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data()
         context.update({
-            'subscription_products': SubscriptionProduct.objects.all(),
+            # 'subscription_products': SubscriptionProduct.objects.all(),
             'enquiries': chain(
                 GeneralEnquiry.objects.filter(approved=False),
                 ShortlistedEnquiry.objects.filter(approved=False)

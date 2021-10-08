@@ -24,3 +24,8 @@ def get_im(value, agency_id):
     return value.filter(
         maid__agency__pk=agency_id
     )
+
+
+@register.filter
+def keyvalue(dict, key):
+    return dict[key]

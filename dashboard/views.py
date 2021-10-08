@@ -1533,6 +1533,29 @@ class AgencyPlanList(AgencyOwnerRequiredMixin, GetAuthorityMixin, ListView):
     authority = ''
     agency_id = ''
 
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'plans_map': {
+                'BasicPlan': {
+                    3: 'price_1JMn8FKvEbGNaxrCyjESuW6Y',
+                    6: 'price_1JMn8FKvEbGNaxrChQji3o1u',
+                    12: 'price_1JMn8FKvEbGNaxrCvTyY5Ym6'
+                },
+                'StandardPlan': {
+                    3: 'price_1JiDEaKvEbGNaxrC42CnkoLe',
+                    6: 'price_1JiDEiKvEbGNaxrCPMeCw5VT',
+                    12: 'price_1JiDEsKvEbGNaxrCVpVu3tC9'
+                },
+                'PremiumPlan': {
+                    3: 'price_1JiDEsKvEbGNaxrCVpVu3tC9',
+                    6: 'price_1JiDEsKvEbGNaxrCVpVu3tC9',
+                    12: 'price_1JiDG3KvEbGNaxrCzejJlKlD'
+                }
+            }
+        })
+        return context
+
 
 class DashboardBaseDeleteView(DeleteView):
     http_method_names = ['post']

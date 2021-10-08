@@ -1,21 +1,8 @@
-
-
+from agency.models import Agency
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
-# Imports from project
-from onlinemaid.storage_backends import PublicMediaStorage
-
-from agency.models import Agency
-
-
-from .constants import (
-    SubscriptionStatusChoices, SubscriptionTypeChoices, SubscriptionLimitMap
-)
-
-
-
-
+from .constants import (SubscriptionLimitMap, SubscriptionStatusChoices,
+                        SubscriptionTypeChoices)
 
 
 class Invoice(models.Model):
@@ -44,47 +31,7 @@ class Customer(models.Model):
     )
 
 
-class SubscriptionProduct(models.Model):
-    id = models.CharField(
-        primary_key=True,
-        max_length=255
-    )
-
-    name = models.CharField(
-        verbose_name=_('Subscription Product\'s Name'),
-        max_length=255
-    )
-
-    description = models.TextField(
-        verbose_name=_('Subscription Product\'s Description')
-    )
-
-    active = models.BooleanField(
-        verbose_name=_('Subscription Product\'s Active State'),
-        default=True
-    )
-
-    archived = models.BooleanField(
-        verbose_name=_('Subscription Product\'s Archived State'),
-        default=False
-    )
-
-
-class SubscriptionProductImage(models.Model):
-    subscription_product = models.ForeignKey(
-        SubscriptionProduct,
-        on_delete=models.CASCADE,
-        related_name='images'
-    )
-
-    photo = models.FileField(
-        verbose_name=_('Subscription Product\'s Photo'),
-        null=True,
-        storage=PublicMediaStorage()
-    )
-
-
-class SubscriptionProductPrice(models.Model):
+class SubscriptionPrice(models.Model):
     class Currencies(models.TextChoices):
         SGD = 'sgd', _('Singapore Dollars')
 
@@ -105,10 +52,8 @@ class SubscriptionProductPrice(models.Model):
         max_length=255
     )
 
-    subscription_product = models.ForeignKey(
-        SubscriptionProduct,
-        on_delete=models.CASCADE,
-        related_name='price'
+    name = models.CharField(
+        max_length=255
     )
 
     active = models.BooleanField(
@@ -125,7 +70,7 @@ class SubscriptionProductPrice(models.Model):
     interval = models.CharField(
         max_length=5,
         choices=Intervals.choices,
-        default=Intervals.DAY
+        default=Intervals.MONTH
     )
 
     interval_count = models.IntegerField(
@@ -150,10 +95,10 @@ class Subscription(models.Model):
         related_name='subscriptions'
     )
 
-    product = models.ForeignKey(
-        SubscriptionProduct,
+    price = models.ForeignKey(
+        SubscriptionPrice,
         on_delete=models.CASCADE,
-        related_name='subscription'
+        related_name='price'
     )
 
     start_date = models.DateTimeField(
