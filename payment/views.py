@@ -15,7 +15,6 @@ from django.shortcuts import redirect
 from django.urls.base import reverse_lazy
 from django.utils import timezone
 from django.utils.decorators import method_decorator
-from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, View
 from django.views.generic.base import RedirectView, TemplateView
@@ -24,7 +23,7 @@ from onlinemaid.types import T
 
 from .constants import (SubscriptionLimitMap, SubscriptionStatusChoices,
                         SubscriptionTypeChoices)
-from .models import Customer, Invoice, Subscription, SubscriptionPrice
+from .models import Customer, Invoice, Subscription
 
 # Stripe Settings
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -38,7 +37,7 @@ class ViewCart(TemplateView):
         current_cart = self.request.session.get('cart', [])
         self.request.session['cart'] = current_cart
 
-        context['cart'] = SubscriptionPrice.objects.filter(
+        context['cart'] = Subscription.objects.filter(
             pk__in=current_cart
         )
         return context
@@ -104,10 +103,10 @@ class AddToCart(View):
             else:
                 pk = request.POST.get('advertisementPlan')
             try:
-                selected_product_price = SubscriptionPrice.objects.get(
+                selected_product_price = Subscription.objects.get(
                     pk=pk
                 )
-            except SubscriptionPrice.DoesNotExist:
+            except Subscription.DoesNotExist:
                 messages.error(
                     self.request,
                     'This product does not exist'
@@ -152,10 +151,10 @@ class RemoveFromCart(RedirectView):
     def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         current_cart = self.request.session.get('cart', [])
         try:
-            select_product_price = SubscriptionPrice.objects.get(
+            select_product_price = Subscription.objects.get(
                 pk=kwargs.get('pk')
             )
-        except SubscriptionPrice.DoesNotExist:
+        except Subscription.DoesNotExist:
             messages.error(
                 self.request,
                 'This product does not exist'

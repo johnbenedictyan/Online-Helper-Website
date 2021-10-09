@@ -143,9 +143,16 @@ elif 'test' in sys.argv:
     }
 else:
     DATABASES = {
-        'default': dj_database_url.parse(
-            os.environ.get('POSTGRESQL_URL')
-        )
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': "main",
+            'USER': os.environ.get('TEST_POSTGRESQL_DB_USER'),
+            'PASSWORD': os.environ.get('TEST_POSTGRESQL_DB_PASSWORD'),
+            'HOST': os.environ.get('TEST_POSTGRESQL_DB_HOST'),
+            'PORT': os.environ.get('TEST_POSTGRESQL_DB_PORT'),
+            'DISABLE_SERVER_SIDE_CURSORS': True,
+            'OPTIONS': {'sslmode': 'require'},
+        }
     }
 
 
