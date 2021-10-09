@@ -130,8 +130,14 @@ WSGI_APPLICATION = 'onlinemaid.wsgi.application'
 if int(os.environ.get('DATABASE_DEBUG', '1')):
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': "main",
+            'USER': os.environ.get('TEST_POSTGRESQL_DB_USER'),
+            'PASSWORD': os.environ.get('TEST_POSTGRESQL_DB_PASSWORD'),
+            'HOST': os.environ.get('TEST_POSTGRESQL_DB_HOST'),
+            'PORT': os.environ.get('TEST_POSTGRESQL_DB_PORT'),
+            'DISABLE_SERVER_SIDE_CURSORS': True,
+            'OPTIONS': {'sslmode': 'require'},
         }
     }
 elif 'test' in sys.argv:
@@ -143,16 +149,9 @@ elif 'test' in sys.argv:
     }
 else:
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': "main",
-            'USER': os.environ.get('TEST_POSTGRESQL_DB_USER'),
-            'PASSWORD': os.environ.get('TEST_POSTGRESQL_DB_PASSWORD'),
-            'HOST': os.environ.get('TEST_POSTGRESQL_DB_HOST'),
-            'PORT': os.environ.get('TEST_POSTGRESQL_DB_PORT'),
-            'DISABLE_SERVER_SIDE_CURSORS': True,
-            'OPTIONS': {'sslmode': 'require'},
-        }
+        'default': dj_database_url.parse(
+            os.environ.get('POSTGRESQL_URL')
+        )
     }
 
 
