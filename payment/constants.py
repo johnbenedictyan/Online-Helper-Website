@@ -20,6 +20,20 @@ class SubscriptionTypeChoices(models.TextChoices):
     ADVERTISEMENT = 'AD', _('Advertisement')
 
 
+class PlanIntervals(models.TextChoices):
+    ONE_MONTH = '1month', _('1 Month')
+    THREE_MONTH = '3month', _('3 Month')
+    SIX_MONTH = '6month', _('6 Month')
+    TWELVE_MONTH = '12month', _('12 Month')
+
+
+class PlanType(models.TextChoices):
+    BASIC_PLAN = 'Basic Plan', _('Basic Plan')
+    STANDARD_PLAN = 'Standard Plan', _('Standard Plan')
+    PREMIUM_PLAN = 'Premium Plan', _('Premium Plan')
+    ADVERTISEMENT = 'Advertisement', _('Advertisement')
+
+
 SubscriptionLimitMap = {
     "prod_IlJqpv40JRgCa6": {
         "name": "Premium Platform & CRM Plan",

@@ -1,3 +1,4 @@
+{% load dashboard_tags %}
 <div class="card bg-custom-lab text-dark">
     <div class="card-body text-center">
         <h5 class="card-title fs-16">{{plan_type}}</h5>
@@ -51,7 +52,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="agencySubscriptionPlan"
                             id="agencySubscriptionPlanRadios1"
-                            value="{% if plan_id == 'BasicPlan' %}price_1JMn8FKvEbGNaxrCyjESuW6Y{% elif plan_id == 'StandardPlan' %}price_1I9n5vKvEbGNaxrCbI9NEQ7Y{% elif plan_id == 'PremiumPlan' %}price_1I9nCqKvEbGNaxrCgwHXYWEY{% endif %}"
+                            value="{{plans_map|keyvalue:plan_id|keyvalue:3}}"
                             checked>
                         <label class="form-check-label" for="agencySubscriptionPlanRadios1">
                             3 Months
@@ -60,7 +61,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="agencySubscriptionPlan"
                             id="agencySubscriptionPlanRadios2"
-                            value="{% if plan_id == 'BasicPlan' %}price_1JMn8FKvEbGNaxrChQji3o1u{% elif plan_id == 'StandardPlan' %}price_1I9n6KKvEbGNaxrCdb3CjhAE{% elif plan_id == 'PremiumPlan' %}price_1I9nDBKvEbGNaxrCliF4Utjg{% endif %}">
+                            value="{{plans_map|keyvalue:plan_id|keyvalue:6}}">
                         <label class="form-check-label" for="agencySubscriptionPlanRadios2">
                             6 Months
                         </label>
@@ -68,7 +69,7 @@
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="agencySubscriptionPlan"
                             id="agencySubscriptionPlanRadios3"
-                            value="{% if plan_id == 'BasicPlan' %}price_1JMn8FKvEbGNaxrCvTyY5Ym6{% elif plan_id == 'StandardPlan' %}price_1I9n6xKvEbGNaxrC30npDvLs{% elif plan_id == 'PremiumPlan' %}price_1I9nDRKvEbGNaxrCmYucgqfN{% endif %}">
+                            value="{{plans_map|keyvalue:plan_id|keyvalue:12}}">
                         <label class="form-check-label" for="agencySubscriptionPlanRadios3">
                             12 Months
                         </label>
