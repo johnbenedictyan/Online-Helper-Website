@@ -104,7 +104,7 @@ class AddToCart(View):
                 pk = request.POST.get('advertisementPlan')
             try:
                 selected_product_price = Subscription.objects.get(
-                    pk=pk
+                    stripe_id=pk
                 )
             except Subscription.DoesNotExist:
                 messages.error(
