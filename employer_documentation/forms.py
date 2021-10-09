@@ -740,6 +740,13 @@ class EmployerSponsorForm(forms.ModelForm):
     def is_married(self, ms):
         return ms == om_constants.MaritalStatusChoices.MARRIED
 
+    def validate_nric_field(self, cleaned_field):
+        empty_field = _("NRIC field cannot be empty")
+        if not cleaned_field:
+            return empty_field
+        else:
+            return validate_nric(cleaned_field)
+
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
