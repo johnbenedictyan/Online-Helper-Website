@@ -51,3 +51,21 @@
 {% include 'components/form-footer.html' with page_name=page_name %}
 {% include 'components/45-ws-section/end.html' %}
 {% endblock accounts_section %}
+{% block js %}
+<script>
+    $(function () {
+        $("#toggle-password-visibility").on('click', function (event) {
+            event.preventDefault();
+            if ($('#id_password').attr("type") == "text") {
+                $('#id_password').attr('type', 'password');
+                $('#toggle-password-visibility i').addClass("fa-eye-slash");
+                $('#toggle-password-visibility i').removeClass("fa-eye");
+            } else if ($('#id_password').attr("type") == "password") {
+                $('#id_password').attr('type', 'text');
+                $('#toggle-password-visibility i').removeClass("fa-eye-slash");
+                $('#toggle-password-visibility i').addClass("fa-eye");
+            }
+        });
+    });
+</script>
+{% endblock js %}
