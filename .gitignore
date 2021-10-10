@@ -130,3 +130,4 @@ delete_migrations.sh
 **.css
 **/slick
 **.min.js
+**/testing_settings.py
