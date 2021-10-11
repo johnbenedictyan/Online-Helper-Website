@@ -23,6 +23,10 @@ def is_null(x) -> bool:
     return False if x else True
 
 
+def is_not_null(x) -> bool:
+    return not is_null(x)
+
+
 def slugify_text(text) -> str:
     return slugify(text)
 

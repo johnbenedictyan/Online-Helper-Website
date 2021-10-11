@@ -60,8 +60,6 @@ def generate_archive_path(instance, filename):
     return os.path.join(relative_path, filename_split[-1])
 
 
-
-
 class ReceiptMaster(models.Model):
     number = models.PositiveBigIntegerField(
         verbose_name=_('Running Count of the receipt numbers'),

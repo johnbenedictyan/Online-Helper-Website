@@ -1,3 +1,5 @@
+from typing import Any, Dict
+
 from agency.models import Agency, AgencyEmployee
 from crispy_forms.bootstrap import PrependedText, StrictButton
 from crispy_forms.helper import FormHelper
@@ -11,11 +13,13 @@ from django.forms.widgets import ClearableFileInput
 from django.utils.translation import ugettext_lazy as _
 from maid.models import Maid
 from onlinemaid import constants as om_constants
-from onlinemaid.helper_functions import encrypt_string, is_married, is_null
+from onlinemaid.helper_functions import (encrypt_string, is_married,
+                                         is_not_null, is_null)
 from onlinemaid.validators import (validate_ea_personnel_number, validate_fin,
                                    validate_nric, validate_passport)
 
-from .constants import EmployerTypeOfApplicantChoices
+from .constants import (EmployerTypeOfApplicantChoices,
+                        ResidentialStatusFullChoices)
 from .helper_functions import is_foreigner, is_local, is_pasted
 from .models import (CaseSignature, CaseStatus, DocSafetyAgreement,
                      DocServAgmtEmpCtr, DocServiceFeeSchedule, DocUpload,
@@ -399,8 +403,9 @@ class EmployerForm(forms.ModelForm):
             self.instance.employer_fin_tag = tag
             return ciphertext
         else:
-            error_msg = _('Please use this individual\'s NRIC instead')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('Please use this individual\'s NRIC instead')
+                raise ValidationError(error_msg)
 
     def clean_employer_passport_num(self):
         cleaned_field = self.cleaned_data.get('employer_passport_num')
@@ -417,8 +422,9 @@ class EmployerForm(forms.ModelForm):
             self.instance.employer_passport_tag = tag
             return ciphertext
         else:
-            error_msg = _('Please use this individual\'s NRIC instead')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('Please use this individual\'s NRIC instead')
+                raise ValidationError(error_msg)
 
     def clean_employer_passport_date(self):
         cleaned_field = self.cleaned_data.get('employer_passport_date')
@@ -464,8 +470,7 @@ class EmployerForm(forms.ModelForm):
             else:
                 return cleaned_field
         else:
-            error_msg = _('This employer does not have a spouse')
-            raise ValidationError(error_msg)
+            return cleaned_field
 
     def clean_spouse_name(self):
         cleaned_field = self.cleaned_data.get('spouse_name')
@@ -477,8 +482,9 @@ class EmployerForm(forms.ModelForm):
             else:
                 return cleaned_field
         else:
-            error_msg = _('This individual does not have a spouse')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('This individual does not have a spouse')
+                raise ValidationError(error_msg)
 
     def clean_spouse_gender(self):
         cleaned_field = self.cleaned_data.get('spouse_gender')
@@ -490,8 +496,9 @@ class EmployerForm(forms.ModelForm):
             else:
                 return cleaned_field
         else:
-            error_msg = _('This individual does not have a spouse')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('This individual does not have a spouse')
+                raise ValidationError(error_msg)
 
     def clean_spouse_date_of_birth(self):
         cleaned_field = self.cleaned_data.get('spouse_date_of_birth')
@@ -504,8 +511,9 @@ class EmployerForm(forms.ModelForm):
             else:
                 return cleaned_field
         else:
-            error_msg = _('This individual does not have a spouse')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('This individual does not have a spouse')
+                raise ValidationError(error_msg)
 
     def clean_spouse_nationality(self):
         cleaned_field = self.cleaned_data.get('spouse_nationality')
@@ -518,8 +526,9 @@ class EmployerForm(forms.ModelForm):
             else:
                 return cleaned_field
         else:
-            error_msg = _('This individual does not have a spouse')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('This individual does not have a spouse')
+                raise ValidationError(error_msg)
 
     def clean_spouse_residential_status(self):
         cleaned_field = self.cleaned_data.get('spouse_residential_status')
@@ -532,8 +541,9 @@ class EmployerForm(forms.ModelForm):
             else:
                 return cleaned_field
         else:
-            error_msg = _('This individual does not have a spouse')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('This individual does not have a spouse')
+                raise ValidationError(error_msg)
 
     def clean_spouse_nric_num(self):
         cleaned_field = self.cleaned_data.get('spouse_nric_num')
@@ -555,8 +565,9 @@ class EmployerForm(forms.ModelForm):
                 error_msg = _('This individual is not issued an NRIC')
                 raise ValidationError(error_msg)
         else:
-            error_msg = _('This individual does not have a spouse')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('This individual does not have a spouse')
+                raise ValidationError(error_msg)
 
     def clean_spouse_fin_num(self):
         cleaned_field = self.cleaned_data.get('spouse_fin_num')
@@ -575,11 +586,13 @@ class EmployerForm(forms.ModelForm):
                 self.instance.spouse_fin_tag = tag
                 return ciphertext
             else:
-                error_msg = _('Please use this individual\'s NRIC instead')
-                raise ValidationError(error_msg)
+                if is_not_null(cleaned_field):
+                    error_msg = _('Please use this individual\'s NRIC instead')
+                    raise ValidationError(error_msg)
         else:
-            error_msg = _('This individual does not have a spouse')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('This individual does not have a spouse')
+                raise ValidationError(error_msg)
 
     def clean_spouse_passport_num(self):
         cleaned_field = self.cleaned_data.get('spouse_passport_num')
@@ -598,11 +611,13 @@ class EmployerForm(forms.ModelForm):
                 self.instance.spouse_passport_tag = tag
                 return ciphertext
             else:
-                error_msg = _('Please use this individual\'s NRIC instead')
-                raise ValidationError(error_msg)
+                if is_not_null(cleaned_field):
+                    error_msg = _('Please use this individual\'s NRIC instead')
+                    raise ValidationError(error_msg)
         else:
-            error_msg = _('This individual does not have a spouse')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('This individual does not have a spouse')
+                raise ValidationError(error_msg)
 
     def clean_spouse_passport_date(self):
         cleaned_field = self.cleaned_data.get('spouse_passport_date')
@@ -621,6 +636,33 @@ class EmployerForm(forms.ModelForm):
             raise ValidationError(error_msg)
 
         return cleaned_field
+
+    def clean(self) -> Dict[str, Any]:
+        cleaned_data = super().clean()
+        employer_nationality = cleaned_data.get('employer_nationality')
+        employer_residential_status = cleaned_data.get(
+            'employer_residential_status'
+        )
+        employer_spouse_nationality = cleaned_data.get(
+            'employer_spouse_nationality'
+        )
+        employer_spouse_residential_status = cleaned_data.get(
+            'employer_spouse_residential_status'
+        )
+        if(employer_nationality == om_constants.FullNationsChoices.SINGAPORE
+            and employer_residential_status == ResidentialStatusFullChoices.SC
+           ):
+            error_msg = _('This employer must be a citizen of Singapore')
+            raise ValidationError(error_msg)
+
+        if employer_spouse_nationality:
+            if(employer_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE
+                and employer_spouse_residential_status == ResidentialStatusFullChoices.SC
+               ):
+                error_msg = _(
+                    'This employer\'s spouse must be a citizen of Singapore')
+                raise ValidationError(error_msg)
+        return cleaned_data
 
     def save(self):
         if self.changed_data and self.form_type == 'UPDATE':
@@ -1220,8 +1262,9 @@ class EmployerSponsorForm(forms.ModelForm):
                 self.instance.sponsor_1_spouse_fin_tag = tag
                 return ciphertext
             else:
-                error_msg = _('Please use this individual\'s NRIC instead')
-                raise ValidationError(error_msg)
+                if is_not_null(cleaned_field):
+                    error_msg = _('Please use this individual\'s NRIC instead')
+                    raise ValidationError(error_msg)
         else:
             error_msg = _('This individual has no spouse')
             raise ValidationError(error_msg)
@@ -1243,8 +1286,9 @@ class EmployerSponsorForm(forms.ModelForm):
                 self.instance.sponsor_1_spouse_passport_tag = tag
                 return ciphertext
             else:
-                error_msg = _('Please use this individual\'s NRIC instead')
-                raise ValidationError(error_msg)
+                if is_not_null(cleaned_field):
+                    error_msg = _('Please use this individual\'s NRIC instead')
+                    raise ValidationError(error_msg)
         else:
             error_msg = _('This individual has no spouse')
             raise ValidationError(error_msg)
@@ -1572,8 +1616,9 @@ class EmployerSponsorForm(forms.ModelForm):
                 self.instance.sponsor_2_spouse_fin_tag = tag
                 return ciphertext
             else:
-                error_msg = _('Please use this individual\'s NRIC instead')
-                raise ValidationError(error_msg)
+                if is_not_null(cleaned_field):
+                    error_msg = _('Please use this individual\'s NRIC instead')
+                    raise ValidationError(error_msg)
         else:
             return None
 
@@ -1595,8 +1640,9 @@ class EmployerSponsorForm(forms.ModelForm):
                 self.instance.sponsor_2_spouse_passport_tag = tag
                 return ciphertext
             else:
-                error_msg = _('Please use this individual\'s NRIC instead')
-                raise ValidationError(error_msg)
+                if is_not_null(cleaned_field):
+                    error_msg = _('Please use this individual\'s NRIC instead')
+                    raise ValidationError(error_msg)
         else:
             return None
 
@@ -1616,10 +1662,66 @@ class EmployerSponsorForm(forms.ModelForm):
                 else:
                     return cleaned_field
             else:
-                error_msg = _('Please use this individual\'s NRIC instead')
-                raise ValidationError(error_msg)
+                if is_not_null(cleaned_field):
+                    error_msg = _('Please use this individual\'s NRIC instead')
+                    raise ValidationError(error_msg)
         else:
             return None
+
+    def clean(self) -> Dict[str, Any]:
+        cleaned_data = super().clean()
+        sponsor_1_nationality = cleaned_data.get('sponsor_1_nationality')
+        sponsor_1_residential_status = cleaned_data.get(
+            'sponsor_1_residential_status'
+        )
+        sponsor_1_spouse_nationality = cleaned_data.get(
+            'sponsor_1_spouse_nationality'
+        )
+        sponsor_1_spouse_residential_status = cleaned_data.get(
+            'sponsor_1_spouse_residential_status'
+        )
+
+        if(sponsor_1_nationality == om_constants.FullNationsChoices.SINGAPORE
+            and sponsor_1_residential_status == ResidentialStatusFullChoices.SC
+           ):
+            error_msg = _('Sponsor 1 must be a citizen of Singapore')
+            raise ValidationError(error_msg)
+
+        if sponsor_1_spouse_nationality:
+            if(sponsor_1_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE
+                and sponsor_1_spouse_residential_status == ResidentialStatusFullChoices.SC
+               ):
+                error_msg = _(
+                    'Sponsor 1\'s spouse must be a citizen of Singapore')
+                raise ValidationError(error_msg)
+
+        sponsor_2_required = cleaned_data.get('sponsor_2_required')
+        if sponsor_2_required:
+            sponsor_2_nationality = cleaned_data.get('sponsor_2_nationality')
+            sponsor_2_residential_status = cleaned_data.get(
+                'sponsor_2_residential_status'
+            )
+            sponsor_2_spouse_nationality = cleaned_data.get(
+                'sponsor_2_spouse_nationality'
+            )
+            sponsor_2_spouse_residential_status = cleaned_data.get(
+                'sponsor_2_spouse_residential_status'
+            )
+            if(sponsor_2_nationality == om_constants.FullNationsChoices.SINGAPORE
+               and sponsor_2_residential_status == ResidentialStatusFullChoices.SC
+               ):
+                error_msg = _('Sponsor 2 must be a citizen of Singapore')
+                raise ValidationError(error_msg)
+
+            if sponsor_2_spouse_nationality:
+                if(sponsor_2_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE
+                    and sponsor_2_spouse_residential_status == ResidentialStatusFullChoices.SC
+                   ):
+                    error_msg = _(
+                        'Sponsor 2\'s spouse must be a citizen of Singapore')
+                    raise ValidationError(error_msg)
+
+        return cleaned_data
 
     def save(self):
         if self.changed_data and self.form_type == 'UPDATE':
@@ -1941,8 +2043,9 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 self.instance.joint_applicant_spouse_fin_tag = tag
                 return ciphertext
             else:
-                error_msg = _('Please use this individual\'s NRIC instead')
-                raise ValidationError(error_msg)
+                if is_not_null(cleaned_field):
+                    error_msg = _('Please use this individual\'s NRIC instead')
+                    raise ValidationError(error_msg)
         else:
             error_msg = _('This Joint Applicant does not have a spouse')
             raise ValidationError(error_msg)
@@ -1968,8 +2071,9 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 self.instance.joint_applicant_spouse_passport_tag = tag
                 return ciphertext
             else:
-                error_msg = _('Please use this individual\'s NRIC instead')
-                raise ValidationError(error_msg)
+                if is_not_null(cleaned_field):
+                    error_msg = _('Please use this individual\'s NRIC instead')
+                    raise ValidationError(error_msg)
         else:
             error_msg = _('This Joint Applicant does not have a spouse')
             raise ValidationError(error_msg)
@@ -1992,11 +2096,39 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 else:
                     return cleaned_field
             else:
-                error_msg = _('Please use this individual\'s NRIC instead')
-                raise ValidationError(error_msg)
+                if is_not_null(cleaned_field):
+                    error_msg = _('Please use this individual\'s NRIC instead')
+                    raise ValidationError(error_msg)
         else:
             error_msg = _('This Joint Applicant does not have a spouse')
             raise ValidationError(error_msg)
+
+    def clean(self) -> Dict[str, Any]:
+        cleaned_data = super().clean()
+        joint_applicant_nationality = cleaned_data.get('employer_nationality')
+        joint_applicant_residential_status = cleaned_data.get(
+            'employer_residential_status'
+        )
+        joint_applicant_spouse_nationality = cleaned_data.get(
+            'employer_spouse_nationality'
+        )
+        joint_applicant_spouse_residential_status = cleaned_data.get(
+            'employer_spouse_residential_status'
+        )
+        if(joint_applicant_nationality == om_constants.FullNationsChoices.SINGAPORE
+            and joint_applicant_residential_status == ResidentialStatusFullChoices.SC
+           ):
+            error_msg = _('This joint applicant must be a citizen of Singapore')
+            raise ValidationError(error_msg)
+
+        if joint_applicant_spouse_nationality:
+            if(joint_applicant_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE
+                and joint_applicant_spouse_residential_status == ResidentialStatusFullChoices.SC
+               ):
+                error_msg = _(
+                    'This joint applicant\'s spouse must be a citizen of Singapore')
+                raise ValidationError(error_msg)
+        return cleaned_data
 
     def save(self):
         if self.changed_data and self.form_type == 'UPDATE':

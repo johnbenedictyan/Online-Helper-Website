@@ -104,6 +104,7 @@ def validate_passport(passport_text) -> Union[NoReturn, None]:
 
 
 def validate_ea_personnel_number(ea_personnel_number) -> Union[NoReturn, None]:
+    error_msg = None
     if not ea_personnel_number:
         error_msg = _("EA Personnel number cannot be empty")
 
