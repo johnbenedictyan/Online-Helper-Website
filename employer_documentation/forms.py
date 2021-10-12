@@ -15,12 +15,13 @@ from maid.models import Maid
 from onlinemaid import constants as om_constants
 from onlinemaid.helper_functions import (encrypt_string, is_married,
                                          is_not_null, is_null)
-from onlinemaid.validators import (validate_ea_personnel_number, validate_fin,
-                                   validate_nric, validate_passport)
+from onlinemaid.validators import (validate_age, validate_ea_personnel_number,
+                                   validate_fin, validate_nric,
+                                   validate_passport, validate_passport_date)
 
 from .constants import (EmployerTypeOfApplicantChoices,
                         ResidentialStatusFullChoices)
-from .helper_functions import is_foreigner, is_local, is_pasted
+from .helper_functions import is_foreigner, is_local
 from .models import (CaseSignature, CaseStatus, DocSafetyAgreement,
                      DocServAgmtEmpCtr, DocServiceFeeSchedule, DocUpload,
                      Employer, EmployerDoc, EmployerHousehold, EmployerIncome,
@@ -435,10 +436,12 @@ class EmployerForm(forms.ModelForm):
             if is_null(cleaned_field):
                 error_msg = _('Passport expiry date field cannot be empty')
                 raise ValidationError(error_msg)
-
-        if is_pasted(cleaned_field):
-            error_msg = _('This passport has expired')
-            raise ValidationError(error_msg)
+            else:
+                validate_passport_date(cleaned_field)
+        else:
+            if is_not_null(cleaned_field):
+                error_msg = _('Please use this individual\'s NRIC instead')
+                raise ValidationError(error_msg)
 
         return cleaned_field
 
@@ -496,9 +499,7 @@ class EmployerForm(forms.ModelForm):
             else:
                 return cleaned_field
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This individual does not have a spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_spouse_date_of_birth(self):
         cleaned_field = self.cleaned_data.get('spouse_date_of_birth')
@@ -509,6 +510,7 @@ class EmployerForm(forms.ModelForm):
                     'Employer spouse date of birth field cannot be empty')
                 raise ValidationError(error_msg)
             else:
+                validate_age(cleaned_field, 18)
                 return cleaned_field
         else:
             if is_not_null(cleaned_field):
@@ -526,9 +528,7 @@ class EmployerForm(forms.ModelForm):
             else:
                 return cleaned_field
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This individual does not have a spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_spouse_residential_status(self):
         cleaned_field = self.cleaned_data.get('spouse_residential_status')
@@ -541,9 +541,7 @@ class EmployerForm(forms.ModelForm):
             else:
                 return cleaned_field
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This individual does not have a spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_spouse_nric_num(self):
         cleaned_field = self.cleaned_data.get('spouse_nric_num')
@@ -630,11 +628,18 @@ class EmployerForm(forms.ModelForm):
                 if is_null(cleaned_field):
                     error_msg = _('Passport expiry date field cannot be empty')
                     raise ValidationError(error_msg)
+                else:
+                    validate_passport_date(cleaned_field)
+            else:
+                if is_not_null(cleaned_field):
+                    error_msg = _('Please use this individual\'s NRIC instead')
+                    raise ValidationError(error_msg)
 
-        if is_pasted(cleaned_field):
-            error_msg = _('This passport has expired')
-            raise ValidationError(error_msg)
+        return cleaned_field
 
+    def clean_employer_date_of_birth(self):
+        cleaned_field = self.cleaned_data.get('employer_date_of_birth')
+        validate_age(cleaned_field, 18)
         return cleaned_field
 
     def clean(self) -> Dict[str, Any]:
@@ -649,9 +654,10 @@ class EmployerForm(forms.ModelForm):
         employer_spouse_residential_status = cleaned_data.get(
             'employer_spouse_residential_status'
         )
-        if(employer_nationality == om_constants.FullNationsChoices.SINGAPORE
+        if not (
+            employer_nationality == om_constants.FullNationsChoices.SINGAPORE
             and employer_residential_status == ResidentialStatusFullChoices.SC
-           ):
+        ):
             error_msg = _('This employer must be a citizen of Singapore')
             raise ValidationError(error_msg)
 
@@ -1187,6 +1193,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     _('Sponsor 1 spouse date of birth field cannot be empty')
                 )
             else:
+                validate_age(cleaned_field, 18)
                 return cleaned_field
         else:
             error_msg = _('This sponsor does not have a spouse')
@@ -1201,6 +1208,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     _('Sponsor 1 spouse nationality field cannot be empty')
                 )
             else:
+                validate_age(cleaned_field, 18)
                 return cleaned_field
         else:
             error_msg = _('This sponsor does not have a spouse')
@@ -1362,6 +1370,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     _('Sponsor 2 date of birth field cannot be empty')
                 )
             else:
+                validate_age(cleaned_field, 18)
                 return cleaned_field
         else:
             return None
@@ -1529,6 +1538,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     _('Sponsor 2 spouse date of birth field cannot be empty')
                 )
             else:
+                validate_age(cleaned_field, 18)
                 return cleaned_field
         else:
             return None
@@ -1798,9 +1808,6 @@ class EmployerJointApplicantForm(forms.ModelForm):
             'joint_applicant_spouse_passport_tag',
         ]
 
-    def is_married(self, ms):
-        return ms == om_constants.MaritalStatusChoices.MARRIED
-
     def __init__(self, *args, **kwargs):
         self.user_pk = kwargs.pop('user_pk')
         self.authority = kwargs.pop('authority')
@@ -1997,6 +2004,11 @@ class EmployerJointApplicantForm(forms.ModelForm):
         self.instance.joint_applicant_nric_tag = tag
         return ciphertext
 
+    def clean_joint_applicant_date_of_birth(self):
+        cleaned_field = self.cleaned_data.get('joint_applicant_date_of_birth')
+        validate_age(cleaned_field, 18)
+        return cleaned_field
+
     def clean_joint_applicant_spouse_nric_num(self):
         cleaned_field = self.cleaned_data.get(
             'joint_applicant_spouse_nric_num'
@@ -2021,8 +2033,9 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 error_msg = _('This individual is not issued an NRIC')
                 raise ValidationError(error_msg)
         else:
-            error_msg = _('This individual has no spouse')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('This individual has no spouse')
+                raise ValidationError(error_msg)
 
     def clean_joint_applicant_spouse_fin_num(self):
         cleaned_field = self.cleaned_data.get('joint_applicant_spouse_fin_num')
@@ -2047,8 +2060,9 @@ class EmployerJointApplicantForm(forms.ModelForm):
                     error_msg = _('Please use this individual\'s NRIC instead')
                     raise ValidationError(error_msg)
         else:
-            error_msg = _('This Joint Applicant does not have a spouse')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('This Joint Applicant does not have a spouse')
+                raise ValidationError(error_msg)
 
     def clean_joint_applicant_spouse_passport_num(self):
         cleaned_field = self.cleaned_data.get(
@@ -2075,8 +2089,9 @@ class EmployerJointApplicantForm(forms.ModelForm):
                     error_msg = _('Please use this individual\'s NRIC instead')
                     raise ValidationError(error_msg)
         else:
-            error_msg = _('This Joint Applicant does not have a spouse')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('This Joint Applicant does not have a spouse')
+                raise ValidationError(error_msg)
 
     def clean_joint_applicant_spouse_passport_date(self):
         cleaned_field = self.cleaned_data.get(
@@ -2090,8 +2105,8 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 'joint_applicant_spouse_residential_status'
             )
             if is_foreigner(spouse_residential_status):
-                error_msg = _('Passport expiry date field cannot be empty')
                 if is_null(cleaned_field):
+                    error_msg = _('Passport expiry date field cannot be empty')
                     raise ValidationError(error_msg)
                 else:
                     return cleaned_field
@@ -2100,8 +2115,28 @@ class EmployerJointApplicantForm(forms.ModelForm):
                     error_msg = _('Please use this individual\'s NRIC instead')
                     raise ValidationError(error_msg)
         else:
-            error_msg = _('This Joint Applicant does not have a spouse')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('This Joint Applicant does not have a spouse')
+                raise ValidationError(error_msg)
+
+    def clean_joint_applicant_spouse_date_of_birth(self):
+        cleaned_field = self.cleaned_data.get(
+            'joint_applicant_spouse_date_of_birth')
+        marital_status = self.cleaned_data.get(
+            'joint_applicant_marital_status'
+        )
+        if is_married(marital_status):
+            if is_null(cleaned_field):
+                error_msg = _('Spouse date of birth field cannot be empty')
+                raise ValidationError(error_msg)
+            else:
+                validate_age(cleaned_field, 18)
+        else:
+            if is_not_null(cleaned_field):
+                error_msg = _('This Joint Applicant does not have a spouse')
+                raise ValidationError(error_msg)
+
+        return cleaned_field
 
     def clean(self) -> Dict[str, Any]:
         cleaned_data = super().clean()
@@ -2115,19 +2150,39 @@ class EmployerJointApplicantForm(forms.ModelForm):
         joint_applicant_spouse_residential_status = cleaned_data.get(
             'employer_spouse_residential_status'
         )
-        if(joint_applicant_nationality == om_constants.FullNationsChoices.SINGAPORE
+        if(
+            joint_applicant_nationality == om_constants.FullNationsChoices.SINGAPORE
             and joint_applicant_residential_status == ResidentialStatusFullChoices.SC
-           ):
-            error_msg = _('This joint applicant must be a citizen of Singapore')
+        ):
+            error_msg = _(
+                'This joint applicant must be a citizen of Singapore')
             raise ValidationError(error_msg)
 
         if joint_applicant_spouse_nationality:
-            if(joint_applicant_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE
+            if(
+                joint_applicant_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE
                 and joint_applicant_spouse_residential_status == ResidentialStatusFullChoices.SC
-               ):
+            ):
                 error_msg = _(
                     'This joint applicant\'s spouse must be a citizen of Singapore')
                 raise ValidationError(error_msg)
+
+        joint_applicant_address_1 = cleaned_data.get(
+            'joint_applicant_address_1')
+        joint_applicant_address_2 = cleaned_data.get(
+            'joint_applicant_address_2')
+        joint_applicant_post_code = cleaned_data.get(
+            'joint_applicant_post_code')
+        employer_obj = Employer.objects.get(pk=self.level_0_pk)
+        if (
+            employer_obj.employer_address_1 != joint_applicant_address_1
+            or employer_obj.employer_address_2 != joint_applicant_address_2
+            or employer_obj.employer_post_code != joint_applicant_post_code
+        ):
+            error_msg = _(
+                'The joint applicant must stay in the same residence as the employer')
+            raise ValidationError(error_msg)
+
         return cleaned_data
 
     def save(self):

@@ -27,6 +27,17 @@ def is_not_null(x) -> bool:
     return not is_null(x)
 
 
+def is_of_age(dt, age: int) -> bool:
+    if dt and age:
+        date_diff = date.today() - dt
+        return date_diff.days >= age * 365
+
+
+def is_pasted(dt) -> bool:
+    if dt:
+        return dt < datetime.datetime.now()
+
+
 def slugify_text(text) -> str:
     return slugify(text)
 

@@ -4,7 +4,21 @@ from typing import NoReturn, Union
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
+from onlinemaid.helper_functions import is_of_age, is_pasted
+
 # Start of Validators
+
+
+def validate_passport_date(dt) -> Union[NoReturn, None]:
+    if is_pasted(dt):
+        error_msg = _('This passport is expired')
+        raise ValidationError(error_msg)
+
+
+def validate_age(dt, age) -> Union[NoReturn, None]:
+    if not is_of_age(dt, age):
+        error_msg = f'This individual is not at least {age} years old'
+        raise ValidationError(error_msg)
 
 
 def validate_nric(test_id) -> Union[NoReturn, None]:

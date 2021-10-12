@@ -1,7 +1,3 @@
-import datetime
-
-from django.utils.translation import ugettext_lazy as _
-
 from .constants import (EmployerTypeOfApplicantChoices,
                         ResidentialStatusFullChoices)
 
@@ -27,8 +23,3 @@ def is_applicant_joint_applicant(type_of_applicant) -> bool:
 
 def is_applicant_spouse(type_of_applicant) -> bool:
     return type_of_applicant == EmployerTypeOfApplicantChoices.SPOUSE
-
-
-def is_pasted(dt) -> bool:
-    if dt:
-        return dt < datetime.datetime.now()
