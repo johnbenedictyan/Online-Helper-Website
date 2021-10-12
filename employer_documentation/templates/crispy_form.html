@@ -32,8 +32,8 @@
 {% crispy form %}
 {% endif %}
 {% endblock form %}
-{% if url_name == 'employer_householddetails_route' or url_name == 'maid_inventory_route' %}
 {% block extra_js %}
+{% if url_name == 'employer_householddetails_route' or url_name == 'maid_inventory_route' %}
 <script>
     $(function () {
         $("#addButton").on('click', function (e) {
@@ -46,5 +46,39 @@
         })
     })
 </script>
-{% endblock extra_js %}
+{% else %}
+<script>
+    $(function () {
+        let fdw_clean_window_exterior = $('#id_fdw_clean_window_exterior').val();
+        let window_exterior_location = $('#id_window_exterior_location').val();
+        if(fdw_clean_window_exterior == 'True'){
+            $('#id_window_exterior_location').parent().parent().parent().removeClass('d-none');
+        }
+        if(window_exterior_location == 'OTHER'){
+            $('#id_grilles_installed_require_cleaning').parent().parent().parent().removeClass('d-none');
+        }
+
+        $("#id_fdw_clean_window_exterior").on('change', function (e) {
+            let fdw_clean_window_exterior = $(this).val();
+            if(fdw_clean_window_exterior == 'True'){
+                $('#id_window_exterior_location').parent().parent().parent().removeClass('d-none');
+            } else {
+                $('#id_window_exterior_location').val('');
+                $('#id_window_exterior_location').parent().parent().parent().addClass('d-none');
+                $('#id_grilles_installed_require_cleaning').val('');
+                $('#id_grilles_installed_require_cleaning').parent().parent().parent().addClass('d-none');
+            }
+        })
+        $("#id_window_exterior_location").on('change', function (e) {
+            let window_exterior_location = $(this).val();
+            if(window_exterior_location == 'OTHER'){
+                $('#id_grilles_installed_require_cleaning').parent().parent().parent().removeClass('d-none');
+            } else {
+                $('#id_grilles_installed_require_cleaning').val('');
+                $('#id_grilles_installed_require_cleaning').parent().parent().parent().addClass('d-none');
+            }
+        })
+    })
+</script>
 {% endif %}
+{% endblock extra_js %}

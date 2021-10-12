@@ -3091,17 +3091,17 @@ class DocSafetyAgreementForm(forms.ModelForm):
             Row(
                 Column(
                     'window_exterior_location',
-                    css_class='form-group col-md-12 pr-md-3'
+                    css_class='form-group col-md-12 pr-md-3 d-none'
                 ),
                 Column(
                     'grilles_installed_require_cleaning',
-                    css_class='form-group col-md-12 pl-md-3'
+                    css_class='form-group col-md-12 pl-md-3 d-none'
                 )
             ),
             Row(
                 Column(
                     'adult_supervision',
-                    css_class='form-group col-md-12 pr-md-3'
+                    css_class='form-group col-md-12 pr-md-3 d-none'
                 ),
                 Column(
                     'verifiy_employer_understands_window_cleaning',
