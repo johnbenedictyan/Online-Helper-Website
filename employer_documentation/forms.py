@@ -3160,7 +3160,7 @@ class DocSafetyAgreementForm(forms.ModelForm):
         )
         if (
             self.cleaned_data.get('window_exterior_location') == 'OTHER'
-            and self.cleaned_data.get('grilles_installed_require_cleaning')
+            and not self.cleaned_data.get('grilles_installed_require_cleaning')
         ):
             self.add_error(
                 'grilles_installed_require_cleaning',

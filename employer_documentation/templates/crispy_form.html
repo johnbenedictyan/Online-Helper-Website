@@ -51,31 +51,51 @@
     $(function () {
         let fdw_clean_window_exterior = $('#id_fdw_clean_window_exterior').val();
         let window_exterior_location = $('#id_window_exterior_location').val();
-        if(fdw_clean_window_exterior == 'True'){
+        let grilles_installed_require_cleaning = $('#id_grilles_installed_require_cleaning').val();
+        if (fdw_clean_window_exterior == 'True') {
             $('#id_window_exterior_location').parent().parent().parent().removeClass('d-none');
         };
-        if(window_exterior_location == 'OTHER'){
+        if (window_exterior_location == 'OTHER') {
             $('#id_grilles_installed_require_cleaning').parent().parent().parent().removeClass('d-none');
         };
+        if (grilles_installed_require_cleaning == 'True') {
+            $('#id_adult_supervision').parent().parent().parent().removeClass('d-none');
+        }
 
         $("#id_fdw_clean_window_exterior").on('change', function (e) {
-            let fdw_clean_window_exterior = $(this).val();
-            if(fdw_clean_window_exterior == 'True'){
+            fdw_clean_window_exterior = $(this).val();
+            if (fdw_clean_window_exterior == 'True') {
                 $('#id_window_exterior_location').parent().parent().parent().removeClass('d-none');
             } else {
                 $('#id_window_exterior_location').val('');
                 $('#id_window_exterior_location').parent().parent().parent().addClass('d-none');
                 $('#id_grilles_installed_require_cleaning').val('');
-                $('#id_grilles_installed_require_cleaning').parent().parent().parent().addClass('d-none');
+                $('#id_grilles_installed_require_cleaning').parent().parent().parent().addClass(
+                    'd-none');
+                $('#id_adult_supervision').val('');
+                $('#id_adult_supervision').parent().parent().parent().addClass('d-none');
             }
         });
         $("#id_window_exterior_location").on('change', function (e) {
-            let window_exterior_location = $(this).val();
-            if(window_exterior_location == 'OTHER'){
-                $('#id_grilles_installed_require_cleaning').parent().parent().parent().removeClass('d-none');
+            window_exterior_location = $(this).val();
+            if (window_exterior_location == 'OTHER') {
+                $('#id_grilles_installed_require_cleaning').parent().parent().parent().removeClass(
+                    'd-none');
             } else {
                 $('#id_grilles_installed_require_cleaning').val('');
-                $('#id_grilles_installed_require_cleaning').parent().parent().parent().addClass('d-none');
+                $('#id_grilles_installed_require_cleaning').parent().parent().parent().addClass(
+                    'd-none');
+                $('#id_adult_supervision').val('');
+                $('#id_adult_supervision').parent().parent().parent().addClass('d-none');
+            }
+        });
+        $("#id_grilles_installed_require_cleaning").on('change', function (e) {
+            grilles_installed_require_cleaning = $(this).val();
+            if (grilles_installed_require_cleaning == 'True') {
+                $('#id_adult_supervision').parent().parent().parent().removeClass('d-none');
+            } else {
+                $('#id_adult_supervision').val('');
+                $('#id_adult_supervision').parent().parent().parent().addClass('d-none');
             }
         });
     })
