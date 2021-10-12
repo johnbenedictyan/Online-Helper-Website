@@ -2759,14 +2759,15 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
 
     def clean_fdw_replaced_passport_num(self):
         cleaned_field = self.cleaned_data.get('fdw_replaced_passport_num')
-        validate_passport(cleaned_field)
-        ciphertext, nonce, tag = encrypt_string(
-            cleaned_field,
-            settings.ENCRYPTION_KEY
-        )
-        self.instance.fdw_replaced_passport_nonce = nonce
-        self.instance.fdw_replaced_passport_tag = tag
-        return ciphertext
+        if cleaned_field:
+            validate_passport(cleaned_field)
+            ciphertext, nonce, tag = encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY
+            )
+            self.instance.fdw_replaced_passport_nonce = nonce
+            self.instance.fdw_replaced_passport_tag = tag
+            return ciphertext
 
     def clean_b4_loan_transferred(self):
         is_new_case = self.cleaned_data.get('is_new_case')
@@ -2779,6 +2780,15 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
                 field')
         else:
             return cleaned_field
+
+    def clean(self) -> Dict[str, Any]:
+        cleaned_data = super().clean()
+        fdw_replaced_passport_num = cleaned_data.get(
+            'fdw_replaced_passport_num')
+        is_new_case = cleaned_data.get('is_new_case')
+        if not is_new_case and fdw_replaced_passport_num:
+            error_msg = _('The replaced FDW passport number is required')
+            raise ValidationError(error_msg)
 
     def save(self):
         if self.changed_data and self.form_type == 'UPDATE':
