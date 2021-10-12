@@ -570,7 +570,16 @@ class EmailUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.get('user')
         kwargs.pop('user')
+        self.remember_email_obj = kwargs.pop('remember_email_obj', None)
         super().__init__(*args, **kwargs)
+        if (
+            self.remember_email_obj
+            and 'remember_email' in self.remember_email_obj
+        ):
+            remember_email = self.remember_email_obj.get('remember_email')
+            self.initial.update({
+                'remember_email': remember_email
+            })
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Row(

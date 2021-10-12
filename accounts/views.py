@@ -284,6 +284,10 @@ class UserEmailUpdate(LoginRequiredMixin, UpdateView):
     def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
-            'user': self.request.user
+            'user': self.request.user,
+            'remember_email_obj': self.request.session.get(
+                'remember_email_obj',
+                None
+            )
         })
         return kwargs
