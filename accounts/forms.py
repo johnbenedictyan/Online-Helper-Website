@@ -25,15 +25,26 @@ class SignInForm(AuthenticationForm):
     # We cannot have it to be a static redirect, the next url must take
     # precedence
     # redirect_named_url = 'home'
-    placeholders = {
-        'username': '',
-        'password': ''
-    }
+
+    remember_email = forms.BooleanField(
+        label=_('Remember Email'),
+        required=False
+    )
 
     def __init__(self, *args, **kwargs):
+        self.remember_email_obj = kwargs.pop('remember_email_obj', None)
         super().__init__(*args, **kwargs)
-        for k, v in self.placeholders.items():
-            self.fields[k].widget.attrs['placeholder'] = v
+        if (
+            self.remember_email_obj
+            and 'email' in self.remember_email_obj
+            and 'remember_email' in self.remember_email_obj
+        ):
+            username = self.remember_email_obj.get('email')
+            remember_email = self.remember_email_obj.get('remember_email')
+            self.initial.update({
+                'username': username,
+                'remember_email': remember_email
+            })
         # self.fields['password'].help_text = '''
         #     <a class='ml-1'
         #     href="{% url 'password_reset' %}">Forget your password?</a>
@@ -43,6 +54,7 @@ class SignInForm(AuthenticationForm):
             Row(
                 Column(
                     'username',
+                    'remember_email',
                     css_class='form-group col-24'
                 )
             ),
@@ -85,12 +97,32 @@ class SignInForm(AuthenticationForm):
             ),
         )
 
-    def confirm_login_allowed(self, user) -> None:
-        result = super().confirm_login_allowed(user)
-        if self.cleaned_data.get('remember_password'):
-            self.get_user().set_remember_password_true()
-
-        return result
+    def clean_username(self):
+        cleaned_field = self.cleaned_data["username"]
+        try:
+            user = get_user_model().objects.get(
+                email=cleaned_field
+            )
+        except get_user_model().DoesNotExist:
+            pass
+        else:
+            if user.groups.filter(name=FDW).exists():
+                self.add_error(
+                    'username',
+                    ValidationError(
+                        _('Please use the fdw login page'),
+                        code='invalid-signin'
+                    )
+                )
+            if not user.groups.filter(name=EMPLOYERS).exists():
+                self.add_error(
+                    'username',
+                    ValidationError(
+                        _('Please use the agency login page'),
+                        code='invalid-signin'
+                    )
+                )
+        return cleaned_field
 
 
 class AgencySignInForm(AuthenticationForm):
@@ -117,16 +149,25 @@ class AgencySignInForm(AuthenticationForm):
         max_length=255
     )
 
-    placeholders = {
-        'agency_license_number': '',
-        'username': '',
-        'password': ''
-    }
+    remember_email = forms.BooleanField(
+        label=_('Remember Email'),
+        required=False
+    )
 
     def __init__(self, *args, **kwargs):
+        self.remember_email_obj = kwargs.pop('remember_email_obj', None)
         super().__init__(*args, **kwargs)
-        for k, v in self.placeholders.items():
-            self.fields[k].widget.attrs['placeholder'] = v
+        if (
+            self.remember_email_obj
+            and 'email' in self.remember_email_obj
+            and 'remember_email' in self.remember_email_obj
+        ):
+            username = self.remember_email_obj.get('email')
+            remember_email = self.remember_email_obj.get('remember_email')
+            self.initial.update({
+                'username': username,
+                'remember_email': remember_email
+            })
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
@@ -145,6 +186,7 @@ class AgencySignInForm(AuthenticationForm):
                 ),
                 Column(
                     'username',
+                    'remember_email',
                     css_class='form-group col-md-12 pl-md-3'
                 ),
                 css_class='form-row'
