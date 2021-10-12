@@ -29,8 +29,6 @@ from .constants import (CookingRemarksChoices, DisabledCareRemarksChoices,
 from .helper_functions import is_able_to_speak
 
 
-
-
 class MaidResponsibility(models.Model):
     name = models.CharField(
         verbose_name=_('Name of maid\'s responsibility'),

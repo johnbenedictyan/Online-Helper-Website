@@ -1,4 +1,5 @@
 from decimal import Decimal
+from typing import Any, Dict
 
 from agency.models import Agency
 from crispy_forms.helper import FormHelper
@@ -9,7 +10,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from employer_documentation.models import EmployerDoc
 from onlinemaid.constants import TrueFalseChoices
-from onlinemaid.helper_functions import encrypt_string
+from onlinemaid.helper_functions import encrypt_string, is_not_null, is_null
 from onlinemaid.validators import validate_fin, validate_passport
 from onlinemaid.widgets import OMCustomTextarea
 
@@ -19,7 +20,8 @@ from .constants import (CookingRemarksChoices, DisabledCareRemarksChoices,
                         InfantChildCareRemarksChoices, MaidAssessmentChoices,
                         MaidDietaryRestrictionChoices,
                         MaidFoodPreferenceChoices,
-                        MaidLanguageProficiencyChoices)
+                        MaidLanguageProficiencyChoices,
+                        MaidPassportStatusChoices)
 from .models import (Maid, MaidCooking, MaidDietaryRestriction,
                      MaidDisabledCare, MaidElderlyCare, MaidEmploymentHistory,
                      MaidFoodHandlingPreference, MaidGeneralHousework,
@@ -218,11 +220,8 @@ class MaidForm(forms.ModelForm):
     def clean_passport_number(self):
         cleaned_field = self.cleaned_data.get('passport_number')
 
-        # If form errors then raise ValidationError, else continue
-        error_msg = validate_passport(cleaned_field)
-        if error_msg:
-            raise ValidationError(error_msg)
-        else:
+        if is_not_null(cleaned_field):
+            validate_passport(cleaned_field)
             # Encryption
             ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
@@ -235,20 +234,16 @@ class MaidForm(forms.ModelForm):
     def clean_fin_number(self):
         cleaned_field = self.cleaned_data.get('fin_number')
         if cleaned_field:
-
             # If form errors then raise ValidationError, else continue
-            error_msg = validate_fin(cleaned_field)
-            if error_msg:
-                raise ValidationError(error_msg)
-            else:
-                # Encryption
-                ciphertext, nonce, tag = encrypt_string(
-                    cleaned_field,
-                    settings.ENCRYPTION_KEY,
-                )
-                self.instance.fin_number_nonce = nonce
-                self.instance.fin_number_tag = tag
-                return ciphertext
+            validate_fin(cleaned_field)
+            # Encryption
+            ciphertext, nonce, tag = encrypt_string(
+                cleaned_field,
+                settings.ENCRYPTION_KEY,
+            )
+            self.instance.fin_number_nonce = nonce
+            self.instance.fin_number_tag = tag
+            return ciphertext
 
     def clean_expected_salary(self):
         field_name = 'expected_salary'
@@ -336,6 +331,20 @@ class MaidForm(forms.ModelForm):
             return photo
         else:
             raise ValidationError("Couldn't read uploaded image")
+
+    def clean(self) -> Dict[str, Any]:
+        cleaned_data = super().clean()
+        passport_number = cleaned_data.get('passport_number')
+        passport_status = cleaned_data.get('passport_status')
+        if(
+            passport_status == MaidPassportStatusChoices.READY
+            and is_null(passport_number)
+        ):
+            error_msg = _(
+                'The maid \'s passport number cannot be empty if it is ready')
+            raise ValidationError(error_msg)
+
+        return cleaned_data
 
     def save(self, *args, **kwargs):
         self.instance.agency = Agency.objects.get(
