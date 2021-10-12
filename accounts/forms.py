@@ -558,6 +558,11 @@ class CustomPasswordResetForm(PasswordResetForm):
 
 
 class EmailUpdateForm(forms.ModelForm):
+    remember_email = forms.BooleanField(
+        label=_('Remember Email'),
+        required=False
+    )
+
     class Meta:
         model = get_user_model()
         fields = ['email']
@@ -571,6 +576,7 @@ class EmailUpdateForm(forms.ModelForm):
             Row(
                 Column(
                     'email',
+                    'remember_email',
                     css_class='form-group col'
                 ),
                 css_class='form-row'

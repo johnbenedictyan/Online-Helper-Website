@@ -124,6 +124,8 @@ class SignOutView(LoginRequiredMixin, RedirectView):
                 'email': user.email,
                 'remember_email': user.remember_email
             }
+        else:
+            self.request.session.pop('remember_email_obj')
 
         messages.success(
             self.request,
@@ -262,6 +264,20 @@ class UserEmailUpdate(LoginRequiredMixin, UpdateView):
                 authority = auth_name
                 if authority == AG_OWNERS:
                     self.request.user.agency_owner.unset_test_email()
+
+        if form.cleaned_data.get('remember_email'):
+            new_email = form.cleaned_data.get('email')
+            remember_email_obj = self.request.session.get('remember_email_obj')
+            if (
+                remember_email_obj
+                and 'email' in remember_email_obj
+                and 'remember_email' in remember_email_obj
+            ):
+                remember_email = remember_email_obj.get('remember_email')
+                self.request.session['remember_email_obj'] = {
+                    'email': new_email,
+                    'remember_email': remember_email
+                }
 
         return super().form_valid(form)
 
