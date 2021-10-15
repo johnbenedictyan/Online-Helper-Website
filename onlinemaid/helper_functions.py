@@ -19,22 +19,41 @@ from .constants import MaritalStatusChoices
 UserModel = get_user_model()
 
 
-def slugify_text(text):
+def is_null(x) -> bool:
+    return False if x else True
+
+
+def is_not_null(x) -> bool:
+    return not is_null(x)
+
+
+def is_of_age(dt, age: int) -> bool:
+    if dt and age:
+        date_diff = date.today() - dt
+        return date_diff.days >= age * 365
+
+
+def is_pasted(dt) -> bool:
+    if dt:
+        return dt < datetime.datetime.now()
+
+
+def slugify_text(text) -> str:
     return slugify(text)
 
 
-def is_married(marital_status):
+def is_married(marital_status) -> bool:
     return marital_status == MaritalStatusChoices.MARRIED
 
 
-def r_string(length):
+def r_string(length) -> str:
     r_str = ''.join(
         random.choice(string.ascii_lowercase) for i in range(length)
     )
     return r_str
 
 
-def r_contact_number():
+def r_contact_number() -> int:
     return random.randint(80000000, 99999999)
 
 
