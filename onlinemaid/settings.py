@@ -63,6 +63,8 @@ INSTALLED_APPS = [
     # 3rd party packages
     # 'captcha',
     # 'extra_views',
+    'rest_framework',
+    'rest_framework_api_key',
     'crispy_forms',
     'django_filters',
     'django_otp',
@@ -74,6 +76,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'advertisement',
     'agency.apps.AgencyConfig',
+    'api',
     'dashboard',
     'employer_documentation.apps.EmployerDocumentationConfig',
     'maid.apps.MaidConfig',
@@ -140,13 +143,13 @@ if DEBUG:
             'OPTIONS': {'sslmode': 'require'},
         }
     }
-elif 'test' in sys.argv:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
+# elif 'test' in sys.argv:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#         }
+#     }
 else:
     DATABASES = {
         'default': dj_database_url.parse(
@@ -355,3 +358,12 @@ ACCOUNT_UUID_NAMESPACE = os.environ.get('ACCOUNT_UUID_NAMESPACE')
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 ADMIN_ID = os.environ.get('ADMIN_ID')
+
+# Django REST Framework
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        "rest_framework_api_key.permissions.HasAPIKey",
+    ]
+}

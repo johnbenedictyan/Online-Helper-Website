@@ -5,7 +5,7 @@ from django.core.validators import RegexValidator, URLValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from onlinemaid.fields import NullableCharField
-from onlinemaid.helper_functions import get_sg_region
+from onlinemaid.helper_functions import get_sg_region, r_string
 from onlinemaid.storage_backends import PublicMediaStorage
 from onlinemaid.validators import validate_ea_personnel_number
 
@@ -100,6 +100,10 @@ class Agency(models.Model):
         max_length=255
     )
 
+    api_auth_id = NullableCharField(
+        max_length=10
+    )
+
     __original_branch_address_line_1 = None
     __original_branch_address_line_2 = None
     __original_branch_postal_code = None
@@ -153,6 +157,10 @@ class Agency(models.Model):
         return len(
             list(maid for maid in self.maid.all() if maid.is_published)
         )
+
+    def set_api_auth_id(self):
+        self.api_auth_id = r_string(10)
+        self.save()
 
     def create_or_update_stripe_customer(self):
         from payment.models import Customer
