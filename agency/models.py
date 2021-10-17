@@ -583,7 +583,9 @@ class AgencyEmployee(models.Model):
         return self.ea_personnel_number
 
     def is_ea_personnel_no_valid(self):
-        if validate_ea_personnel_number(self.ea_personnel_number):
+        try:
+            validate_ea_personnel_number(self.ea_personnel_number)
+        except Exception:
             return False
         else:
             return True
