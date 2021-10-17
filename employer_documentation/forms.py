@@ -1158,6 +1158,16 @@ class EmployerSponsorForm(forms.ModelForm):
             # raise ValidationError(error_msg)
             return None
 
+    def clean_sponsor_1_date_of_birth(self):
+        cleaned_field = self.cleaned_data.get('sponsor_1_date_of_birth')
+        if is_null(cleaned_field):
+            raise ValidationError(
+                _('Sponsor 1 date of birth field cannot be empty')
+            )
+        else:
+            validate_age(cleaned_field, 18)
+            return cleaned_field
+
     def clean_sponsor_1_spouse_name(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_name')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
@@ -1212,7 +1222,6 @@ class EmployerSponsorForm(forms.ModelForm):
                     _('Sponsor 1 spouse nationality field cannot be empty')
                 )
             else:
-                validate_age(cleaned_field, 18)
                 return cleaned_field
         else:
             # error_msg = _('This sponsor does not have a spouse')
