@@ -1281,8 +1281,9 @@ class EmployerSponsorForm(forms.ModelForm):
                     error_msg = _('Please use this individual\'s NRIC instead')
                     raise ValidationError(error_msg)
         else:
-            error_msg = _('This individual has no spouse')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('This individual has no spouse')
+                raise ValidationError(error_msg)
 
     def clean_sponsor_1_spouse_passport_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_passport_num')
@@ -1305,8 +1306,9 @@ class EmployerSponsorForm(forms.ModelForm):
                     error_msg = _('Please use this individual\'s NRIC instead')
                     raise ValidationError(error_msg)
         else:
-            error_msg = _('This individual has no spouse')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('This individual has no spouse')
+                raise ValidationError(error_msg)
 
     def clean_sponsor_1_spouse_passport_date(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_passport_date')
@@ -1320,12 +1322,11 @@ class EmployerSponsorForm(forms.ModelForm):
                     error_msg = _('Passport expiry date field cannot be empty')
                     raise ValidationError(error_msg)
 
-            if is_pasted(cleaned_field):
-                error_msg = _('This passport has expired')
-                raise ValidationError(error_msg)
+            validate_passport_date(cleaned_field)
         else:
-            error_msg = _('This individual has no spouse')
-            raise ValidationError(error_msg)
+            if is_not_null(cleaned_field):
+                error_msg = _('This individual has no spouse')
+                raise ValidationError(error_msg)
 
         return cleaned_field
 
@@ -1702,14 +1703,14 @@ class EmployerSponsorForm(forms.ModelForm):
             'sponsor_1_spouse_residential_status'
         )
 
-        if(sponsor_1_nationality == om_constants.FullNationsChoices.SINGAPORE
+        if not (sponsor_1_nationality == om_constants.FullNationsChoices.SINGAPORE
             and sponsor_1_residential_status == ResidentialStatusFullChoices.SC
            ):
             error_msg = _('Sponsor 1 must be a citizen of Singapore')
             raise ValidationError(error_msg)
 
         if sponsor_1_spouse_nationality:
-            if(sponsor_1_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE
+            if not (sponsor_1_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE
                 and sponsor_1_spouse_residential_status == ResidentialStatusFullChoices.SC
                ):
                 error_msg = _(
@@ -1728,14 +1729,14 @@ class EmployerSponsorForm(forms.ModelForm):
             sponsor_2_spouse_residential_status = cleaned_data.get(
                 'sponsor_2_spouse_residential_status'
             )
-            if(sponsor_2_nationality == om_constants.FullNationsChoices.SINGAPORE
+            if not (sponsor_2_nationality == om_constants.FullNationsChoices.SINGAPORE
                and sponsor_2_residential_status == ResidentialStatusFullChoices.SC
                ):
                 error_msg = _('Sponsor 2 must be a citizen of Singapore')
                 raise ValidationError(error_msg)
 
             if sponsor_2_spouse_nationality:
-                if(sponsor_2_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE
+                if not (sponsor_2_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE
                     and sponsor_2_spouse_residential_status == ResidentialStatusFullChoices.SC
                    ):
                     error_msg = _(
@@ -2161,7 +2162,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
         joint_applicant_spouse_residential_status = cleaned_data.get(
             'employer_spouse_residential_status'
         )
-        if(
+        if not (
             joint_applicant_nationality == om_constants.FullNationsChoices.SINGAPORE
             and joint_applicant_residential_status == ResidentialStatusFullChoices.SC
         ):
@@ -2170,7 +2171,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
             raise ValidationError(error_msg)
 
         if joint_applicant_spouse_nationality:
-            if(
+            if not (
                 joint_applicant_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE
                 and joint_applicant_spouse_residential_status == ResidentialStatusFullChoices.SC
             ):
