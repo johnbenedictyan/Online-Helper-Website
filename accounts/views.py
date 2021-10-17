@@ -53,6 +53,24 @@ class SignInView(BaseLoginView):
             })
         return kwargs
 
+    def get_form_kwargs(self) -> Dict[str, Any]:
+        form_kwargs = super().get_form_kwargs()
+        form_kwargs.update({
+            'remember_email_obj': self.request.session.get(
+                'remember_email_obj',
+                None
+            )
+        })
+        return form_kwargs
+
+    def form_valid(self, form) -> res:
+        result = super().form_valid(form)
+        if form.cleaned_data.get('remember_email', None):
+            self.request.user.set_remember_email_true()
+        else:
+            self.request.user.set_remember_email_false()
+        return result
+
 
 class AgencySignInView(BaseLoginView):
     template_name = 'base/agency-sign-in.html'
@@ -71,6 +89,24 @@ class AgencySignInView(BaseLoginView):
                     return success_url
         return super().get_success_url()
 
+    def get_form_kwargs(self) -> Dict[str, Any]:
+        form_kwargs = super().get_form_kwargs()
+        form_kwargs.update({
+            'remember_email_obj': self.request.session.get(
+                'remember_email_obj',
+                None
+            )
+        })
+        return form_kwargs
+
+    def form_valid(self, form) -> res:
+        result = super().form_valid(form)
+        if form.cleaned_data.get('remember_email', None):
+            self.request.user.set_remember_email_true()
+        else:
+            self.request.user.set_remember_email_false()
+        return result
+
 
 class CustomPasswordResetView(PasswordResetView):
     form_class = CustomPasswordResetForm
@@ -81,7 +117,16 @@ class SignOutView(LoginRequiredMixin, RedirectView):
     pattern_name = 'home'
 
     def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
+        user = self.request.user
         logout(self.request)
+        if user.remember_email:
+            self.request.session['remember_email_obj'] = {
+                'email': user.email,
+                'remember_email': user.remember_email
+            }
+        else:
+            self.request.session.pop('remember_email_obj')
+
         messages.success(
             self.request,
             'Log out successful',
@@ -220,11 +265,29 @@ class UserEmailUpdate(LoginRequiredMixin, UpdateView):
                 if authority == AG_OWNERS:
                     self.request.user.agency_owner.unset_test_email()
 
+        if form.cleaned_data.get('remember_email'):
+            new_email = form.cleaned_data.get('email')
+            remember_email_obj = self.request.session.get('remember_email_obj')
+            if (
+                remember_email_obj
+                and 'email' in remember_email_obj
+                and 'remember_email' in remember_email_obj
+            ):
+                remember_email = remember_email_obj.get('remember_email')
+                self.request.session['remember_email_obj'] = {
+                    'email': new_email,
+                    'remember_email': remember_email
+                }
+
         return super().form_valid(form)
 
     def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
         kwargs.update({
-            'user': self.request.user
+            'user': self.request.user,
+            'remember_email_obj': self.request.session.get(
+                'remember_email_obj',
+                None
+            )
         })
         return kwargs

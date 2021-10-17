@@ -131,7 +131,6 @@ WSGI_APPLICATION = 'onlinemaid.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 if DEBUG:
-# if int(os.environ.get('DATABASE_DEBUG', '1')):
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',

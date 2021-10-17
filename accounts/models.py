@@ -19,6 +19,10 @@ class User(AbstractUser):
         editable=False,
         null=True
     )
+    remember_email = models.BooleanField(
+        default=False,
+        editable=False
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -27,6 +31,14 @@ class User(AbstractUser):
 
     def __str__(self) -> str:
         return self.email
+
+    def set_remember_email_true(self):
+        self.remember_email = True
+        self.save()
+
+    def set_remember_email_false(self):
+        self.remember_email = False
+        self.save()
 
     class Meta:
         verbose_name = 'User'

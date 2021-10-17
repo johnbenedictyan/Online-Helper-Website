@@ -249,7 +249,7 @@ class EmployerJointApplicantCreateView(
             'user_pk': self.request.user.pk,
             'authority': self.authority,
             'form_type': 'CREATE',
-            'level_0_pk': self.kwargs.get(self.pk_url_kwarg),
+            'level_0_pk': self.kwargs.get(self.pk_url_kwarg)
         })
         return kwargs
 
