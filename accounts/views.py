@@ -125,7 +125,8 @@ class SignOutView(LoginRequiredMixin, RedirectView):
                 'remember_email': user.remember_email
             }
         else:
-            self.request.session.pop('remember_email_obj')
+            if self.request.session.get('remember_email_obj', None):
+                self.request.session.pop('remember_email_obj')
 
         messages.success(
             self.request,
