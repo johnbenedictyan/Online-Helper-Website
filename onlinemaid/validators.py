@@ -104,16 +104,17 @@ def validate_fin(test_id) -> Union[NoReturn, None]:
 def validate_passport(passport_text) -> Union[NoReturn, None]:
     if not passport_text:
         error_msg = _("Passport number cannot be empty")
+        raise ValidationError(error_msg)
 
     # return error message if fail, else return None for success
     if not isinstance(passport_text, str):
         error_msg = _('Must be a string')
+        raise ValidationError(error_msg)
     if len(passport_text) > 20:
         error_msg = _('Passport must not exceed 20 characters')
+        raise ValidationError(error_msg)
     if not re.match('^[A-Za-z0-9]*$', passport_text):
         error_msg = _('Can only enter letters or numbers')
-
-    if error_msg:
         raise ValidationError(error_msg)
 
 
