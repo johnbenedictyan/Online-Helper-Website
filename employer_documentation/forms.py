@@ -485,9 +485,7 @@ class EmployerForm(forms.ModelForm):
             else:
                 return cleaned_field
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This individual does not have a spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_spouse_gender(self):
         cleaned_field = self.cleaned_data.get('spouse_gender')
@@ -513,9 +511,7 @@ class EmployerForm(forms.ModelForm):
                 validate_age(cleaned_field, 18)
                 return cleaned_field
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This individual does not have a spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_spouse_nationality(self):
         cleaned_field = self.cleaned_data.get('spouse_nationality')
@@ -563,9 +559,7 @@ class EmployerForm(forms.ModelForm):
                 error_msg = _('This individual is not issued an NRIC')
                 raise ValidationError(error_msg)
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This individual does not have a spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_spouse_fin_num(self):
         cleaned_field = self.cleaned_data.get('spouse_fin_num')
@@ -588,9 +582,7 @@ class EmployerForm(forms.ModelForm):
                     error_msg = _('Please use this individual\'s NRIC instead')
                     raise ValidationError(error_msg)
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This individual does not have a spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_spouse_passport_num(self):
         cleaned_field = self.cleaned_data.get('spouse_passport_num')
@@ -613,9 +605,7 @@ class EmployerForm(forms.ModelForm):
                     error_msg = _('Please use this individual\'s NRIC instead')
                     raise ValidationError(error_msg)
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This individual does not have a spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_spouse_passport_date(self):
         cleaned_field = self.cleaned_data.get('spouse_passport_date')
@@ -714,11 +704,12 @@ class EmployerForm(forms.ModelForm):
                     )
                 )
         else:
-            self.instance.set_potential_employer_relation(
-                self.cleaned_data.get(
-                    'employer_email'
+            if not self.instance.potential_employer:
+                self.instance.set_potential_employer_relation(
+                    self.cleaned_data.get(
+                        'employer_email'
+                    )
                 )
-            )
         return super().save()
 
 
