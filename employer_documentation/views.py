@@ -1137,10 +1137,13 @@ class SignatureUpdateByAgentView(
         return context
 
     def get_success_url(self) -> str:
-        self.object.employer_doc.set_status_wait_emp_sign()
         return reverse_lazy('case_detail_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk,
         })
+
+    def form_valid(self, form) -> res:
+        self.object.employer_doc.set_status_wait_emp_sign()
+        return super().form_valid(form)
 
 # PDF Views
 
@@ -1482,6 +1485,7 @@ class SignatureFormView(EmployerDocAccessMixin, FormView):
                 'joint_applicant_signature'
             )
             signature_obj.save()
+        self.object.set_status_wait_to_handover()
         return super().form_valid(form)
 
 
