@@ -249,6 +249,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get(
     'SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET'
 )
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'home'
 
 # python-social-auth pipeline override
 # https://python-social-auth.readthedocs.io/en/latest/pipeline.html
