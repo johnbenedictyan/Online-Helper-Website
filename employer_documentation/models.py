@@ -1997,6 +1997,7 @@ class CaseSignature(models.Model):
         self.sponsor_2_signature = None if self.sponsor_2_signature else self.sponsor_2_signature
         self.joint_applicant_signature = None if self.joint_applicant_signature else self.joint_applicant_signature
         self.save()
+        self.employer_doc.set_status_wait_ea_sign()
 
 
 class CaseStatus(models.Model):
