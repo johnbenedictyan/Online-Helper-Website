@@ -58,5 +58,3 @@ def create_employer(backend, user, response, *args, **kwargs):
         )
         potential_employer_grp.user_set.add(user)
         potential_employer_obj.set_employer_relation()
-    else:
-        return employer
