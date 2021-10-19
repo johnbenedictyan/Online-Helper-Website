@@ -44,6 +44,7 @@ class EmployerForm(forms.ModelForm):
             'spouse_fin_tag',
             'spouse_passport_nonce',
             'spouse_passport_tag',
+            'potential_employer'
         ]
 
     def __init__(self, *args, **kwargs):
