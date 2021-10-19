@@ -33,7 +33,6 @@
 {% endif %}
 {% endblock form %}
 {% block extra_js %}
-{% if url_name == 'employer_householddetails_route' or url_name == 'maid_inventory_route' %}
 <script>
     $(function () {
         $("#addButton").on('click', function (e) {
@@ -45,9 +44,6 @@
             this.form.submit();
         })
     })
-</script>
-{% else %}
-<script>
     $(function () {
         let fdw_clean_window_exterior = $('#id_fdw_clean_window_exterior').val();
         let window_exterior_location = $('#id_window_exterior_location').val();
@@ -100,5 +96,4 @@
         });
     })
 </script>
-{% endif %}
 {% endblock extra_js %}
