@@ -47,6 +47,10 @@ class PrivacyPolicyView(BaseTemplateView):
     template_name = 'privacy-policy.html'
 
 
+class DataDeletionView(BaseTemplateView):
+    template_name = 'data-deletion.html'
+
+
 class HowItWorksView(BaseTemplateView):
     template_name = 'how-it-works.html'
 
