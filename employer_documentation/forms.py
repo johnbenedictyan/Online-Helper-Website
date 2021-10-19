@@ -1146,8 +1146,6 @@ class EmployerSponsorForm(forms.ModelForm):
             else:
                 return cleaned_field
         else:
-            # error_msg = _('This sponsor does not have a spouse')
-            # raise ValidationError(error_msg)
             return None
 
     def clean_sponsor_1_date_of_birth(self):
@@ -1170,9 +1168,7 @@ class EmployerSponsorForm(forms.ModelForm):
             else:
                 return cleaned_field
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This sponsor does not have a spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_sponsor_1_spouse_gender(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_gender')
@@ -1185,8 +1181,6 @@ class EmployerSponsorForm(forms.ModelForm):
             else:
                 return cleaned_field
         else:
-            # error_msg = _('This sponsor does not have a spouse')
-            # raise ValidationError(error_msg)
             return None
 
     def clean_sponsor_1_spouse_date_of_birth(self):
@@ -1201,9 +1195,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 validate_age(cleaned_field, 18)
                 return cleaned_field
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This sponsor does not have a spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_sponsor_1_spouse_nationality(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_nationality')
@@ -1216,8 +1208,6 @@ class EmployerSponsorForm(forms.ModelForm):
             else:
                 return cleaned_field
         else:
-            # error_msg = _('This sponsor does not have a spouse')
-            # raise ValidationError(error_msg)
             return None
 
     def clean_sponsor_1_spouse_residential_status(self):
@@ -1233,8 +1223,6 @@ class EmployerSponsorForm(forms.ModelForm):
             else:
                 return cleaned_field
         else:
-            # error_msg = _('This sponsor does not have a spouse')
-            # raise ValidationError(error_msg)
             return None
 
     def clean_sponsor_1_spouse_nric_num(self):
@@ -1257,9 +1245,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 error_msg = _('This individual is not issued an NRIC')
                 raise ValidationError(error_msg)
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This sponsor does not have a spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_sponsor_1_spouse_fin_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_fin_num')
@@ -1282,9 +1268,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     error_msg = _('Please use this individual\'s NRIC instead')
                     raise ValidationError(error_msg)
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This individual has no spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_sponsor_1_spouse_passport_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_passport_num')
@@ -1307,9 +1291,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     error_msg = _('Please use this individual\'s NRIC instead')
                     raise ValidationError(error_msg)
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This individual has no spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_sponsor_1_spouse_passport_date(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_passport_date')
@@ -1325,9 +1307,7 @@ class EmployerSponsorForm(forms.ModelForm):
 
             validate_passport_date(cleaned_field)
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This individual has no spouse')
-                raise ValidationError(error_msg)
+            return None
 
         return cleaned_field
 
@@ -1518,9 +1498,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 else:
                     return cleaned_field
             else:
-                if is_not_null(cleaned_field):
-                    error_msg = _('Sponsor 2 does not have a spouse')
-                    raise ValidationError(error_msg)
+                return None
         else:
             return None
 
@@ -1566,8 +1544,6 @@ class EmployerSponsorForm(forms.ModelForm):
                 else:
                     return cleaned_field
             else:
-                # error_msg = _('Sponsor 2 does not have a spouse')
-                # raise ValidationError(error_msg)
                 return None
         else:
             return None
@@ -1587,8 +1563,6 @@ class EmployerSponsorForm(forms.ModelForm):
                 else:
                     return cleaned_field
             else:
-                # error_msg = _('Sponsor 2 does not have a spouse')
-                # raise ValidationError(error_msg)
                 return None
         else:
             return None
@@ -1615,9 +1589,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     error_msg = _('This individual is not issued an NRIC')
                     raise ValidationError(error_msg)
             else:
-                if is_not_null(cleaned_field):
-                    error_msg = _('Sponsor 2 does not have a spouse')
-                    raise ValidationError(error_msg)
+                return None
         else:
             return None
 
@@ -2046,9 +2018,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 error_msg = _('This individual is not issued an NRIC')
                 raise ValidationError(error_msg)
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This individual has no spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_joint_applicant_spouse_fin_num(self):
         cleaned_field = self.cleaned_data.get('joint_applicant_spouse_fin_num')
@@ -2073,9 +2043,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                     error_msg = _('Please use this individual\'s NRIC instead')
                     raise ValidationError(error_msg)
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This Joint Applicant does not have a spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_joint_applicant_spouse_passport_num(self):
         cleaned_field = self.cleaned_data.get(
@@ -2102,9 +2070,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                     error_msg = _('Please use this individual\'s NRIC instead')
                     raise ValidationError(error_msg)
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This Joint Applicant does not have a spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_joint_applicant_spouse_passport_date(self):
         cleaned_field = self.cleaned_data.get(
@@ -2128,9 +2094,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                     error_msg = _('Please use this individual\'s NRIC instead')
                     raise ValidationError(error_msg)
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This Joint Applicant does not have a spouse')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_joint_applicant_spouse_date_of_birth(self):
         cleaned_field = self.cleaned_data.get(
@@ -2145,9 +2109,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
             else:
                 validate_age(cleaned_field, 18)
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('This Joint Applicant does not have a spouse')
-                raise ValidationError(error_msg)
+            return None
 
         return cleaned_field
 
