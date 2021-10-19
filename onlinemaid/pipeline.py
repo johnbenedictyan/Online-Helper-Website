@@ -1,13 +1,11 @@
 from urllib.parse import quote_plus
 
-
+from accounts.models import PotentialEmployer
+from django.contrib.auth.models import Group
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 
-
-from accounts.models import PotentialEmployer
-
-
+from onlinemaid.constants import EMPLOYERS
 # Start of Pipeline
 
 
@@ -54,4 +52,11 @@ def create_employer(backend, user, response, *args, **kwargs):
     """
     employer = PotentialEmployer.objects.filter(user=user).first()
     if employer is None:
-        PotentialEmployer.objects.create(user=user)
+        potential_employer_obj = PotentialEmployer.objects.create(user=user)
+        potential_employer_grp = Group.objects.get(
+            name=EMPLOYERS
+        )
+        potential_employer_grp.user_set.add(user)
+        potential_employer_obj.set_employer_relation()
+    else:
+        return employer
