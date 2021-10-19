@@ -2,11 +2,11 @@
 from django.urls import include, path
 
 from .views import (AboutUsView, AdminPanelEnquiryListView, AdminPanelView,
-                    ContactUsView, Error403View, Error404View, Error500View,
-                    FakeAdminPanel, FAQView, HomeView, HowItWorksView,
-                    LoaderIOView, PrivacyPolicyView, RobotsTxt, SitemapView,
-                    TermsAndConditionsAgencyView, TermsAndConditionsUserView,
-                    UsefulLinksView)
+                    ContactUsView, DataDeletionView, Error403View,
+                    Error404View, Error500View, FakeAdminPanel, FAQView,
+                    HomeView, HowItWorksView, LoaderIOView, PrivacyPolicyView,
+                    RobotsTxt, SitemapView, TermsAndConditionsAgencyView,
+                    TermsAndConditionsUserView, UsefulLinksView)
 
 urlpatterns = [
     path(
@@ -43,6 +43,11 @@ urlpatterns = [
         'privacy-policy/',
         PrivacyPolicyView.as_view(),
         name='privacy_policy'
+    ),
+    path(
+        'data-deletion/',
+        DataDeletionView.as_view(),
+        name='data_deletion'
     ),
     path(
         'how-it-works/',
