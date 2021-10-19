@@ -1137,6 +1137,7 @@ class SignatureUpdateByAgentView(
         return context
 
     def get_success_url(self) -> str:
+        self.object.employer_doc.set_status_wait_emp_sign()
         return reverse_lazy('case_detail_route', kwargs={
             'level_1_pk': self.object.employer_doc.pk,
         })
