@@ -110,7 +110,7 @@ urlpatterns = [
     ),
     path(
         'password-reset/complete/',
-        auth_views.PasswordResetDoneView.as_view(),
+        auth_views.PasswordResetConfirmView.as_view(),
         name='password_reset_complete'
     )
 ]
