@@ -1,6 +1,7 @@
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
 
+from .forms import CustomSetPasswordForm
 from .views import (AgencySignInView, CustomPasswordResetView,
                     FDWAccountCreate, FDWAccountDetail,
                     PotentialEmployerCreate, PotentialEmployerDelete,
@@ -102,7 +103,9 @@ urlpatterns = [
     ),
     path(
         'password-reset/<uidb64>/<token>/',
-        auth_views.PasswordResetConfirmView.as_view(),
+        auth_views.PasswordResetConfirmView.as_view(
+            form_class=CustomSetPasswordForm
+        ),
         name='password_reset_confirm'
     ),
     path(

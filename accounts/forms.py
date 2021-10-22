@@ -3,7 +3,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Column, Div, Layout, Row, Submit
 from django import forms
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
+from django.contrib.auth.forms import (AuthenticationForm, PasswordResetForm,
+                                       SetPasswordForm)
 from django.contrib.auth.models import Group
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
@@ -541,6 +542,36 @@ class CustomPasswordResetForm(PasswordResetForm):
             Row(
                 Column(
                     'email',
+                    css_class='form-group'
+                )
+            ),
+            Row(
+                Column(
+                    Submit(
+                        'submit',
+                        'Send',
+                        css_class="btn btn-xs-lg btn-primary w-100"
+                    ),
+                    css_class='form-group col-24 text-center'
+                )
+            ),
+        )
+
+
+class CustomSetPasswordForm(SetPasswordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Row(
+                Column(
+                    'new_password1',
+                    css_class='form-group'
+                )
+            ),
+            Row(
+                Column(
+                    'new_password2',
                     css_class='form-group'
                 )
             ),
