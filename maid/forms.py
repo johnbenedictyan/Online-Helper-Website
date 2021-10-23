@@ -56,7 +56,9 @@ class MaidForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.FIELD_MAXLENGTH = 20
         self.initial.update({
-            'passport_number': self.instance.get_passport_number()
+            'passport_number': self.instance.get_passport_number(),
+            'date_of_birth': self.instance.date_of_birth,
+            'passport_expiry': self.instance.passport_expiry
         })
         self.initial.update({'fin_number': self.instance.get_fin_number()})
 
