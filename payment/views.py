@@ -38,7 +38,7 @@ class ViewCart(TemplateView):
         self.request.session['cart'] = current_cart
 
         context['cart'] = Subscription.objects.filter(
-            pk__in=current_cart
+            stripe_id__in=current_cart
         )
         return context
 
@@ -127,6 +127,7 @@ class AddToCart(View):
                     new_subscription.stripe_id
                 )
                 self.request.session['cart'] = current_cart
+                return redirect(reverse_lazy('view_cart'))
             else:
                 if planLimitMap[pk]['type'] == 'plan':
                     if Subscription.objects.filter(
@@ -148,7 +149,11 @@ class AddToCart(View):
                             ''',
                             extra_tags='error'
                         )
-                        return reverse_lazy('dashboard_agency_plan_list')
+                        return redirect(reverse_lazy('dashboard_agency_plan_list'))
+                    else:
+                        return redirect(reverse_lazy('view_cart'))
+                else:
+                    return redirect(reverse_lazy('view_cart'))
 
         else:
             return redirect('dashboard_agency_plan_list')
