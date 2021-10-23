@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 # Start of Constants
 
 
-class SubscriptionStatusChoices(models.TextChoices):
+class planStatusChoices(models.TextChoices):
     INCOMPLETE = 'INCOMPLETE', _('Incomplete')
     INCOMPLETE_EXPIRED = 'INCOMPLETE_EXPIRED', _('Incomplete (Expired)')
     TRIALING = 'TRIALING', _('Trialing')
@@ -15,7 +15,7 @@ class SubscriptionStatusChoices(models.TextChoices):
     UNPAID = 'UNPAID', _('Unpaid')
 
 
-class SubscriptionTypeChoices(models.TextChoices):
+class planTypeChoices(models.TextChoices):
     PLAN = 'PLAN', _('Plan')
     ADVERTISEMENT = 'AD', _('Advertisement')
 
@@ -34,7 +34,7 @@ class PlanType(models.TextChoices):
     ADVERTISEMENT = 'Advertisement', _('Advertisement')
 
 
-SubscriptionLimitMap = {
+planLimitMap = {
     'price_1JiDNRKvEbGNaxrCspFPthnv': {
         'product_id': 'prod_KMxIAjOOMeB715',
         'name': 'Enquiry Page Advertisement',
@@ -78,7 +78,7 @@ SubscriptionLimitMap = {
     'price_1JiDG3KvEbGNaxrCzejJlKlD': {
         'product_id': 'prod_IlJqpv40JRgCa6',
         'name': 'Premium Platform & CRM Plan',
-        'type': 'subscription',
+        'type': 'plan',
         'biodata': 200,
         'documents': 200,
         'employee_accounts': 10
@@ -86,7 +86,7 @@ SubscriptionLimitMap = {
     'price_1JiDFvKvEbGNaxrCOwAIX2AY': {
         'product_id': 'prod_IlJqpv40JRgCa6',
         'name': 'Premium Platform & CRM Plan',
-        'type': 'subscription',
+        'type': 'plan',
         'biodata': 200,
         'documents': 200,
         'employee_accounts': 10
@@ -94,7 +94,7 @@ SubscriptionLimitMap = {
     'price_1JiDFmKvEbGNaxrCaSPhrjuF': {
         'product_id': 'prod_IlJqpv40JRgCa6',
         'name': 'Premium Platform & CRM Plan',
-        'type': 'subscription',
+        'type': 'plan',
         'biodata': 200,
         'documents': 200,
         'employee_accounts': 10
@@ -102,7 +102,7 @@ SubscriptionLimitMap = {
     'price_1JiDEsKvEbGNaxrCVpVu3tC9': {
         'product_id': 'prod_IlJiwIHP2LXuRI',
         'name': 'Standard Platform & CRM Plan',
-        'type': 'subscription',
+        'type': 'plan',
         'biodata': 200,
         'documents': 200,
         'employee_accounts': 10
@@ -110,7 +110,7 @@ SubscriptionLimitMap = {
     'price_1JiDEiKvEbGNaxrCPMeCw5VT': {
         'product_id': 'prod_IlJiwIHP2LXuRI',
         'name': 'Standard Platform & CRM Plan',
-        'type': 'subscription',
+        'type': 'plan',
         'biodata': 200,
         'documents': 200,
         'employee_accounts': 10
@@ -118,7 +118,7 @@ SubscriptionLimitMap = {
     'price_1JiDEaKvEbGNaxrC42CnkoLe': {
         'product_id': 'prod_IlJiwIHP2LXuRI',
         'name': 'Standard Platform & CRM Plan',
-        'type': 'subscription',
+        'type': 'plan',
         'biodata': 200,
         'documents': 200,
         'employee_accounts': 10
@@ -126,7 +126,7 @@ SubscriptionLimitMap = {
     'price_1JMn8FKvEbGNaxrCvTyY5Ym6': {
         'product_id': 'prod_K0olZqTcT0jErR',
         'name': 'Basic Platform & CRM Plan',
-        'type': 'subscription',
+        'type': 'plan',
         'biodata': 200,
         'documents': 200,
         'employee_accounts': 10
@@ -134,7 +134,7 @@ SubscriptionLimitMap = {
     'price_1JMn8FKvEbGNaxrChQji3o1u': {
         'product_id': 'prod_K0olZqTcT0jErR',
         'name': 'Basic Platform & CRM Plan',
-        'type': 'subscription',
+        'type': 'plan',
         'biodata': 200,
         'documents': 200,
         'employee_accounts': 10
@@ -142,7 +142,7 @@ SubscriptionLimitMap = {
     'price_1JMn8FKvEbGNaxrCyjESuW6Y': {
         'product_id': 'prod_K0olZqTcT0jErR',
         'name': 'Basic Platform & CRM Plan',
-        'type': 'subscription',
+        'type': 'plan',
         'biodata': 200,
         'documents': 200,
         'employee_accounts': 10
