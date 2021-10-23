@@ -54,7 +54,8 @@ class Subscription(models.Model):
     status = models.CharField(
         verbose_name=_('Subscription\'s status'),
         max_length=18,
-        choices=SubscriptionStatusChoices.choices
+        choices=SubscriptionStatusChoices.choices,
+        default=SubscriptionStatusChoices.INCOMPLETE
     )
 
     interval = models.CharField(

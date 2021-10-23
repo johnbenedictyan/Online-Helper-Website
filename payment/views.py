@@ -98,24 +98,35 @@ class AddToCart(View):
             or request.POST.get('advertisementPlan')
         ):
             current_cart = self.request.session.get('cart', [])
+            agency = self.request.user.agency_owner.agency
             if request.POST.get('agencySubscriptionPlan'):
                 pk = request.POST.get('agencySubscriptionPlan')
             else:
                 pk = request.POST.get('advertisementPlan')
             try:
-                selected_product_price = Subscription.objects.get(
+                current_subscription = Subscription.objects.get(
+                    agency=agency,
                     stripe_id=pk
                 )
             except Subscription.DoesNotExist:
-                messages.error(
-                    self.request,
-                    'This product does not exist'
+                # messages.error(
+                #     self.request,
+                #     'This product does not exist'
+                # )
+                # return redirect('dashboard_agency_plan_list')
+                new_subscription = Subscription.objects.create(
+                    customer=Customer.objects.get(
+                        agency=agency
+                    ),
+                    price=1,
+                    stripe_id=pk
                 )
-                return redirect('dashboard_agency_plan_list')
+                current_cart.append(
+                    new_subscription.stripe_id
+                )
+                self.request.session['cart'] = current_cart
             else:
-                product = selected_product_price.subscription_product
-                agency = self.request.user.agency_owner.agency
-                if SubscriptionLimitMap[product.pk]['type'] == 'plan':
+                if SubscriptionLimitMap[pk]['type'] == 'plan':
                     if Subscription.objects.filter(
                         customer=Customer.objects.get(
                             agency=agency
@@ -137,10 +148,6 @@ class AddToCart(View):
                         )
                         return reverse_lazy('dashboard_agency_plan_list')
 
-                current_cart.append(
-                    selected_product_price.pk
-                )
-                self.request.session['cart'] = current_cart
         else:
             return redirect('dashboard_agency_plan_list')
 
