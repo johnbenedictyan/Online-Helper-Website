@@ -27,20 +27,20 @@ from .models import (Maid, MaidCooking, MaidDietaryRestriction,
                      MaidFoodHandlingPreference, MaidGeneralHousework,
                      MaidInfantChildCare, MaidLanguageProficiency,
                      MaidLoanTransaction)
-from .widgets import CustomDateInput
+# from .widgets import CustomDateInput
 
 
 class MaidForm(forms.ModelForm):
-    date_of_birth = forms.DateField(
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y']
-    )
+    # date_of_birth = forms.DateField(
+    #     widget=CustomDateInput(),
+    #     input_formats=['%d %b %Y']
+    # )
 
-    passport_expiry = forms.DateField(
-        widget=CustomDateInput(),
-        input_formats=['%d %b %Y'],
-        required=False
-    )
+    # passport_expiry = forms.DateField(
+    #     widget=CustomDateInput(),
+    #     input_formats=['%d %b %Y'],
+    #     required=False
+    # )
 
     class Meta:
         model = Maid
@@ -56,9 +56,7 @@ class MaidForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.FIELD_MAXLENGTH = 20
         self.initial.update({
-            'passport_number': self.instance.get_passport_number(),
-            'date_of_birth': self.instance.date_of_birth,
-            'passport_expiry': self.instance.passport_expiry
+            'passport_number': self.instance.get_passport_number()
         })
         self.initial.update({'fin_number': self.instance.get_fin_number()})
 
@@ -108,7 +106,12 @@ class MaidForm(forms.ModelForm):
                     css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
-                    'date_of_birth',
+                    Field(
+                        'date_of_birth',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Date of birth'
+                    ),
                     css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
@@ -179,7 +182,12 @@ class MaidForm(forms.ModelForm):
                     css_class='form-group col-lg-12 pl-xl-3'
                 ),
                 Column(
-                    'passport_expiry',
+                    Field(
+                        'passport_expiry',
+                        type='text',
+                        onfocus="(this.type='date')",
+                        placeholder='Passport Expiry Date'
+                    ),
                     css_class='form-group col-lg-12 pr-xl-3'
                 ),
                 Column(
