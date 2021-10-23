@@ -105,7 +105,9 @@ class AddToCart(View):
                 pk = request.POST.get('advertisementPlan')
             try:
                 current_subscription = Subscription.objects.get(
-                    agency=agency,
+                    customer=Customer.objects.get(
+                        agency=agency
+                    ),
                     stripe_id=pk
                 )
             except Subscription.DoesNotExist:
