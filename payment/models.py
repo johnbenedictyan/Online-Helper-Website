@@ -1,7 +1,7 @@
 from agency.models import Agency
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from .constants import SubscriptionStatusChoices, PlanIntervals, PlanType
+from .constants import planStatusChoices, PlanIntervals, PlanType
 
 
 class Invoice(models.Model):
@@ -54,8 +54,8 @@ class Subscription(models.Model):
     status = models.CharField(
         verbose_name=_('Subscription\'s status'),
         max_length=18,
-        choices=SubscriptionStatusChoices.choices,
-        default=SubscriptionStatusChoices.INCOMPLETE
+        choices=planStatusChoices.choices,
+        default=planStatusChoices.INCOMPLETE
     )
 
     interval = models.CharField(
