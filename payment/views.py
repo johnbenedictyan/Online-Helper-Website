@@ -21,8 +21,8 @@ from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
 from onlinemaid.types import T
 
-from .constants import (SubscriptionLimitMap, SubscriptionStatusChoices,
-                        SubscriptionTypeChoices)
+from .constants import (planLimitMap, planStatusChoices,
+                        planTypeChoices)
 from .models import Customer, Invoice, Subscription
 
 # Stripe Settings
@@ -128,13 +128,13 @@ class AddToCart(View):
                 )
                 self.request.session['cart'] = current_cart
             else:
-                if SubscriptionLimitMap[pk]['type'] == 'plan':
+                if planLimitMap[pk]['type'] == 'plan':
                     if Subscription.objects.filter(
                         customer=Customer.objects.get(
                             agency=agency
                         ),
-                        subscription_type=SubscriptionTypeChoices.PLAN,
-                        status=SubscriptionStatusChoices.ACTIVE,
+                        subscription_type=planTypeChoices.PLAN,
+                        status=planStatusChoices.ACTIVE,
                         end_date__gt=timezone.now()
                     ).count() >= 1:
                         messages.warning(
@@ -297,7 +297,7 @@ class StripeWebhookView(View):
                     product=SubscriptionProduct.objects.get(
                         pk=event.data.object.lines.data[0].price.product
                     ),
-                    status=SubscriptionStatusChoices.UNPAID
+                    status=planStatusChoices.UNPAID
                 )
             if event.type == 'invoice.paid':
                 subscription = Subscription.objects.get(
@@ -309,7 +309,7 @@ class StripeWebhookView(View):
                 subscription.end_date = datetime.utcfromtimestamp(
                     event.data.object.lines.data[0].period.end
                 )
-                subscription.status = SubscriptionStatusChoices.ACTIVE
+                subscription.status = planStatusChoices.ACTIVE
                 subscription.save()
 
             if event.type == 'invoice.payment_failed':
