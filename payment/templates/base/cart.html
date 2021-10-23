@@ -36,19 +36,19 @@
                 <p class="mb-0">{{product_price.pk}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">{{product_price.subscription_product.name}}</p>
+                <p class="mb-0">{{product_price.subscription_type}}</p>
             </div>
             <div class="col">
-                <p class="mb-0">{{product_price.subscription_product.interval}}</p>
+                <p class="mb-0">{{product_price.get_interval_display}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{% now "j M Y" %}</p>
             </div>
             <div class="col">
                 <p class="mb-0"></p>
             </div>
             <div class="col">
-                <p class="mb-0"></p>
-            </div>
-            <div class="col">
-                <p class="mb-0">{{product_price.subscription_product.unit_amount}}</p>
+                <p class="mb-0">${{product_price.price}}</p>
             </div>
             <div class="col-1">
                 <div class="row justify-content-center">
