@@ -377,18 +377,21 @@ class EmployerForm(forms.ModelForm):
         employer_residential_status = self.cleaned_data.get(
             'employer_residential_status'
         )
-        if is_local(employer_residential_status) and is_not_null(cleaned_field):
-            validate_nric(cleaned_field)
-            ciphertext, nonce, tag = encrypt_string(
-                cleaned_field,
-                settings.ENCRYPTION_KEY
-            )
-            self.instance.employer_nric_nonce = nonce
-            self.instance.employer_nric_tag = tag
-            return ciphertext
+        if is_not_null(cleaned_field):
+            if is_local(employer_residential_status):
+                validate_nric(cleaned_field)
+                ciphertext, nonce, tag = encrypt_string(
+                    cleaned_field,
+                    settings.ENCRYPTION_KEY
+                )
+                self.instance.employer_nric_nonce = nonce
+                self.instance.employer_nric_tag = tag
+                return ciphertext
+            else:
+                error_msg = _('This individual is not issued an NRIC')
+                raise ValidationError(error_msg)
         else:
-            error_msg = _('This individual is not issued an NRIC')
-            raise ValidationError(error_msg)
+            return None
 
     def clean_employer_fin_num(self):
         cleaned_field = self.cleaned_data.get('employer_fin_num')
@@ -547,18 +550,21 @@ class EmployerForm(forms.ModelForm):
             spouse_residential_status = self.cleaned_data.get(
                 'spouse_residential_status'
             )
-            if is_local(spouse_residential_status) and is_not_null(cleaned_field):
-                validate_nric(cleaned_field)
-                ciphertext, nonce, tag = encrypt_string(
-                    cleaned_field,
-                    settings.ENCRYPTION_KEY
-                )
-                self.instance.spouse_nric_nonce = nonce
-                self.instance.spouse_nric_tag = tag
-                return ciphertext
+            if is_not_null(cleaned_field):
+                if is_local(spouse_residential_status):
+                    validate_nric(cleaned_field)
+                    ciphertext, nonce, tag = encrypt_string(
+                        cleaned_field,
+                        settings.ENCRYPTION_KEY
+                    )
+                    self.instance.spouse_nric_nonce = nonce
+                    self.instance.spouse_nric_tag = tag
+                    return ciphertext
+                else:
+                    error_msg = _('This individual is not issued an NRIC')
+                    raise ValidationError(error_msg)
             else:
-                error_msg = _('This individual is not issued an NRIC')
-                raise ValidationError(error_msg)
+                return None
         else:
             return None
 
@@ -579,9 +585,7 @@ class EmployerForm(forms.ModelForm):
                 self.instance.spouse_fin_tag = tag
                 return ciphertext
             else:
-                if is_not_null(cleaned_field):
-                    error_msg = _('Please use this individual\'s NRIC instead')
-                    raise ValidationError(error_msg)
+                return None
         else:
             return None
 
@@ -602,9 +606,7 @@ class EmployerForm(forms.ModelForm):
                 self.instance.spouse_passport_tag = tag
                 return ciphertext
             else:
-                if is_not_null(cleaned_field):
-                    error_msg = _('Please use this individual\'s NRIC instead')
-                    raise ValidationError(error_msg)
+                return None
         else:
             return None
 
@@ -622,9 +624,7 @@ class EmployerForm(forms.ModelForm):
                 else:
                     validate_passport_date(cleaned_field)
             else:
-                if is_not_null(cleaned_field):
-                    error_msg = _('Please use this individual\'s NRIC instead')
-                    raise ValidationError(error_msg)
+                return None
 
         return cleaned_field
 
@@ -1238,18 +1238,21 @@ class EmployerSponsorForm(forms.ModelForm):
             spouse_residential_status = self.cleaned_data.get(
                 'sponsor_1_spouse_residential_status'
             )
-            if is_local(spouse_residential_status) and is_not_null(cleaned_field):
-                validate_nric(cleaned_field)
-                ciphertext, nonce, tag = encrypt_string(
-                    cleaned_field,
-                    settings.ENCRYPTION_KEY
-                )
-                self.instance.sponsor_1_spouse_nric_nonce = nonce
-                self.instance.sponsor_1_spouse_nric_tag = tag
-                return ciphertext
+            if is_not_null(cleaned_field):
+                if is_local(spouse_residential_status):
+                    validate_nric(cleaned_field)
+                    ciphertext, nonce, tag = encrypt_string(
+                        cleaned_field,
+                        settings.ENCRYPTION_KEY
+                    )
+                    self.instance.sponsor_1_spouse_nric_nonce = nonce
+                    self.instance.sponsor_1_spouse_nric_tag = tag
+                    return ciphertext
+                else:
+                    error_msg = _('This individual is not issued an NRIC')
+                    raise ValidationError(error_msg)
             else:
-                error_msg = _('This individual is not issued an NRIC')
-                raise ValidationError(error_msg)
+                return None
         else:
             return None
 
@@ -1270,9 +1273,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 self.instance.sponsor_1_spouse_fin_tag = tag
                 return ciphertext
             else:
-                if is_not_null(cleaned_field):
-                    error_msg = _('Please use this individual\'s NRIC instead')
-                    raise ValidationError(error_msg)
+                return None
         else:
             return None
 
@@ -1293,9 +1294,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 self.instance.sponsor_1_spouse_passport_tag = tag
                 return ciphertext
             else:
-                if is_not_null(cleaned_field):
-                    error_msg = _('Please use this individual\'s NRIC instead')
-                    raise ValidationError(error_msg)
+                return None
         else:
             return None
 
@@ -1582,18 +1581,21 @@ class EmployerSponsorForm(forms.ModelForm):
                 spouse_residential_status = self.cleaned_data.get(
                     'sponsor_2_spouse_residential_status'
                 )
-                if is_local(spouse_residential_status) and is_not_null(cleaned_field):
-                    validate_nric(cleaned_field)
-                    ciphertext, nonce, tag = encrypt_string(
-                        cleaned_field,
-                        settings.ENCRYPTION_KEY
-                    )
-                    self.instance.sponsor_2_spouse_nric_nonce = nonce
-                    self.instance.sponsor_2_spouse_nric_tag = tag
-                    return ciphertext
+                if is_not_null(cleaned_field):
+                    if is_local(spouse_residential_status):
+                        validate_nric(cleaned_field)
+                        ciphertext, nonce, tag = encrypt_string(
+                            cleaned_field,
+                            settings.ENCRYPTION_KEY
+                        )
+                        self.instance.sponsor_2_spouse_nric_nonce = nonce
+                        self.instance.sponsor_2_spouse_nric_tag = tag
+                        return ciphertext
+                    else:
+                        error_msg = _('This individual is not issued an NRIC')
+                        raise ValidationError(error_msg)
                 else:
-                    error_msg = _('This individual is not issued an NRIC')
-                    raise ValidationError(error_msg)
+                    return None
             else:
                 return None
         else:
@@ -1617,9 +1619,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 self.instance.sponsor_2_spouse_fin_tag = tag
                 return ciphertext
             else:
-                if is_not_null(cleaned_field):
-                    error_msg = _('Please use this individual\'s NRIC instead')
-                    raise ValidationError(error_msg)
+                return None
         else:
             return None
 
@@ -1641,9 +1641,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 self.instance.sponsor_2_spouse_passport_tag = tag
                 return ciphertext
             else:
-                if is_not_null(cleaned_field):
-                    error_msg = _('Please use this individual\'s NRIC instead')
-                    raise ValidationError(error_msg)
+                return None
         else:
             return None
 
@@ -1663,9 +1661,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 else:
                     return cleaned_field
             else:
-                if is_not_null(cleaned_field):
-                    error_msg = _('Please use this individual\'s NRIC instead')
-                    raise ValidationError(error_msg)
+                return None
         else:
             return None
 
@@ -2011,18 +2007,21 @@ class EmployerJointApplicantForm(forms.ModelForm):
             spouse_residential_status = self.cleaned_data.get(
                 'joint_applicant_spouse_residential_status'
             )
-            if is_local(spouse_residential_status) and is_not_null(cleaned_field):
-                validate_nric(cleaned_field)
-                ciphertext, nonce, tag = encrypt_string(
-                    cleaned_field,
-                    settings.ENCRYPTION_KEY
-                )
-                self.instance.joint_applicant_spouse_nric_nonce = nonce
-                self.instance.joint_applicant_spouse_nric_tag = tag
-                return ciphertext
+            if is_not_null(cleaned_field):
+                if is_local(spouse_residential_status):
+                    validate_nric(cleaned_field)
+                    ciphertext, nonce, tag = encrypt_string(
+                        cleaned_field,
+                        settings.ENCRYPTION_KEY
+                    )
+                    self.instance.joint_applicant_spouse_nric_nonce = nonce
+                    self.instance.joint_applicant_spouse_nric_tag = tag
+                    return ciphertext
+                else:
+                    error_msg = _('This individual is not issued an NRIC')
+                    raise ValidationError(error_msg)
             else:
-                error_msg = _('This individual is not issued an NRIC')
-                raise ValidationError(error_msg)
+                return None
         else:
             return None
 
@@ -2045,9 +2044,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 self.instance.joint_applicant_spouse_fin_tag = tag
                 return ciphertext
             else:
-                if is_not_null(cleaned_field):
-                    error_msg = _('Please use this individual\'s NRIC instead')
-                    raise ValidationError(error_msg)
+                return None
         else:
             return None
 
@@ -2072,9 +2069,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 self.instance.joint_applicant_spouse_passport_tag = tag
                 return ciphertext
             else:
-                if is_not_null(cleaned_field):
-                    error_msg = _('Please use this individual\'s NRIC instead')
-                    raise ValidationError(error_msg)
+                return None
         else:
             return None
 
@@ -2096,9 +2091,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 else:
                     return cleaned_field
             else:
-                if is_not_null(cleaned_field):
-                    error_msg = _('Please use this individual\'s NRIC instead')
-                    raise ValidationError(error_msg)
+                return None
         else:
             return None
 
