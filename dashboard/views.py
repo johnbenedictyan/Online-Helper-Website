@@ -2,6 +2,7 @@ import json
 from datetime import datetime, timedelta
 from typing import Any, Dict, Optional
 
+from advertisement.models import AdvertisementLocation
 from agency.forms import (AgencyEmployeeForm, AgencyOpeningHoursForm,
                           AgencyUpdateForm)
 from agency.formsets import AgencyBranchFormSet, AgencyBranchFormSetHelper
@@ -1552,6 +1553,15 @@ class AgencyPlanList(AgencyOwnerRequiredMixin, GetAuthorityMixin, ListView):
                     6: 'price_1JiDEsKvEbGNaxrCVpVu3tC9',
                     12: 'price_1JiDG3KvEbGNaxrCzejJlKlD'
                 }
+            },
+            'advertisement_map': {
+                f'{location.name}': {
+                    'stripe_price_id': location.stripe_price_id,
+                    'slots_open': location.get_slots(),
+                    'no_of_cols': len(location.get_slots())
+                } for location in AdvertisementLocation.objects.filter(
+                    active=True
+                )
             }
         })
         return context

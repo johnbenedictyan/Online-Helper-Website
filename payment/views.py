@@ -2,6 +2,8 @@ from datetime import datetime
 from typing import Any, Dict, Optional
 
 import stripe
+from advertisement.models import (Advertisement, AdvertisementLocation,
+                                  QuarterChoices, YearChoices)
 from agency.mixins import AgencyOwnerRequiredMixin, GetAuthorityMixin
 from django.conf import settings
 from django.contrib import messages
@@ -21,8 +23,7 @@ from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.detail import DetailView
 from onlinemaid.types import T
 
-from .constants import (planLimitMap, planStatusChoices,
-                        planTypeChoices)
+from .constants import planLimitMap, planStatusChoices, planTypeChoices
 from .models import Customer, Invoice, Subscription
 
 # Stripe Settings
@@ -37,9 +38,15 @@ class ViewCart(TemplateView):
         current_cart = self.request.session.get('cart', [])
         self.request.session['cart'] = current_cart
 
-        context['cart'] = Subscription.objects.filter(
-            stripe_id__in=current_cart
-        )
+        context.update({
+            'plans': Subscription.objects.filter(
+                stripe_id__in=current_cart
+            ),
+            'ads': Advertisement.objects.filter(
+                location__stripe_price_id__in=current_cart,
+                paid=False
+            )
+        })
         return context
 
 
@@ -101,57 +108,117 @@ class AddToCart(View):
             agency = self.request.user.agency_owner.agency
             if request.POST.get('agencySubscriptionPlan'):
                 pk = request.POST.get('agencySubscriptionPlan')
-            else:
-                pk = request.POST.get('advertisementPlan')
-            try:
-                current_subscription = Subscription.objects.get(
-                    customer=Customer.objects.get(
-                        agency=agency
-                    ),
-                    stripe_id=pk
-                )
-            except Subscription.DoesNotExist:
-                # messages.error(
-                #     self.request,
-                #     'This product does not exist'
-                # )
-                # return redirect('dashboard_agency_plan_list')
-                new_subscription = Subscription.objects.create(
-                    customer=Customer.objects.get(
-                        agency=agency
-                    ),
-                    price=1,
-                    stripe_id=pk
-                )
-                current_cart.append(
-                    new_subscription.stripe_id
-                )
-                self.request.session['cart'] = current_cart
-                return redirect(reverse_lazy('view_cart'))
-            else:
-                if planLimitMap[pk]['type'] == 'plan':
-                    if Subscription.objects.filter(
+                try:
+                    current_subscription = Subscription.objects.get(
                         customer=Customer.objects.get(
                             agency=agency
                         ),
-                        subscription_type=planTypeChoices.PLAN,
-                        status=planStatusChoices.ACTIVE,
-                        end_date__gt=timezone.now()
-                    ).count() >= 1:
-                        messages.warning(
-                            self.request,
-                            f'''
-                            You already have an active subscription.
-                            If you would like to change that subscription,
-                            <a href="{reverse_lazy('stripe_customer_portal')}">
-                                Click Here
-                            </a>
-                            ''',
-                            extra_tags='error'
-                        )
-                        return redirect(reverse_lazy('dashboard_agency_plan_list'))
+                        stripe_id=pk
+                    )
+                except Subscription.DoesNotExist:
+                    # messages.error(
+                    #     self.request,
+                    #     'This product does not exist'
+                    # )
+                    # return redirect('dashboard_agency_plan_list')
+                    new_subscription = Subscription.objects.create(
+                        customer=Customer.objects.get(
+                            agency=agency
+                        ),
+                        price=1,
+                        stripe_id=pk
+                    )
+                    current_cart.append(
+                        new_subscription.stripe_id
+                    )
+                    self.request.session['cart'] = current_cart
+                    return redirect(reverse_lazy('view_cart'))
+                else:
+                    print(current_subscription)
+                    if planLimitMap[pk]['type'] == 'plan':
+                        if Subscription.objects.filter(
+                            customer=Customer.objects.get(
+                                agency=agency
+                            ),
+                            subscription_type=planTypeChoices.PLAN,
+                            status=planStatusChoices.ACTIVE,
+                            end_date__gt=timezone.now()
+                        ).count() >= 1:
+                            messages.warning(
+                                self.request,
+                                f'''
+                                You already have an active subscription.
+                                If you would like to change that subscription,
+                                <a href="{reverse_lazy('stripe_customer_portal')}">
+                                    Click Here
+                                </a>
+                                ''',
+                                extra_tags='error'
+                            )
+                            return redirect(reverse_lazy('dashboard_agency_plan_list'))
+                        else:
+                            return redirect(reverse_lazy('view_cart'))
                     else:
                         return redirect(reverse_lazy('view_cart'))
+            else:
+                pk = request.POST.get('advertisementPlan')
+                location = request.POST.get('advertisementPlanLocation')
+                quarters = request.POST.getlist('advertisementPlanQuarter')
+
+                if not quarters and pk and location:
+                    return redirect(reverse_lazy('dashboard_agency_plan_list'))
+
+                year = datetime.today().year
+                if year == 2021:
+                    year = YearChoices.TWENTY_TWENTY_ONE
+                elif year == 2022:
+                    year = YearChoices.TWENTY_TWENTY_TWO
+                elif year == 2023:
+                    year = YearChoices.TWENTY_TWENTY_THREE
+                elif year == 2024:
+                    year = YearChoices.TWENTY_TWENTY_FOUR
+
+                try:
+                    for quarter in quarters:
+                        if quarter == 'q1':
+                            quarter = QuarterChoices.ONE
+                        elif quarter == 'q2':
+                            quarter = QuarterChoices.TWO
+                        elif quarter == 'q3':
+                            quarter = QuarterChoices.THREE
+                        elif quarter == 'q4':
+                            quarter = QuarterChoices.FOUR
+                        try:
+                            advertisement = Advertisement.objects.get(
+                                agency=agency,
+                                location__stripe_price_id=pk,
+                                location__name=location,
+                                quarter=quarter,
+                                year=year,
+                                paid=False
+                            )
+                        except Advertisement.DoesNotExist:
+                            ad_location = AdvertisementLocation.objects.get(
+                                stripe_price_id=pk,
+                                name=location
+                            )
+                            advertisement = Advertisement.objects.create(
+                                agency=agency,
+                                location=ad_location,
+                                quarter=quarter,
+                                year=year
+                            )
+                            current_cart.append(
+                                advertisement.location.stripe_price_id
+                            )
+                            self.request.session['cart'] = current_cart
+                        else:
+                            current_cart.append(
+                                advertisement.location.stripe_price_id
+                            )
+                            self.request.session['cart'] = current_cart
+                except Exception as e:
+                    print(e)
                 else:
                     return redirect(reverse_lazy('view_cart'))
 
@@ -173,6 +240,18 @@ class RemoveFromCart(RedirectView):
                 self.request,
                 'This product does not exist'
             )
+            try:
+                ad = Advertisement.objects.get(
+                    pk=kwargs.get('pk')
+                )
+            except Advertisement.DoesNotExist:
+                pass
+            else:
+                ad.delete()
+                current_cart.remove(
+                    ad.location.stripe_price_id
+                )
+                self.request.session['cart'] = current_cart
         else:
             if select_product_price.pk not in current_cart:
                 messages.error(
@@ -215,7 +294,54 @@ class CheckoutSession(View):
             if self.request.user.groups.filter(
                 name='Agency Owners'
             ).exists():
+                agency = request.user.agency_owner.agency
+                sub_counter = 0
                 try:
+                    line_items = []
+                    for i in request.session.get('cart'):
+                        try:
+                            ad_location = AdvertisementLocation.objects.get(
+                                stripe_price_id=i
+                            )
+                        except AdvertisementLocation.DoesNotExist:
+                            try:
+                                Subscription.objects.get(
+                                    stripe_id=i,
+                                    customer=Customer.objects.get(
+                                        agency=agency
+                                    )
+                                )
+                            except Subscription.DoesNotExist:
+                                pass
+                            else:
+                                sub_counter += 1
+                                line_items.append({
+                                    'price': i,
+                                    'quantity': 1
+                                })
+                        else:
+                            try:
+                                ads = Advertisement.objects.filter(
+                                    location=ad_location,
+                                    agency=agency,
+                                    paid=False
+                                )
+                            except Advertisement.DoesNotExist:
+                                pass
+                            else:
+                                if ads.count() >= 1:
+                                    ad_price = ads[0].get_price()
+                                    print(ad_price)
+                                    line_items.append({
+                                        'name': ad_location.get_name(),
+                                        'amount': ad_price,
+                                        'currency': 'sgd',
+                                        'quantity': len(ads)
+                                    })
+                    if sub_counter > 0:
+                        mode = 'subscription'
+                    else:
+                        mode = 'payment'
                     checkout_session = stripe.checkout.Session.create(
                         success_url=request.build_absolute_uri(
                             reverse_lazy('checkout_success')
@@ -227,20 +353,11 @@ class CheckoutSession(View):
                             agency__pk=request.user.agency_owner.agency.pk
                         ).pk,
                         payment_method_types=['card'],
-                        mode='subscription',
-                        line_items=[
-                            {
-                                'price': i,
-                                'quantity': 1
-                            } for i in request.session.get('cart')
-                        ]
-                    )
-                    return JsonResponse(
-                        {
-                            'sessionId': checkout_session['id']
-                        }
+                        mode=mode,
+                        line_items=line_items
                     )
                 except Exception as e:
+                    print(e)
                     return JsonResponse(
                         {
                             'error': {
@@ -248,6 +365,12 @@ class CheckoutSession(View):
                             }
                         },
                         status=400
+                    )
+                else:
+                    return JsonResponse(
+                        {
+                            'sessionId': checkout_session['id']
+                        }
                     )
             else:
                 return JsonResponse(

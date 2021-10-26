@@ -76,3 +76,21 @@
     </div>
 </section>
 {% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function () {
+        $('.planSubmitButton').on(
+            'click',
+            function () {
+                $(this).parent().parent().find('.subscriptionPlanForm').submit();
+            }
+        );
+        $('.adSubmitButton').on(
+            'click',
+            function () {
+                $(this).parent().parent().find('.advertisementPlanForm').submit();
+            }
+        );
+    });
+</script>
+{% endblock js %}

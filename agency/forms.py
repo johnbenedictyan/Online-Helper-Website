@@ -766,9 +766,15 @@ class AgencyBranchForm(forms.ModelForm):
                 msg = _('You must have at least one main branch')
                 self.add_error('main_branch', msg)
         else:
+            print(AgencyBranch.objects.filter(
+                agency=self.agency
+            ).count())
             if AgencyBranch.objects.filter(
                 agency=self.agency
             ).count() >= 2:
+                print(main_branch)
+                print(branch_name)
+                print(current_main_branch.name)
                 if main_branch and branch_name != current_main_branch.name:
                     msg = _(f"""
                         {current_main_branch} is already set as the main branch

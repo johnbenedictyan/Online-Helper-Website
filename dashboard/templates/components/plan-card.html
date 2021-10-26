@@ -24,8 +24,8 @@
                 <p class="card-text">{{feature3}}</p>
             </div>
         </div>
-        <button type="button" class="btn btn-xs-lg btn-primary w-50 my-4" data-toggle="modal"
-            data-target="#{{plan_id}}Modal">Subscribe</button>
+        {% comment %} <button type="button" class="btn btn-xs-lg btn-primary w-50 my-4" data-toggle="modal"
+            data-target="#{{plan_id}}Modal">Subscribe</button> {% endcomment %}
     </div>
 </div>
 
@@ -47,7 +47,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{% url 'add_to_cart' %}" id="subscriptionPlanForm" method="POST">
+                <form action="{% url 'add_to_cart' %}" class="subscriptionPlanForm" method="POST">
                     {% csrf_token %}
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="agencySubscriptionPlan"
@@ -78,19 +78,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-xs-lg btn btn-xs-lg-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-xs-lg btn-primary" id="submitButton">Subscribe</button>
+                <button type="button" class="btn btn-xs-lg btn-primary planSubmitButton">Subscribe</button>
             </div>
         </div>
     </div>
 </div>
-{% block js %}
-<script>
-    $(function () {
-        $('#submitButton').click(
-            function () {
-                $('#subscriptionPlanForm').submit();
-            }
-        );
-    });
-</script>
-{% endblock js%}

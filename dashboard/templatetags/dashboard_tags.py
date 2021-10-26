@@ -29,3 +29,8 @@ def get_im(value, agency_id):
 @register.filter
 def keyvalue(dict, key):
     return dict[key]
+
+
+@register.simple_tag
+def define(val=None):
+    return val
