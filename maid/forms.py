@@ -245,7 +245,7 @@ class MaidForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('fin_number')
         if cleaned_field:
             # If form errors then raise ValidationError, else continue
-            validate_fin(cleaned_field)
+            validate_fin('FDW', cleaned_field)
             # Encryption
             ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,

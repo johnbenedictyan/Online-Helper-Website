@@ -399,7 +399,7 @@ class EmployerForm(forms.ModelForm):
             'employer_residential_status'
         )
         if is_foreigner(employer_residential_status):
-            validate_fin(cleaned_field)
+            validate_fin('Employer', cleaned_field)
             ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
                 settings.ENCRYPTION_KEY
@@ -569,7 +569,7 @@ class EmployerForm(forms.ModelForm):
                 'spouse_residential_status'
             )
             if is_foreigner(spouse_residential_status):
-                validate_fin(cleaned_field)
+                validate_fin("Employer's spouse's", cleaned_field)
                 ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
                     settings.ENCRYPTION_KEY
@@ -625,7 +625,7 @@ class EmployerForm(forms.ModelForm):
                     return None
         else:
             return None
-        
+
 
     def clean_employer_date_of_birth(self):
         cleaned_field = self.cleaned_data.get('employer_date_of_birth')
@@ -1262,7 +1262,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 'sponsor_1_spouse_residential_status'
             )
             if is_foreigner(spouse_residential_status):
-                validate_fin(cleaned_field)
+                validate_fin("Sponsor 1's spouse's", cleaned_field)
                 ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
                     settings.ENCRYPTION_KEY
@@ -1278,19 +1278,22 @@ class EmployerSponsorForm(forms.ModelForm):
     def clean_sponsor_1_spouse_passport_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_passport_num')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if is_married(marital_status):
-            spouse_residential_status = self.cleaned_data.get(
-                'sponsor_1_spouse_residential_status'
-            )
-            if is_foreigner(spouse_residential_status):
-                validate_passport("Sponsor 1's spouse", cleaned_field)
-                ciphertext, nonce, tag = encrypt_string(
-                    cleaned_field,
-                    settings.ENCRYPTION_KEY
+        if is_not_null(cleaned_field):
+            if is_married(marital_status):
+                spouse_residential_status = self.cleaned_data.get(
+                    'sponsor_1_spouse_residential_status'
                 )
-                self.instance.sponsor_1_spouse_passport_nonce = nonce
-                self.instance.sponsor_1_spouse_passport_tag = tag
-                return ciphertext
+                if is_foreigner(spouse_residential_status):
+                    validate_passport("Sponsor 1's spouse", cleaned_field)
+                    ciphertext, nonce, tag = encrypt_string(
+                        cleaned_field,
+                        settings.ENCRYPTION_KEY
+                    )
+                    self.instance.sponsor_1_spouse_passport_nonce = nonce
+                    self.instance.sponsor_1_spouse_passport_tag = tag
+                    return ciphertext
+                else:
+                    return None
             else:
                 return None
         else:
@@ -1299,16 +1302,19 @@ class EmployerSponsorForm(forms.ModelForm):
     def clean_sponsor_1_spouse_passport_date(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_spouse_passport_date')
         marital_status = self.cleaned_data.get('sponsor_1_marital_status')
-        if is_married(marital_status):
-            spouse_residential_status = self.cleaned_data.get(
-                'sponsor_1_spouse_residential_status'
-            )
-            if is_foreigner(spouse_residential_status):
-                if is_null(cleaned_field):
-                    error_msg = _('Passport expiry date field cannot be empty')
-                    raise ValidationError(error_msg)
+        if is_not_null(cleaned_field):
+            if is_married(marital_status):
+                spouse_residential_status = self.cleaned_data.get(
+                    'sponsor_1_spouse_residential_status'
+                )
+                if is_foreigner(spouse_residential_status):
+                    if is_null(cleaned_field):
+                        error_msg = _('Passport expiry date field cannot be empty')
+                        raise ValidationError(error_msg)
 
-            validate_passport_date(cleaned_field)
+                validate_passport_date(cleaned_field)
+            else:
+                return None
         else:
             return None
 
@@ -1607,7 +1613,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 'sponsor_2_spouse_residential_status'
             )
             if is_foreigner(spouse_residential_status):
-                validate_fin(cleaned_field)
+                validate_fin("Sponsor 2's spouse's", cleaned_field)
                 ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
                     settings.ENCRYPTION_KEY
@@ -2042,7 +2048,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 'joint_applicant_spouse_residential_status'
             )
             if is_foreigner(spouse_residential_status):
-                validate_fin(cleaned_field)
+                validate_fin("The Joint Applicant spouse's", cleaned_field)
                 ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
                     settings.ENCRYPTION_KEY

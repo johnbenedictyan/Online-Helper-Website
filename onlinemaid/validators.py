@@ -21,9 +21,9 @@ def validate_age(dt, age) -> Union[NoReturn, None]:
         raise ValidationError(error_msg)
 
 
-def validate_nric(test_id) -> Union[NoReturn, None]:
+def validate_nric(person, test_id) -> Union[NoReturn, None]:
     if not test_id:
-        empty_nric = _("NRIC cannot be empty")
+        empty_nric = _(f"{person}'s NRIC cannot be empty")
         raise ValidationError(empty_nric)
 
     # return error message if fail, else return None for success
@@ -61,9 +61,9 @@ def validate_nric(test_id) -> Union[NoReturn, None]:
             raise ValidationError(error_msg)
 
 
-def validate_fin(test_id) -> Union[NoReturn, None]:
+def validate_fin(person, test_id) -> Union[NoReturn, None]:
     if not test_id:
-        empty_fin = _("FIN cannot be empty")
+        empty_fin = _(f"{person}'s FIN cannot be empty")
         raise ValidationError(empty_fin)
 
     # return error message if fail, else return None for success
@@ -103,7 +103,7 @@ def validate_fin(test_id) -> Union[NoReturn, None]:
 
 def validate_passport(person, passport_text) -> Union[NoReturn, None]:
     if not passport_text:
-        error_msg = _(f"{person}'s Passport number cannot be empty")
+        error_msg = _(f"{person}'s passport number cannot be empty")
         raise ValidationError(error_msg)
 
     # return error message if fail, else return None for success
