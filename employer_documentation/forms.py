@@ -459,19 +459,19 @@ class EmployerForm(forms.ModelForm):
         else:
             return cleaned_field
 
-    def clean_employer_marriage_sg_registered(self):
-        cleaned_field = self.cleaned_data.get(
-            'employer_marriage_sg_registered'
-        )
-        marital_status = self.cleaned_data.get('employer_marital_status')
-        if is_married(marital_status):
-            if is_null(cleaned_field):
-                error_msg = _('Marriage registration field cannot be empty')
-                raise ValidationError(error_msg)
-            else:
-                return cleaned_field
-        else:
-            return cleaned_field
+    # def clean_employer_marriage_sg_registered(self):
+    #     cleaned_field = self.cleaned_data.get(
+    #         'employer_marriage_sg_registered'
+    #     )
+    #     marital_status = self.cleaned_data.get('employer_marital_status')
+    #     if is_married(marital_status):
+    #         if is_null(cleaned_field):
+    #             error_msg = _('Marriage registration field cannot be empty')
+    #             raise ValidationError(error_msg)
+    #         else:
+    #             return cleaned_field
+    #     else:
+    #         return cleaned_field
 
     def clean_spouse_name(self):
         cleaned_field = self.cleaned_data.get('spouse_name')
