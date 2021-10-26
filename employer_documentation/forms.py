@@ -377,7 +377,7 @@ class EmployerForm(forms.ModelForm):
         employer_residential_status = self.cleaned_data.get(
             'employer_residential_status'
         )
-        if is_local(employer_residential_status):
+        if is_local(employer_residential_status) and is_not_null(cleaned_field):
             validate_nric(cleaned_field)
             ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
@@ -547,7 +547,7 @@ class EmployerForm(forms.ModelForm):
             spouse_residential_status = self.cleaned_data.get(
                 'spouse_residential_status'
             )
-            if is_local(spouse_residential_status):
+            if is_local(spouse_residential_status) and is_not_null(cleaned_field):
                 validate_nric(cleaned_field)
                 ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
@@ -1238,7 +1238,7 @@ class EmployerSponsorForm(forms.ModelForm):
             spouse_residential_status = self.cleaned_data.get(
                 'sponsor_1_spouse_residential_status'
             )
-            if is_local(spouse_residential_status):
+            if is_local(spouse_residential_status) and is_not_null(cleaned_field):
                 validate_nric(cleaned_field)
                 ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
@@ -1582,7 +1582,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 spouse_residential_status = self.cleaned_data.get(
                     'sponsor_2_spouse_residential_status'
                 )
-                if is_local(spouse_residential_status):
+                if is_local(spouse_residential_status) and is_not_null(cleaned_field):
                     validate_nric(cleaned_field)
                     ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
@@ -2011,7 +2011,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
             spouse_residential_status = self.cleaned_data.get(
                 'joint_applicant_spouse_residential_status'
             )
-            if is_local(spouse_residential_status):
+            if is_local(spouse_residential_status) and is_not_null(cleaned_field):
                 validate_nric(cleaned_field)
                 ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
