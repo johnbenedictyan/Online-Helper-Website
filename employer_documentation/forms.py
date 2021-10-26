@@ -380,7 +380,7 @@ class EmployerForm(forms.ModelForm):
         )
         if is_not_null(cleaned_field):
             if is_local(employer_residential_status):
-                validate_nric(cleaned_field)
+                validate_nric("Employer", cleaned_field)
                 ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
                     settings.ENCRYPTION_KEY
@@ -546,7 +546,7 @@ class EmployerForm(forms.ModelForm):
             )
             if is_not_null(cleaned_field):
                 if is_local(spouse_residential_status):
-                    validate_nric(cleaned_field)
+                    validate_nric("Employer's spouse's", cleaned_field)
                     ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
@@ -1130,7 +1130,7 @@ class EmployerSponsorForm(forms.ModelForm):
 
     def clean_sponsor_1_nric_num(self):
         cleaned_field = self.cleaned_data.get('sponsor_1_nric_num')
-        validate_nric(cleaned_field)
+        validate_nric("Sponsor 1", cleaned_field)
         ciphertext, nonce, tag = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
@@ -1239,7 +1239,7 @@ class EmployerSponsorForm(forms.ModelForm):
             )
             if is_not_null(cleaned_field):
                 if is_local(spouse_residential_status):
-                    validate_nric(cleaned_field)
+                    validate_nric("Sponsor 1's spouse", cleaned_field)
                     ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
@@ -1377,7 +1377,7 @@ class EmployerSponsorForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('sponsor_2_nric_num')
         sponsor_2_required = self.cleaned_data.get('sponsor_2_required')
         if sponsor_2_required:
-            validate_nric(cleaned_field)
+            validate_nric("Sponsor 2", cleaned_field)
             ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
                 settings.ENCRYPTION_KEY
@@ -1587,7 +1587,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 )
                 if is_not_null(cleaned_field):
                     if is_local(spouse_residential_status):
-                        validate_nric(cleaned_field)
+                        validate_nric("Sponsor 2's spouse", cleaned_field)
                         ciphertext, nonce, tag = encrypt_string(
                             cleaned_field,
                             settings.ENCRYPTION_KEY
@@ -1996,7 +1996,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
 
     def clean_joint_applicant_nric_num(self):
         cleaned_field = self.cleaned_data.get('joint_applicant_nric_num')
-        validate_nric(cleaned_field)
+        validate_nric("The joint applicant", cleaned_field)
         ciphertext, nonce, tag = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
@@ -2023,7 +2023,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
             )
             if is_not_null(cleaned_field):
                 if is_local(spouse_residential_status):
-                    validate_nric(cleaned_field)
+                    validate_nric("The joint applicant's spouse", cleaned_field)
                     ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
@@ -2316,7 +2316,7 @@ class EmployerHouseholdDetailsForm(forms.ModelForm):
 
     def clean_household_id_num(self):
         cleaned_field = self.cleaned_data.get('household_id_num')
-        validate_nric(cleaned_field)
+        validate_nric("This member", cleaned_field)
         ciphertext, nonce, tag = encrypt_string(
             cleaned_field,
             settings.ENCRYPTION_KEY
