@@ -43,7 +43,7 @@ class ViewCart(TemplateView):
                 stripe_id__in=current_cart
             ),
             'ads': Advertisement.objects.filter(
-                location__stripe_price_id__in=current_cart,
+                pk__in=current_cart,
                 paid=False
             )
         })
@@ -202,12 +202,12 @@ class AddToCart(View):
                                 year=year
                             )
                             current_cart.append(
-                                advertisement.location.stripe_price_id
+                                advertisement.pk
                             )
                             self.request.session['cart'] = current_cart
                         else:
                             current_cart.append(
-                                advertisement.location.stripe_price_id
+                                advertisement.pk
                             )
                             self.request.session['cart'] = current_cart
                 except Exception as e:
@@ -224,15 +224,29 @@ class RemoveFromCart(RedirectView):
 
     def get_redirect_url(self, *args: Any, **kwargs: Any) -> Optional[str]:
         current_cart = self.request.session.get('cart', [])
-        try:
-            select_product_price = Subscription.objects.get(
-                pk=kwargs.get('pk')
-            )
-        except Subscription.DoesNotExist:
-            messages.error(
-                self.request,
-                'This product does not exist'
-            )
+        sub_type = kwargs.get('sub_type')
+        if sub_type == 'sub':
+            try:
+                select_product_price = Subscription.objects.get(
+                    pk=kwargs.get('pk')
+                )
+            except Subscription.DoesNotExist:
+                messages.error(
+                    self.request,
+                    'This product does not exist'
+                )
+            else:
+                if select_product_price.pk not in current_cart:
+                    messages.error(
+                        self.request,
+                        'This product is not in your cart'
+                    )
+                else:
+                    current_cart.remove(
+                        select_product_price.pk
+                    )
+                    self.request.session['cart'] = current_cart
+        else:
             try:
                 ad = Advertisement.objects.get(
                     pk=kwargs.get('pk')
@@ -245,17 +259,7 @@ class RemoveFromCart(RedirectView):
                     ad.location.stripe_price_id
                 )
                 self.request.session['cart'] = current_cart
-        else:
-            if select_product_price.pk not in current_cart:
-                messages.error(
-                    self.request,
-                    'This product is not in your cart'
-                )
-            else:
-                current_cart.remove(
-                    select_product_price.pk
-                )
-                self.request.session['cart'] = current_cart
+        kwargs.pop('sub_type')
         kwargs.pop('pk')
         return super().get_redirect_url(*args, **kwargs)
 
@@ -292,47 +296,38 @@ class CheckoutSession(View):
                 try:
                     line_items = []
                     metadata = {}
+                    cart = request.session.get('cart')
+                    for ad in Advertisement.objects.filter(
+                        pk__in=cart,
+                        agency=agency,
+                        paid=False
+                    ):
+                        ad_price = ad.get_price()
+                        line_items.append({
+                            'name': ad.get_name(),
+                            'amount': ad_price,
+                            'currency': 'sgd',
+                            'quantity': 1
+                        })
+                        metadata[ad.pk] = 1
+                        ad.set_price_paid(ad_price)
+
                     for i in request.session.get('cart'):
                         try:
-                            ad_location = AdvertisementLocation.objects.get(
-                                stripe_price_id=i
+                            Subscription.objects.get(
+                                stripe_id=i,
+                                customer=Customer.objects.get(
+                                    agency=agency
+                                )
                             )
-                        except AdvertisementLocation.DoesNotExist:
-                            try:
-                                Subscription.objects.get(
-                                    stripe_id=i,
-                                    customer=Customer.objects.get(
-                                        agency=agency
-                                    )
-                                )
-                            except Subscription.DoesNotExist:
-                                pass
-                            else:
-                                sub_counter += 1
-                                line_items.append({
-                                    'price': i,
-                                    'quantity': 1
-                                })
+                        except Subscription.DoesNotExist:
+                            pass
                         else:
-                            try:
-                                ads = Advertisement.objects.filter(
-                                    location=ad_location,
-                                    agency=agency,
-                                    paid=False
-                                )
-                            except Advertisement.DoesNotExist:
-                                pass
-                            else:
-                                for ad in ads:
-                                    ad_price = ad.get_price()
-                                    line_items.append({
-                                        'name': ad.get_name(),
-                                        'amount': ad_price,
-                                        'currency': 'sgd',
-                                        'quantity': 1
-                                    })
-                                    metadata[ad.pk] = 1
-                                    ad.set_price_paid(ad_price)
+                            sub_counter += 1
+                            line_items.append({
+                                'price': i,
+                                'quantity': 1
+                            })
 
                     if sub_counter > 0:
                         mode = 'subscription'

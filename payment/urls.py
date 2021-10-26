@@ -168,7 +168,7 @@ urlpatterns = [
                 name='add_to_cart'
             ),
             path(
-                'remove/<slug:pk>/',
+                'remove/<slug:sub_type>/<int:pk>/',
                 RemoveFromCart.as_view(),
                 name='remove_from_cart'
             ),

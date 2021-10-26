@@ -392,7 +392,7 @@ class Advertisement(models.Model):
         return (datetime.now() - self.time_created).total_seconds()
 
     def get_name(self):
-        self.location.get_name() + self.quarter + self.year
+        return self.location.get_name() + " - Q" + self.quarter + " " +self.year
 
     def set_paid(self):
         self.paid = True

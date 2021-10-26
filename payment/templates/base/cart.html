@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-1">
                         <div class="row justify-content-center">
-                            <a class="mx-1" href="{% url 'remove_from_cart' product_price.pk %}"><i
+                            <a class="mx-1" href="{% url 'remove_from_cart' 'sub' product_price.pk %}"><i
                                     class="far fa-trash-alt"></i></a>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                     </div>
                     <div class="col-1">
                         <div class="row justify-content-center">
-                            <a class="mx-1" href="{% url 'remove_from_cart' ad.pk %}"><i
+                            <a class="mx-1" href="{% url 'remove_from_cart' 'ad' ad.pk %}"><i
                                     class="far fa-trash-alt"></i></a>
                         </div>
                     </div>
