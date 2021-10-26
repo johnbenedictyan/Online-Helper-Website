@@ -256,7 +256,7 @@ class RemoveFromCart(RedirectView):
             else:
                 ad.delete()
                 current_cart.remove(
-                    ad.location.stripe_price_id
+                    kwargs.get('pk')
                 )
                 self.request.session['cart'] = current_cart
         kwargs.pop('sub_type')
