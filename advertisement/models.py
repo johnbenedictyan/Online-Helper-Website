@@ -308,7 +308,7 @@ class Advertisement(models.Model):
 
         if not self.paid:
             if str(self.get_current_year()) < self.year:
-                return self.location.price
+                return self.location.price * 100
             else:
                 current_quarter = self.get_current_quarter()
                 if current_quarter == 1:
@@ -330,7 +330,7 @@ class Advertisement(models.Model):
                     if self.quarter == QuarterChoices.FOUR:
                         return math.ceil(q4_frac * self.location.price * 100)
                     else:
-                        return self.location.price
+                        return self.location.price * 100
 
     def get_formatted_price(self):
         return self.get_price() / 100
