@@ -243,7 +243,10 @@ class AdvertisementLocation(models.Model):
             ]
 
     def get_name(self):
-        return (self.name.replace("_ad", " Page Advertisement")).title()
+        if self.name == 'featured_maids_ad':
+            return "Featured Maids Advertisement"
+        else:
+            return self.name.replace("_", " ").replace("ad", "Page Advertisement").title()
 
     def set_purge(self):
         purgeable_ad_requests = [
@@ -387,6 +390,9 @@ class Advertisement(models.Model):
 
     def get_created_duration(self):
         return (datetime.now() - self.time_created).total_seconds()
+
+    def get_name(self):
+        self.location.get_name() + self.quarter + self.year
 
     def set_paid(self):
         self.paid = True

@@ -323,15 +323,13 @@ class CheckoutSession(View):
                             except Advertisement.DoesNotExist:
                                 pass
                             else:
-                                if ads.count() >= 1:
-                                    ad_price = ads[0].get_price()
-                                    line_items.append({
-                                        'name': ad_location.get_name(),
-                                        'amount': ad_price,
-                                        'currency': 'sgd',
-                                        'quantity': len(ads)
-                                    })
                                 for ad in ads:
+                                    line_items.append({
+                                        'name': ad.get_name(),
+                                        'amount': ad.get_price(),
+                                        'currency': 'sgd',
+                                        'quantity': 1
+                                    })
                                     metadata[ad.pk] = 1
                                     ad.set_price_paid(ad_price)
 
