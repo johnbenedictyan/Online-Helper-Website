@@ -35,12 +35,12 @@
                 </div>
                 <div class="row">
                     <div class="col text-right pb-1">
-                        <p class="mb-0 mr-1">Biodata Limit: {{biodata}}/100</p>
+                        <p class="mb-0 mr-1">Biodata Limit: {{biodata}}/{{biodata_allowed}}</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col text-right">
-                        <p class="mb-0 mr-1">Featured Limit: {{featured}}/100</p>
+                        <p class="mb-0 mr-1">Featured Limit: {{featured}}/{{feat_biodata_allowed}}</p>
                     </div>
                 </div>
             </div>
@@ -114,6 +114,13 @@
                             data-toggle="tooltip" data-placement="top" title="Update Maid Information"></i></a>
                     <a class="mx-2" href="{% url 'dashboard_maid_detail' maid.pk %}"><i class="far fa-file-image"
                             data-toggle="tooltip" data-placement="top" title="View Maid Information"></i></a>
+                    {% if maid.is_featured is False %}
+                    <a class="mx-2" href="{% url 'maid_toggle_featured' maid.pk %}"><i class="fas fa-star"
+                            data-toggle="tooltip" data-placement="top" title="Feature Maid"></i></a>
+                    {% else %}
+                    <a class="mx-2" href="{% url 'maid_toggle_featured' maid.pk %}"><i class="far fa-star"
+                            data-toggle="tooltip" data-placement="top" title="Unfeature Maid"></i></a>
+                    {% endif %}
                     {% if maid.is_published is False %}
                     <a class="mx-2" href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye"
                             data-toggle="tooltip" data-placement="top" title="Publish Maid"></i></a>

@@ -196,6 +196,10 @@ class Agency(models.Model):
     def has_customer_relation(self):
         return hasattr(self, 'customer_account')
 
+    def increment_featured_fdw(self, n):
+        self.amount_of_featured_biodata_allowed += n
+        self.save()
+
     def fix_branch_bug(self):
         main_branches = self.branches.filter(main_branch=True)
         new_main_branch = main_branches.first()

@@ -66,76 +66,105 @@ class AdvertisementLocation(models.Model):
             year_choice = YearChoices.TWENTY_TWENTY_FOUR
 
         if self.get_current_quarter == 1:
+            q1_ads = self.advertisements.filter(
+                quarter=QuarterChoices.ONE,
+                year=year_choice
+            ).count()
+            q2_ads = self.advertisements.filter(
+                quarter=QuarterChoices.TWO,
+                year=year_choice
+            ).count()
+            q3_ads = self.advertisements.filter(
+                quarter=QuarterChoices.THREE,
+                year=year_choice
+            ).count()
+            q4_ads = self.advertisements.filter(
+                quarter=QuarterChoices.FOUR,
+                year=year_choice
+            ).count()
             return [
                 [
-                    self.total_amount_allowed - self.advertisements.filter(
-                        quarter=QuarterChoices.ONE,
-                        year=year_choice
-                    ).count(),
+                    self.total_amount_allowed - q1_ads,
                     self.total_amount_allowed,
-                    self.advertisements.count() >= self.total_amount_allowed
+                    q1_ads >= self.total_amount_allowed
                 ],
                 [
-                    self.total_amount_allowed - self.advertisements.filter(
-                        quarter=QuarterChoices.TWO,
-                        year=year_choice
-                    ).count(),
+                    self.total_amount_allowed - q2_ads,
                     self.total_amount_allowed,
-                    self.advertisements.count() >= self.total_amount_allowed
+                    q2_ads >= self.total_amount_allowed
                 ],
                 [
-                    self.total_amount_allowed - self.advertisements.filter(
-                        quarter=QuarterChoices.THREE,
-                        year=year_choice
-                    ).count(),
+                    self.total_amount_allowed - q3_ads,
                     self.total_amount_allowed,
-                    self.advertisements.count() >= self.total_amount_allowed
+                    q3_ads >= self.total_amount_allowed
                 ],
                 [
-                    self.total_amount_allowed - self.advertisements.filter(
-                        quarter=QuarterChoices.FOUR,
-                        year=year_choice
-                    ).count(),
+                    self.total_amount_allowed - q4_ads,
                     self.total_amount_allowed,
-                    self.advertisements.count() >= self.total_amount_allowed
+                    q4_ads >= self.total_amount_allowed
                 ]
             ]
         elif self.get_current_quarter == 2:
+            q2_ads = self.advertisements.filter(
+                quarter=QuarterChoices.TWO,
+                year=year_choice
+            ).count()
+            q3_ads = self.advertisements.filter(
+                quarter=QuarterChoices.THREE,
+                year=year_choice
+            ).count()
+            q4_ads = self.advertisements.filter(
+                quarter=QuarterChoices.FOUR,
+                year=year_choice
+            ).count()
+            next_q1_ads = self.advertisements.filter(
+                quarter=QuarterChoices.ONE,
+                year=year_choice+1
+            ).count()
             return [
                 [
-                    self.total_amount_allowed - self.advertisements.filter(
-                        quarter=QuarterChoices.TWO,
-                        year=year_choice
-                    ).count(),
+                    self.total_amount_allowed - q2_ads,
                     self.total_amount_allowed,
-                    self.advertisements.count() >= self.total_amount_allowed
+                    q2_ads >= self.total_amount_allowed
                 ],
                 [
-                    self.total_amount_allowed - self.advertisements.filter(
-                        quarter=QuarterChoices.THREE,
-                        year=year_choice
-                    ).count(),
+                    self.total_amount_allowed - q3_ads,
                     self.total_amount_allowed,
-                    self.advertisements.count() >= self.total_amount_allowed
+                    q3_ads >= self.total_amount_allowed
                 ],
                 [
-                    self.total_amount_allowed - self.advertisements.filter(
-                        quarter=QuarterChoices.FOUR,
-                        year=year_choice
-                    ).count(),
+                    self.total_amount_allowed - q4_ads,
                     self.total_amount_allowed,
-                    self.advertisements.count() >= self.total_amount_allowed
+                    q4_ads >= self.total_amount_allowed
+                ],
+                [
+                    self.total_amount_allowed - next_q1_ads,
+                    self.total_amount_allowed,
+                    next_q1_ads >= self.total_amount_allowed
                 ]
             ]
         elif self.get_current_quarter == 3:
+            q3_ads = self.advertisements.filter(
+                quarter=QuarterChoices.THREE,
+                year=year_choice
+            ).count()
+            q4_ads = self.advertisements.filter(
+                quarter=QuarterChoices.FOUR,
+                year=year_choice
+            ).count()
+            next_q1_ads = self.advertisements.filter(
+                quarter=QuarterChoices.ONE,
+                year=year_choice+1
+            ).count()
+            next_q2_ads = self.advertisements.filter(
+                quarter=QuarterChoices.TWO,
+                year=year_choice+1
+            ).count()
             return [
                 [
-                    self.total_amount_allowed - self.advertisements.filter(
-                        quarter=QuarterChoices.THREE,
-                        year=year_choice
-                    ).count(),
+                    self.total_amount_allowed - q3_ads,
                     self.total_amount_allowed,
-                    self.advertisements.count() >= self.total_amount_allowed
+                    q3_ads >= self.total_amount_allowed
                 ],
                 [
                     self.total_amount_allowed - self.advertisements.filter(
@@ -144,6 +173,16 @@ class AdvertisementLocation(models.Model):
                     ).count(),
                     self.total_amount_allowed,
                     self.advertisements.count() >= self.total_amount_allowed
+                ],
+                [
+                    self.total_amount_allowed - next_q1_ads,
+                    self.total_amount_allowed,
+                    next_q1_ads >= self.total_amount_allowed
+                ],
+                [
+                    self.total_amount_allowed - next_q2_ads,
+                    self.total_amount_allowed,
+                    next_q2_ads >= self.total_amount_allowed
                 ]
             ]
         else:
