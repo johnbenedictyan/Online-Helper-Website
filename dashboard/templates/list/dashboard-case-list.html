@@ -77,7 +77,8 @@
                 <p class="mb-0">{{ object.case_ref_no }}</p>
             </div>
             <div class="col-7">
-                <p class="mb-0">{{ object.employer }}</p>
+                <p class="mb-0">Employer: {{object.employer}}<br />FDW: {{object.fdw.name}}<br />
+                Personnel: {{object.employer.agency_employee.name}}</p>
             </div>
             <div class="col">
                 <p class="mb-0">{{ object.employer.get_applicant_type_display }}</p>
