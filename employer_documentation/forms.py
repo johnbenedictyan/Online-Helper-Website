@@ -408,9 +408,7 @@ class EmployerForm(forms.ModelForm):
             self.instance.employer_fin_tag = tag
             return ciphertext
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('Please use this individual\'s NRIC instead')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_employer_passport_num(self):
         cleaned_field = self.cleaned_data.get('employer_passport_num')
@@ -427,9 +425,7 @@ class EmployerForm(forms.ModelForm):
             self.instance.employer_passport_tag = tag
             return ciphertext
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('Please use this individual\'s NRIC instead')
-                raise ValidationError(error_msg)
+            return None
 
     def clean_employer_passport_date(self):
         cleaned_field = self.cleaned_data.get('employer_passport_date')
@@ -443,9 +439,7 @@ class EmployerForm(forms.ModelForm):
             else:
                 validate_passport_date(cleaned_field)
         else:
-            if is_not_null(cleaned_field):
-                error_msg = _('Please use this individual\'s NRIC instead')
-                raise ValidationError(error_msg)
+            return None
 
         return cleaned_field
 
