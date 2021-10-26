@@ -725,31 +725,97 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
                 maid=Maid.objects.get(pk=self.maid_id),
                 preference=MaidFoodPreferenceChoices.PORK
             )
+        else:
+            try:
+                obj = MaidFoodHandlingPreference.objects.get(
+                    maid=Maid.objects.get(pk=self.maid_id),
+                    preference=MaidFoodPreferenceChoices.PORK
+                )
+            except MaidFoodHandlingPreference.DoesNotExist:
+                pass
+            else:
+                obj.delete()
+
         if food_handling_beef == 'True':
             MaidFoodHandlingPreference.objects.get_or_create(
                 maid=Maid.objects.get(pk=self.maid_id),
                 preference=MaidFoodPreferenceChoices.BEEF
             )
+        else:
+            try:
+                obj = MaidFoodHandlingPreference.objects.get(
+                    maid=Maid.objects.get(pk=self.maid_id),
+                    preference=MaidFoodPreferenceChoices.BEEF
+                )
+            except MaidFoodHandlingPreference.DoesNotExist:
+                pass
+            else:
+                obj.delete()
+
         if food_handling_veg == 'True':
             MaidFoodHandlingPreference.objects.get_or_create(
                 maid=Maid.objects.get(pk=self.maid_id),
                 preference=MaidFoodPreferenceChoices.VEG
             )
+        else:
+            try:
+                obj = MaidFoodHandlingPreference.objects.get(
+                    maid=Maid.objects.get(pk=self.maid_id),
+                    preference=MaidFoodPreferenceChoices.VEG
+                )
+            except MaidFoodHandlingPreference.DoesNotExist:
+                pass
+            else:
+                obj.delete()
+
         if dietary_restriction_pork == 'True':
             MaidDietaryRestriction.objects.get_or_create(
                 maid=Maid.objects.get(pk=self.maid_id),
                 restriction=MaidDietaryRestrictionChoices.PORK
             )
+        else:
+            try:
+                obj = MaidDietaryRestriction.objects.get(
+                    maid=Maid.objects.get(pk=self.maid_id),
+                    restriction=MaidDietaryRestrictionChoices.PORK
+                )
+            except MaidDietaryRestriction.DoesNotExist:
+                pass
+            else:
+                obj.delete()
+
         if dietary_restriction_beef == 'True':
             MaidDietaryRestriction.objects.get_or_create(
                 maid=Maid.objects.get(pk=self.maid_id),
                 restriction=MaidDietaryRestrictionChoices.BEEF
             )
+        else:
+            try:
+                obj = MaidDietaryRestriction.objects.get(
+                    maid=Maid.objects.get(pk=self.maid_id),
+                    restriction=MaidDietaryRestrictionChoices.BEEF
+                )
+            except MaidDietaryRestriction.DoesNotExist:
+                pass
+            else:
+                obj.delete()
+
         if dietary_restriction_veg == 'True':
             MaidDietaryRestriction.objects.get_or_create(
                 maid=Maid.objects.get(pk=self.maid_id),
                 restriction=MaidDietaryRestrictionChoices.VEG
             )
+        else:
+            try:
+                obj = MaidDietaryRestriction.objects.get(
+                    maid=Maid.objects.get(pk=self.maid_id),
+                    restriction=MaidDietaryRestrictionChoices.VEG
+                )
+            except MaidDietaryRestriction.DoesNotExist:
+                pass
+            else:
+                obj.delete()
+
 
         obj, created = MaidLanguageProficiency.objects.update_or_create(
             maid=Maid.objects.get(pk=self.maid_id),
