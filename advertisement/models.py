@@ -89,23 +89,27 @@ class AdvertisementLocation(models.Model):
             return [
                 [
                     self.total_amount_allowed - q1_ads,
-                    self.total_amount_allowed,
-                    q1_ads >= self.total_amount_allowed
+                    "Q1 " + year_choice,
+                    q1_ads >= self.total_amount_allowed,
+                    "q1-" + year_choice
                 ],
                 [
                     self.total_amount_allowed - q2_ads,
-                    self.total_amount_allowed,
-                    q2_ads >= self.total_amount_allowed
+                    "Q2 " + year_choice,
+                    q2_ads >= self.total_amount_allowed,
+                    "q2-" + year_choice
                 ],
                 [
                     self.total_amount_allowed - q3_ads,
-                    self.total_amount_allowed,
-                    q3_ads >= self.total_amount_allowed
+                    "Q3 " + year_choice,
+                    q3_ads >= self.total_amount_allowed,
+                    "q3-" + year_choice
                 ],
                 [
                     self.total_amount_allowed - q4_ads,
-                    self.total_amount_allowed,
-                    q4_ads >= self.total_amount_allowed
+                    "Q4 " + year_choice,
+                    q4_ads >= self.total_amount_allowed,
+                    "q4-" + year_choice
                 ]
             ]
         elif self.get_current_quarter == 2:
@@ -128,23 +132,27 @@ class AdvertisementLocation(models.Model):
             return [
                 [
                     self.total_amount_allowed - q2_ads,
-                    self.total_amount_allowed,
-                    q2_ads >= self.total_amount_allowed
+                    "Q2 " + year_choice,
+                    q2_ads >= self.total_amount_allowed,
+                    "q2-" + year_choice
                 ],
                 [
                     self.total_amount_allowed - q3_ads,
-                    self.total_amount_allowed,
-                    q3_ads >= self.total_amount_allowed
+                    "Q3 " + year_choice,
+                    q3_ads >= self.total_amount_allowed,
+                    "q3-" + year_choice
                 ],
                 [
                     self.total_amount_allowed - q4_ads,
-                    self.total_amount_allowed,
-                    q4_ads >= self.total_amount_allowed
+                    "Q4 " + year_choice,
+                    q4_ads >= self.total_amount_allowed,
+                    "q4-" + year_choice
                 ],
                 [
                     self.total_amount_allowed - next_q1_ads,
-                    self.total_amount_allowed,
-                    next_q1_ads >= self.total_amount_allowed
+                    "Q1 " + next_year_choice,
+                    next_q1_ads >= self.total_amount_allowed,
+                    "q1-" + next_year_choice
                 ]
             ]
         elif self.get_current_quarter == 3:
@@ -167,23 +175,27 @@ class AdvertisementLocation(models.Model):
             return [
                 [
                     self.total_amount_allowed - q3_ads,
-                    self.total_amount_allowed,
-                    q3_ads >= self.total_amount_allowed
+                    "Q3 " + year_choice,
+                    q3_ads >= self.total_amount_allowed,
+                    "q3-" + year_choice
                 ],
                 [
                     self.total_amount_allowed - q4_ads,
-                    self.total_amount_allowed,
-                    q4_ads >= self.total_amount_allowed
+                    "Q4 " + year_choice,
+                    q4_ads >= self.total_amount_allowed,
+                    "q4-" + year_choice
                 ],
                 [
                     self.total_amount_allowed - next_q1_ads,
-                    self.total_amount_allowed,
-                    next_q1_ads >= self.total_amount_allowed
+                    "Q1 " + next_year_choice,
+                    next_q1_ads >= self.total_amount_allowed,
+                    "q1-" + next_year_choice
                 ],
                 [
                     self.total_amount_allowed - next_q2_ads,
-                    self.total_amount_allowed,
-                    next_q2_ads >= self.total_amount_allowed
+                    "Q2 " + next_year_choice,
+                    next_q2_ads >= self.total_amount_allowed,
+                    "q2-" + next_year_choice
                 ]
             ]
         else:
@@ -206,23 +218,27 @@ class AdvertisementLocation(models.Model):
             return [
                 [
                     self.total_amount_allowed - q4_ads,
-                    self.total_amount_allowed,
-                    q4_ads >= self.total_amount_allowed
+                    "Q4 " + year_choice,
+                    q4_ads >= self.total_amount_allowed,
+                    "q4-" + year_choice
                 ],
                 [
                     self.total_amount_allowed - next_q1_ads,
-                    self.total_amount_allowed,
-                    next_q1_ads >= self.total_amount_allowed
+                    "Q1 " + next_year_choice,
+                    next_q1_ads >= self.total_amount_allowed,
+                    "q1-" + next_year_choice
                 ],
                 [
                     self.total_amount_allowed - next_q2_ads,
-                    self.total_amount_allowed,
-                    next_q2_ads >= self.total_amount_allowed
+                    "Q2 " + next_year_choice,
+                    next_q2_ads >= self.total_amount_allowed,
+                    "q2-" + next_year_choice
                 ],
                 [
                     self.total_amount_allowed - next_q3_ads,
-                    self.total_amount_allowed,
-                    next_q3_ads >= self.total_amount_allowed
+                    "Q3 " + next_year_choice,
+                    next_q3_ads >= self.total_amount_allowed,
+                    "q3-" + next_year_choice
                 ]
             ]
 
