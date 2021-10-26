@@ -507,11 +507,11 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
         else:
             if food_handling_pork:
                 initial.update({
-                    'food_handling_pork': 'True',
+                    'food_handling_pork': True,
                 })
             else:
                 initial.update({
-                    'food_handling_pork': 'False',
+                    'food_handling_pork': False,
                 })
         try:
             food_handling_beef = MaidFoodHandlingPreference.objects.get(
@@ -523,11 +523,11 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
         else:
             if food_handling_beef:
                 initial.update({
-                    'food_handling_beef': 'True',
+                    'food_handling_beef': True,
                 })
             else:
                 initial.update({
-                    'food_handling_beef': 'False',
+                    'food_handling_beef': False,
                 })
         try:
             food_handling_veg = MaidFoodHandlingPreference.objects.get(
@@ -539,11 +539,11 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
         else:
             if food_handling_veg:
                 initial.update({
-                    'food_handling_veg': 'True',
+                    'food_handling_veg': True,
                 })
             else:
                 initial.update({
-                    'food_handling_veg': 'False',
+                    'food_handling_veg': False,
                 })
         try:
             dietary_restriction_pork = MaidDietaryRestriction.objects.get(
@@ -555,11 +555,11 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
         else:
             if dietary_restriction_pork:
                 initial.update({
-                    'dietary_restriction_pork': 'True',
+                    'dietary_restriction_pork': True,
                 })
             else:
                 initial.update({
-                    'dietary_restriction_pork': 'False',
+                    'dietary_restriction_pork': False,
                 })
         try:
             dietary_restriction_beef = MaidDietaryRestriction.objects.get(
@@ -571,11 +571,11 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
         else:
             if dietary_restriction_beef:
                 initial.update({
-                    'dietary_restriction_beef': 'True',
+                    'dietary_restriction_beef': True,
                 })
             else:
                 initial.update({
-                    'dietary_restriction_beef': 'False',
+                    'dietary_restriction_beef': False,
                 })
         try:
             dietary_restriction_veg = MaidDietaryRestriction.objects.get(
@@ -587,11 +587,11 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
         else:
             if dietary_restriction_veg:
                 initial.update({
-                    'dietary_restriction_veg': 'True'
+                    'dietary_restriction_veg': True
                 })
             else:
                 initial.update({
-                    'dietary_restriction_veg': 'False'
+                    'dietary_restriction_veg': False
                 })
 
         try:
