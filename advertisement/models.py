@@ -336,22 +336,18 @@ class Advertisement(models.Model):
         return self.get_price() / 100
 
     def get_quarter_start(self):
-        year = datetime.now().year
-        q1_start = date(year, 1, 1)
-        q2_start = date(year, 4, 1)
-        q3_start = date(year, 7, 1)
-        q4_start = date(year, 10, 1)
         today = date.today()
         if self.quarter == QuarterChoices.ONE:
+            q1_start = date(int(self.year), 1, 1)
             return today if today > q1_start else q1_start
-
         elif self.quarter == QuarterChoices.TWO:
+            q2_start = date(int(self.year), 4, 1)
             return today if today > q2_start else q2_start
-
         elif self.quarter == QuarterChoices.THREE:
+            q3_start = date(int(self.year), 7, 1)
             return today if today > q3_start else q3_start
-
         elif self.quarter == QuarterChoices.FOUR:
+            q4_start = date(int(self.year), 10, 1)
             return today if today > q4_start else q4_start
 
     def get_quarter_end(self):
