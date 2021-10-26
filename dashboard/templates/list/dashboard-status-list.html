@@ -62,8 +62,9 @@
                 <p class="mb-0">{{status.employer_doc.agreement_date}}</p>
             </div>
             <div class="col-4">
-                <p class="mb-0">Employer: {{status.employer_doc.employer}}<br />FDW: {{status.employer_doc.fdw.name}}<br />
-                Personnel: {{status.employer_doc.employer.agency_employee.name}}</p>
+                <p class="mb-0">Employer: {{status.employer_doc.employer}}<br />FDW:
+                    {{status.employer_doc.fdw.name}}<br />
+                    Personnel: {{status.employer_doc.employer.agency_employee.name}}</p>
             </div>
             <div class="col">
                 <p class="mb-0">{{status.ipa_approval_date}}</p>
@@ -84,8 +85,11 @@
                 <div class="row justify-content-center">
                     <a class="mx-1 showModalLink" data-case-pk="{{status.employer_doc.pk}}"><i class="far fa-edit"
                             data-toggle="tooltip" data-placement="top" title="Edit Status Information"></i></a>
-                    {% comment %} <a class="mx-1" href="#"><i class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
-                            title="Delete Status Information"></i></a> {% endcomment %}
+                    <a class="mx-1" href="{% url 'case_detail_route' level_1_pk=status.employer_doc.pk %}"><i
+                            class="far fa-file-image" data-toggle="tooltip" data-placement="top"
+                            title="View Case Information"></i></a>
+                    {% comment %} <a class="mx-1" href="#"><i class="far fa-trash-alt" data-toggle="tooltip"
+                            data-placement="top" title="Delete Status Information"></i></a> {% endcomment %}
                 </div>
             </div>
         </div>
