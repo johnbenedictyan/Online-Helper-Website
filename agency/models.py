@@ -196,6 +196,16 @@ class Agency(models.Model):
     def has_customer_relation(self):
         return hasattr(self, 'customer_account')
 
+    def fix_branch_bug(self):
+        main_branches = self.branches.filter(main_branch=True)
+        new_main_branch = main_branches.first()
+        if main_branches.count() >= 1:
+            for branch in main_branches:
+                branch.main_branch = False
+                branch.save()
+            new_main_branch.main_branch = True
+            new_main_branch.save()
+
     class Meta:
         verbose_name = 'Agency'
         verbose_name_plural = 'Agencies'

@@ -35,7 +35,7 @@ def is_of_age(dt, age: int) -> bool:
 
 def is_pasted(dt) -> bool:
     if dt:
-        return dt < datetime.now()
+        return dt < date.today()
 
 
 def slugify_text(text) -> str:

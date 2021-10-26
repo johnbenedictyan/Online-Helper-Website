@@ -850,7 +850,8 @@ class AgencyOutletDetailsFormView(BaseFormsetView):
     def form_valid(self, form) -> res:
         form.save()
         if form.data.get('submitFlag') == 'True':
-            return super().form_valid(form)
+            result = super().form_valid(form)
+            return result
         else:
             return HttpResponseRedirect(
                 reverse_lazy(
