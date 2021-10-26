@@ -332,6 +332,9 @@ class Advertisement(models.Model):
                     else:
                         return self.location.price
 
+    def get_formatted_price(self):
+        return self.get_price() / 100
+
     def get_quarter_start(self):
         year = datetime.now().year
         q1_start = date(year, 1, 1)
