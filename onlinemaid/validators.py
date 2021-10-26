@@ -101,9 +101,9 @@ def validate_fin(test_id) -> Union[NoReturn, None]:
             raise ValidationError(error_msg)
 
 
-def validate_passport(passport_text) -> Union[NoReturn, None]:
+def validate_passport(person, passport_text) -> Union[NoReturn, None]:
     if not passport_text:
-        error_msg = _("Passport number cannot be empty")
+        error_msg = _(f"{person}'s Passport number cannot be empty")
         raise ValidationError(error_msg)
 
     # return error message if fail, else return None for success

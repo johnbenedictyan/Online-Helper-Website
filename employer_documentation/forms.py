@@ -416,7 +416,7 @@ class EmployerForm(forms.ModelForm):
             'employer_residential_status'
         )
         if is_foreigner(employer_residential_status):
-            validate_passport(cleaned_field)
+            validate_passport('Employer', cleaned_field)
             ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
                 settings.ENCRYPTION_KEY
@@ -590,7 +590,7 @@ class EmployerForm(forms.ModelForm):
                 'spouse_residential_status'
             )
             if is_foreigner(spouse_residential_status):
-                validate_passport(cleaned_field)
+                validate_passport("Employer's spouse", cleaned_field)
                 ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
                     settings.ENCRYPTION_KEY
@@ -1277,7 +1277,7 @@ class EmployerSponsorForm(forms.ModelForm):
                 'sponsor_1_spouse_residential_status'
             )
             if is_foreigner(spouse_residential_status):
-                validate_passport(cleaned_field)
+                validate_passport("Sponsor 1's spouse", cleaned_field)
                 ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
                     settings.ENCRYPTION_KEY
@@ -1624,7 +1624,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     'sponsor_2_spouse_residential_status'
                 )
                 if is_foreigner(spouse_residential_status):
-                    validate_passport(cleaned_field)
+                    validate_passport("Sponsor 2's spouse", cleaned_field)
                     ciphertext, nonce, tag = encrypt_string(
                         cleaned_field,
                         settings.ENCRYPTION_KEY
@@ -2061,7 +2061,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                 'joint_applicant_spouse_residential_status'
             )
             if is_foreigner(spouse_residential_status):
-                validate_passport(cleaned_field)
+                validate_passport("The joint applicant's spouse", cleaned_field)
                 ciphertext, nonce, tag = encrypt_string(
                     cleaned_field,
                     settings.ENCRYPTION_KEY
@@ -2735,7 +2735,7 @@ class DocServiceFeeScheduleForm(forms.ModelForm):
     def clean_fdw_replaced_passport_num(self):
         cleaned_field = self.cleaned_data.get('fdw_replaced_passport_num')
         if cleaned_field:
-            validate_passport(cleaned_field)
+            validate_passport("FDW", cleaned_field)
             ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
                 settings.ENCRYPTION_KEY

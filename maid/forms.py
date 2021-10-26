@@ -231,7 +231,7 @@ class MaidForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('passport_number')
 
         if is_not_null(cleaned_field):
-            validate_passport(cleaned_field)
+            validate_passport("FDW", cleaned_field)
             # Encryption
             ciphertext, nonce, tag = encrypt_string(
                 cleaned_field,
