@@ -1,3 +1,5 @@
+from onlinemaid.constants import FullNationsChoices
+
 from .constants import (EmployerTypeOfApplicantChoices,
                         ResidentialStatusFullChoices)
 
@@ -23,3 +25,12 @@ def is_applicant_joint_applicant(type_of_applicant) -> bool:
 
 def is_applicant_spouse(type_of_applicant) -> bool:
     return type_of_applicant == EmployerTypeOfApplicantChoices.SPOUSE
+
+
+def nationality_residential_status_match(n, rs) -> bool:
+    if n == FullNationsChoices.SINGAPORE:
+        return rs == ResidentialStatusFullChoices.SC
+    elif rs == ResidentialStatusFullChoices.SC:
+        return n == FullNationsChoices.SINGAPORE
+    else:
+        return True

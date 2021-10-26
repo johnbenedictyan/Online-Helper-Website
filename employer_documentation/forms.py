@@ -21,7 +21,8 @@ from onlinemaid.validators import (validate_age, validate_ea_personnel_number,
 
 from .constants import (EmployerTypeOfApplicantChoices,
                         ResidentialStatusFullChoices)
-from .helper_functions import is_foreigner, is_local
+from .helper_functions import (is_foreigner, is_local,
+                               nationality_residential_status_match)
 from .models import (CaseSignature, CaseStatus, DocSafetyAgreement,
                      DocServAgmtEmpCtr, DocServiceFeeSchedule, DocUpload,
                      Employer, EmployerDoc, EmployerHousehold, EmployerIncome,
@@ -388,8 +389,7 @@ class EmployerForm(forms.ModelForm):
                 self.instance.employer_nric_tag = tag
                 return ciphertext
             else:
-                error_msg = _('This individual is not issued an NRIC')
-                raise ValidationError(error_msg)
+                return None
         else:
             return None
 
@@ -555,8 +555,7 @@ class EmployerForm(forms.ModelForm):
                     self.instance.spouse_nric_tag = tag
                     return ciphertext
                 else:
-                    error_msg = _('This individual is not issued an NRIC')
-                    raise ValidationError(error_msg)
+                    return None
             else:
                 return None
         else:
@@ -1243,8 +1242,7 @@ class EmployerSponsorForm(forms.ModelForm):
                     self.instance.sponsor_1_spouse_nric_tag = tag
                     return ciphertext
                 else:
-                    error_msg = _('This individual is not issued an NRIC')
-                    raise ValidationError(error_msg)
+                    return None
             else:
                 return None
         else:
@@ -1586,8 +1584,7 @@ class EmployerSponsorForm(forms.ModelForm):
                         self.instance.sponsor_2_spouse_nric_tag = tag
                         return ciphertext
                     else:
-                        error_msg = _('This individual is not issued an NRIC')
-                        raise ValidationError(error_msg)
+                        return None
                 else:
                     return None
             else:
@@ -1672,16 +1669,18 @@ class EmployerSponsorForm(forms.ModelForm):
             'sponsor_1_spouse_residential_status'
         )
 
-        if not (sponsor_1_nationality == om_constants.FullNationsChoices.SINGAPORE
-            and sponsor_1_residential_status == ResidentialStatusFullChoices.SC
-           ):
+        if not nationality_residential_status_match(
+            sponsor_1_nationality,
+            sponsor_1_residential_status
+        ):
             error_msg = _('Sponsor 1 must be a citizen of Singapore')
             raise ValidationError(error_msg)
 
         if sponsor_1_spouse_nationality:
-            if not (sponsor_1_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE
-                and sponsor_1_spouse_residential_status == ResidentialStatusFullChoices.SC
-               ):
+            if not nationality_residential_status_match(
+                sponsor_1_spouse_nationality,
+                sponsor_1_spouse_residential_status
+            ):
                 error_msg = _(
                     'Sponsor 1\'s spouse must be a citizen of Singapore')
                 raise ValidationError(error_msg)
@@ -1698,16 +1697,19 @@ class EmployerSponsorForm(forms.ModelForm):
             sponsor_2_spouse_residential_status = cleaned_data.get(
                 'sponsor_2_spouse_residential_status'
             )
-            if not (sponsor_2_nationality == om_constants.FullNationsChoices.SINGAPORE
-               and sponsor_2_residential_status == ResidentialStatusFullChoices.SC
-               ):
+
+            if not nationality_residential_status_match(
+                sponsor_2_nationality,
+                sponsor_2_residential_status
+            ):
                 error_msg = _('Sponsor 2 must be a citizen of Singapore')
                 raise ValidationError(error_msg)
 
             if sponsor_2_spouse_nationality:
-                if not (sponsor_2_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE
-                    and sponsor_2_spouse_residential_status == ResidentialStatusFullChoices.SC
-                   ):
+                if not nationality_residential_status_match(
+                    sponsor_2_spouse_nationality,
+                    sponsor_2_spouse_residential_status
+                ):
                     error_msg = _(
                         'Sponsor 2\'s spouse must be a citizen of Singapore')
                     raise ValidationError(error_msg)
@@ -2012,8 +2014,7 @@ class EmployerJointApplicantForm(forms.ModelForm):
                     self.instance.joint_applicant_spouse_nric_tag = tag
                     return ciphertext
                 else:
-                    error_msg = _('This individual is not issued an NRIC')
-                    raise ValidationError(error_msg)
+                    return None
             else:
                 return None
         else:
