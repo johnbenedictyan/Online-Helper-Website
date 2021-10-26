@@ -58,12 +58,16 @@ class AdvertisementLocation(models.Model):
     def get_slots(self):
         if self.get_current_year() == 2021:
             year_choice = YearChoices.TWENTY_TWENTY_ONE
+            next_year_choice = YearChoices.TWENTY_TWENTY_TWO
         elif self.get_current_year() == 2022:
             year_choice = YearChoices.TWENTY_TWENTY_TWO
+            next_year_choice = YearChoices.TWENTY_TWENTY_THREE
         elif self.get_current_year() == 2023:
             year_choice = YearChoices.TWENTY_TWENTY_THREE
+            next_year_choice = YearChoices.TWENTY_TWENTY_FOUR
         elif self.get_current_year() == 2024:
             year_choice = YearChoices.TWENTY_TWENTY_FOUR
+            next_year_choice = YearChoices.TWENTY_TWENTY_FIVE
 
         if self.get_current_quarter == 1:
             q1_ads = self.advertisements.filter(
@@ -119,7 +123,7 @@ class AdvertisementLocation(models.Model):
             ).count()
             next_q1_ads = self.advertisements.filter(
                 quarter=QuarterChoices.ONE,
-                year=year_choice+1
+                year=next_year_choice
             ).count()
             return [
                 [
@@ -154,11 +158,11 @@ class AdvertisementLocation(models.Model):
             ).count()
             next_q1_ads = self.advertisements.filter(
                 quarter=QuarterChoices.ONE,
-                year=year_choice+1
+                year=next_year_choice
             ).count()
             next_q2_ads = self.advertisements.filter(
                 quarter=QuarterChoices.TWO,
-                year=year_choice+1
+                year=next_year_choice
             ).count()
             return [
                 [
@@ -189,15 +193,15 @@ class AdvertisementLocation(models.Model):
             ).count()
             next_q1_ads = self.advertisements.filter(
                 quarter=QuarterChoices.ONE,
-                year=year_choice+1
+                year=next_year_choice
             ).count()
             next_q2_ads = self.advertisements.filter(
                 quarter=QuarterChoices.TWO,
-                year=year_choice+1
+                year=next_year_choice
             ).count()
             next_q3_ads = self.advertisements.filter(
                 quarter=QuarterChoices.THREE,
-                year=year_choice+1
+                year=next_year_choice
             ).count()
             return [
                 [
