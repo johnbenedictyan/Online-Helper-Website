@@ -585,19 +585,22 @@ class EmployerForm(forms.ModelForm):
     def clean_spouse_passport_num(self):
         cleaned_field = self.cleaned_data.get('spouse_passport_num')
         marital_status = self.cleaned_data.get('employer_marital_status')
-        if is_married(marital_status):
-            spouse_residential_status = self.cleaned_data.get(
-                'spouse_residential_status'
-            )
-            if is_foreigner(spouse_residential_status):
-                validate_passport("Employer's spouse", cleaned_field)
-                ciphertext, nonce, tag = encrypt_string(
-                    cleaned_field,
-                    settings.ENCRYPTION_KEY
+        if is_not_null(cleaned_field):
+            if is_married(marital_status):
+                spouse_residential_status = self.cleaned_data.get(
+                    'spouse_residential_status'
                 )
-                self.instance.spouse_passport_nonce = nonce
-                self.instance.spouse_passport_tag = tag
-                return ciphertext
+                if is_foreigner(spouse_residential_status):
+                    validate_passport("Employer's spouse", cleaned_field)
+                    ciphertext, nonce, tag = encrypt_string(
+                        cleaned_field,
+                        settings.ENCRYPTION_KEY
+                    )
+                    self.instance.spouse_passport_nonce = nonce
+                    self.instance.spouse_passport_tag = tag
+                    return ciphertext
+                else:
+                    return None
             else:
                 return None
         else:
@@ -606,20 +609,23 @@ class EmployerForm(forms.ModelForm):
     def clean_spouse_passport_date(self):
         cleaned_field = self.cleaned_data.get('spouse_passport_date')
         marital_status = self.cleaned_data.get('employer_marital_status')
-        if is_married(marital_status):
-            spouse_residential_status = self.cleaned_data.get(
-                'spouse_residential_status'
-            )
-            if is_foreigner(spouse_residential_status):
-                if is_null(cleaned_field):
-                    error_msg = _('Passport expiry date field cannot be empty')
-                    raise ValidationError(error_msg)
+        if is_not_null(cleaned_field):
+            if is_married(marital_status):
+                spouse_residential_status = self.cleaned_data.get(
+                    'spouse_residential_status'
+                )
+                if is_foreigner(spouse_residential_status):
+                    if is_null(cleaned_field):
+                        error_msg = _('Passport expiry date field cannot be empty')
+                        raise ValidationError(error_msg)
+                    else:
+                        validate_passport_date(cleaned_field)
+                        return cleaned_field
                 else:
-                    validate_passport_date(cleaned_field)
-            else:
-                return None
-
-        return cleaned_field
+                    return None
+        else:
+            return None
+        
 
     def clean_employer_date_of_birth(self):
         cleaned_field = self.cleaned_data.get('employer_date_of_birth')
