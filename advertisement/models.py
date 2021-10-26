@@ -169,7 +169,7 @@ class AdvertisementLocation(models.Model):
             ad.delete()
 
     def __str__(self) -> str:
-        return self.get_name + ' - ' + 'Active' if self.active else 'Inactive'
+        return self.get_name() + ' - ' + 'Active' if self.active else 'Inactive'
 
 
 class Advertisement(models.Model):
