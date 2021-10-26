@@ -206,6 +206,11 @@ class Advertisement(models.Model):
         editable=False
     )
 
+    price_paid = models.PositiveSmallIntegerField(
+        verbose_name=_('Price Paid'),
+        default=0
+    )
+
     time_created = models.DateTimeField(
         default=timezone.now
     )
@@ -296,6 +301,14 @@ class Advertisement(models.Model):
 
     def get_created_duration(self):
         return (datetime.now() - self.time_created).total_seconds()
+
+    def set_paid(self):
+        self.paid = True
+        self.save()
+
+    def set_price_paid(self, price_paid):
+        self.price_paid = price_paid
+        self.save()
 
     def is_purgeable(self):
         return not self.paid and self.get_created_duration() > 1000

@@ -298,6 +298,7 @@ class CheckoutSession(View):
                 sub_counter = 0
                 try:
                     line_items = []
+                    metadata = {}
                     for i in request.session.get('cart'):
                         try:
                             ad_location = AdvertisementLocation.objects.get(
@@ -331,13 +332,16 @@ class CheckoutSession(View):
                             else:
                                 if ads.count() >= 1:
                                     ad_price = ads[0].get_price()
-                                    print(ad_price)
                                     line_items.append({
                                         'name': ad_location.get_name(),
                                         'amount': ad_price,
                                         'currency': 'sgd',
                                         'quantity': len(ads)
                                     })
+                                for ad in ads:
+                                    metadata[ad.pk] = 1
+                                    ad.set_price_paid(ad_price)
+
                     if sub_counter > 0:
                         mode = 'subscription'
                     else:
@@ -354,7 +358,8 @@ class CheckoutSession(View):
                         ).pk,
                         payment_method_types=['card'],
                         mode=mode,
-                        line_items=line_items
+                        line_items=line_items,
+                        metadata=metadata
                     )
                 except Exception as e:
                     print(e)
@@ -443,4 +448,19 @@ class StripeWebhookView(View):
             if event.type == 'invoice.payment_failed':
                 print(event)
 
-            return HttpResponse(status=200)
+            if event.type == 'checkout.session.completed':
+                if (
+                    event.data.object.metadata
+                    and event.data.object.payment_status == 'paid'
+                ):
+                    for key in event.data.object.metadata.keys():
+                        try:
+                            ad = Advertisement.objects.get(
+                                pk=key
+                            )
+                        except Advertisement.DoesNotExist:
+                            pass
+                        else:
+                            ad.set_paid()
+
+            return res(status=200)
