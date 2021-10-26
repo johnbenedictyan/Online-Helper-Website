@@ -503,7 +503,10 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
             )
         except MaidFoodHandlingPreference.DoesNotExist:
             pass
-
+        else:
+            initial.update({
+                'food_handling_pork': food_handling_pork,
+            })
         try:
             food_handling_pork = MaidFoodHandlingPreference.objects.get(
                 maid__pk=self.maid_id,
@@ -511,7 +514,10 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
             )
         except MaidFoodHandlingPreference.DoesNotExist:
             pass
-
+        else:
+            initial.update({
+                'food_handling_beef': food_handling_beef,
+            })
         try:
             food_handling_pork = MaidFoodHandlingPreference.objects.get(
                 maid__pk=self.maid_id,
@@ -519,7 +525,10 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
             )
         except MaidFoodHandlingPreference.DoesNotExist:
             pass
-
+        else:
+            initial.update({
+                'food_handling_veg': food_handling_veg,
+            })
         try:
             dietary_restriction_pork = MaidDietaryRestriction.objects.get(
                 maid__pk=self.maid_id,
@@ -527,7 +536,10 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
             )
         except MaidDietaryRestriction.DoesNotExist:
             pass
-
+        else:
+            initial.update({
+                'dietary_restriction_pork': dietary_restriction_pork,
+            })
         try:
             dietary_restriction_beef = MaidDietaryRestriction.objects.get(
                 maid__pk=self.maid_id,
@@ -535,7 +547,10 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
             )
         except MaidDietaryRestriction.DoesNotExist:
             pass
-
+        else:
+            initial.update({
+                'dietary_restriction_beef': dietary_restriction_beef,
+            })
         try:
             dietary_restriction_veg = MaidDietaryRestriction.objects.get(
                 maid__pk=self.maid_id,
@@ -543,15 +558,10 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
             )
         except MaidDietaryRestriction.DoesNotExist:
             pass
-
-        initial.update({
-            'food_handling_pork': food_handling_pork,
-            'food_handling_beef': food_handling_beef,
-            'food_handling_veg': food_handling_veg,
-            'dietary_restriction_pork': dietary_restriction_pork,
-            'dietary_restriction_beef': dietary_restriction_beef,
-            'dietary_restriction_veg': dietary_restriction_veg
-        })
+        else:
+            initial.update({
+                'dietary_restriction_veg': dietary_restriction_veg
+            })
 
         try:
             languages = MaidLanguageProficiency.objects.get(

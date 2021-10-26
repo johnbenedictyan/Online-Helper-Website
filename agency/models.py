@@ -473,6 +473,14 @@ class AgencyBranch(models.Model):
     def get_employees(self):
         return self.employees.filter(branch=self)
 
+    def set_main(self):
+        self.main_branch = True
+        self.save()
+
+    def set_not_main(self):
+        self.main_branch = False
+        self.save()
+
     class Meta:
         verbose_name = 'Agency Branch'
         verbose_name_plural = 'Agency Branches'
