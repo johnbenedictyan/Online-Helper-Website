@@ -1618,19 +1618,22 @@ class EmployerSponsorForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('sponsor_2_spouse_passport_num')
         sponsor_2_required = self.cleaned_data.get('sponsor_2_required')
         marital_status = self.cleaned_data.get('sponsor_2_marital_status')
-        if sponsor_2_required and is_married(marital_status):
-            spouse_residential_status = self.cleaned_data.get(
-                'sponsor_2_spouse_residential_status'
-            )
-            if is_foreigner(spouse_residential_status):
-                validate_fin(cleaned_field)
-                ciphertext, nonce, tag = encrypt_string(
-                    cleaned_field,
-                    settings.ENCRYPTION_KEY
+        if is_not_null(cleaned_field):
+            if sponsor_2_required and is_married(marital_status):
+                spouse_residential_status = self.cleaned_data.get(
+                    'sponsor_2_spouse_residential_status'
                 )
-                self.instance.sponsor_2_spouse_passport_nonce = nonce
-                self.instance.sponsor_2_spouse_passport_tag = tag
-                return ciphertext
+                if is_foreigner(spouse_residential_status):
+                    validate_passport(cleaned_field)
+                    ciphertext, nonce, tag = encrypt_string(
+                        cleaned_field,
+                        settings.ENCRYPTION_KEY
+                    )
+                    self.instance.sponsor_2_spouse_passport_nonce = nonce
+                    self.instance.sponsor_2_spouse_passport_tag = tag
+                    return ciphertext
+                else:
+                    return None
             else:
                 return None
         else:
@@ -1640,17 +1643,20 @@ class EmployerSponsorForm(forms.ModelForm):
         cleaned_field = self.cleaned_data.get('sponsor_2_spouse_passport_date')
         sponsor_2_required = self.cleaned_data.get('sponsor_2_required')
         marital_status = self.cleaned_data.get('sponsor_2_marital_status')
-        if sponsor_2_required and is_married(marital_status):
-            spouse_residential_status = self.cleaned_data.get(
-                'sponsor_2_spouse_residential_status'
-            )
-            if is_foreigner(spouse_residential_status):
-                error_msg = _('Passport expiry date field cannot be empty')
-                error_msg = error_msg if not cleaned_field else None
-                if error_msg:
-                    raise ValidationError(error_msg)
+        if is_not_null(cleaned_field):
+            if sponsor_2_required and is_married(marital_status):
+                spouse_residential_status = self.cleaned_data.get(
+                    'sponsor_2_spouse_residential_status'
+                )
+                if is_foreigner(spouse_residential_status):
+                    error_msg = _('Passport expiry date field cannot be empty')
+                    error_msg = error_msg if not cleaned_field else None
+                    if error_msg:
+                        raise ValidationError(error_msg)
+                    else:
+                        return cleaned_field
                 else:
-                    return cleaned_field
+                    return None
             else:
                 return None
         else:
