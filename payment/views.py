@@ -168,18 +168,11 @@ class AddToCart(View):
                 if not quarters and pk and location:
                     return redirect(reverse_lazy('dashboard_agency_plan_list'))
 
-                year = datetime.today().year
-                if year == 2021:
-                    year = YearChoices.TWENTY_TWENTY_ONE
-                elif year == 2022:
-                    year = YearChoices.TWENTY_TWENTY_TWO
-                elif year == 2023:
-                    year = YearChoices.TWENTY_TWENTY_THREE
-                elif year == 2024:
-                    year = YearChoices.TWENTY_TWENTY_FOUR
-
                 try:
-                    for quarter in quarters:
+                    for quarter_obj in quarters:
+                        quarter_obj_list = quarter_obj.split('-')
+                        quarter = quarter_obj_list[0]
+                        year = quarter_obj_list[1]
                         if quarter == 'q1':
                             quarter = QuarterChoices.ONE
                         elif quarter == 'q2':
