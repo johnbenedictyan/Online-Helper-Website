@@ -455,5 +455,6 @@ class StripeWebhookView(View):
                             pass
                         else:
                             ad.set_paid()
+                            ad.provision_feat_maid_ad()
 
             return res(status=200)

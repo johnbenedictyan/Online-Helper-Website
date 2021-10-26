@@ -399,6 +399,10 @@ class Advertisement(models.Model):
     def is_purgeable(self):
         return not self.paid and self.get_created_duration() > 1000
 
+    def provision_feat_maid_ad(self):
+        if self.location.name == 'featured_maids_ad':
+            self.agency.increment_featured_fdw(1)
+
     # photo = models.FileField(
     #     verbose_name=_('Advertisement Photo'),
     #     null=True,
