@@ -168,6 +168,9 @@ class AdvertisementLocation(models.Model):
         for ad in purgeable_ad_requests:
             ad.delete()
 
+    def __str__(self) -> str:
+        return self.get_name + ' - ' + 'Active' if self.active else 'Inactive'
+
 
 class Advertisement(models.Model):
     agency = models.ForeignKey(
