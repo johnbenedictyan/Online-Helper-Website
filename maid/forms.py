@@ -721,37 +721,37 @@ class MaidLanguagesAndFHPDRForm(forms.Form):
         dietary_restriction_beef = cleaned_data.get('dietary_restriction_beef')
         dietary_restriction_veg = cleaned_data.get('dietary_restriction_veg')
         if food_handling_pork == 'True':
-            MaidFoodHandlingPreference.objects.get_or_create(
+            MaidFoodHandlingPreference.objects.create(
                 maid=Maid.objects.get(pk=self.maid_id),
                 preference=MaidFoodPreferenceChoices.PORK
             )
 
         if food_handling_beef == 'True':
-            MaidFoodHandlingPreference.objects.get_or_create(
+            MaidFoodHandlingPreference.objects.create(
                 maid=Maid.objects.get(pk=self.maid_id),
                 preference=MaidFoodPreferenceChoices.BEEF
             )
 
         if food_handling_veg == 'True':
-            MaidFoodHandlingPreference.objects.get_or_create(
+            MaidFoodHandlingPreference.objects.create(
                 maid=Maid.objects.get(pk=self.maid_id),
                 preference=MaidFoodPreferenceChoices.VEG
             )
 
         if dietary_restriction_pork == 'True':
-            MaidDietaryRestriction.objects.get_or_create(
+            MaidDietaryRestriction.objects.create(
                 maid=Maid.objects.get(pk=self.maid_id),
                 restriction=MaidDietaryRestrictionChoices.PORK
             )
 
         if dietary_restriction_beef == 'True':
-            MaidDietaryRestriction.objects.get_or_create(
+            MaidDietaryRestriction.objects.create(
                 maid=Maid.objects.get(pk=self.maid_id),
                 restriction=MaidDietaryRestrictionChoices.BEEF
             )
 
         if dietary_restriction_veg == 'True':
-            MaidDietaryRestriction.objects.get_or_create(
+            MaidDietaryRestriction.objects.create(
                 maid=Maid.objects.get(pk=self.maid_id),
                 restriction=MaidDietaryRestrictionChoices.VEG
             )

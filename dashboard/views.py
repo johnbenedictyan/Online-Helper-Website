@@ -504,7 +504,7 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
             )
         except MaidFoodHandlingPreference.DoesNotExist:
             pass
-        else:
+        finally:
             if food_handling_pork:
                 initial.update({
                     'food_handling_pork': True,
@@ -520,7 +520,7 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
             )
         except MaidFoodHandlingPreference.DoesNotExist:
             pass
-        else:
+        finally:
             if food_handling_beef:
                 initial.update({
                     'food_handling_beef': True,
@@ -536,7 +536,7 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
             )
         except MaidFoodHandlingPreference.DoesNotExist:
             pass
-        else:
+        finally:
             if food_handling_veg:
                 initial.update({
                     'food_handling_veg': True,
@@ -552,7 +552,7 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
             )
         except MaidDietaryRestriction.DoesNotExist:
             pass
-        else:
+        finally:
             if dietary_restriction_pork:
                 initial.update({
                     'dietary_restriction_pork': True,
@@ -568,7 +568,7 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
             )
         except MaidDietaryRestriction.DoesNotExist:
             pass
-        else:
+        finally:
             if dietary_restriction_beef:
                 initial.update({
                     'dietary_restriction_beef': True,
@@ -584,7 +584,7 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
             )
         except MaidDietaryRestriction.DoesNotExist:
             pass
-        else:
+        finally:
             if dietary_restriction_veg:
                 initial.update({
                     'dietary_restriction_veg': True
