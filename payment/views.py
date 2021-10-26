@@ -324,9 +324,10 @@ class CheckoutSession(View):
                                 pass
                             else:
                                 for ad in ads:
+                                    ad_price = ad.get_price()
                                     line_items.append({
                                         'name': ad.get_name(),
-                                        'amount': ad.get_price(),
+                                        'amount': ad_price,
                                         'currency': 'sgd',
                                         'quantity': 1
                                     })
