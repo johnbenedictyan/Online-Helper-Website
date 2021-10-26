@@ -849,10 +849,15 @@ class AgencyOutletDetailsFormView(BaseFormsetView):
 
     def form_valid(self, form) -> res:
         form.save()
+        agency = Agency.objects.get(
+            pk=self.agency_id
+        )
         if form.data.get('submitFlag') == 'True':
             result = super().form_valid(form)
+            agency.fix_branch_bug()
             return result
         else:
+            agency.fix_branch_bug()
             return HttpResponseRedirect(
                 reverse_lazy(
                     'dashboard_agency_outlet_details_update'

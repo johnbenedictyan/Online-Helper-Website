@@ -645,20 +645,26 @@ class EmployerForm(forms.ModelForm):
         employer_spouse_residential_status = cleaned_data.get(
             'employer_spouse_residential_status'
         )
-        if not (
-            employer_nationality == om_constants.FullNationsChoices.SINGAPORE
-            and employer_residential_status == ResidentialStatusFullChoices.SC
-        ):
-            error_msg = _('This employer must be a citizen of Singapore')
-            raise ValidationError(error_msg)
+        if employer_nationality == om_constants.FullNationsChoices.SINGAPORE:
+            if not employer_residential_status == ResidentialStatusFullChoices.SC:
+                error_msg = _('This employer must be a citizen of Singapore')
+                raise ValidationError(error_msg)
+
+        if employer_residential_status == ResidentialStatusFullChoices.SC:
+            if not employer_nationality == om_constants.FullNationsChoices.SINGAPORE:
+                error_msg = _('This employer must be a citizen of Singapore')
+                raise ValidationError(error_msg)
 
         if employer_spouse_nationality:
-            if(employer_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE
-                and employer_spouse_residential_status == ResidentialStatusFullChoices.SC
-               ):
-                error_msg = _(
-                    'This employer\'s spouse must be a citizen of Singapore')
-                raise ValidationError(error_msg)
+            if employer_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE:
+                if not employer_spouse_residential_status == ResidentialStatusFullChoices.SC:
+                    error_msg = _('This employer must be a citizen of Singapore')
+                    raise ValidationError(error_msg)
+
+            if employer_spouse_residential_status == ResidentialStatusFullChoices.SC:
+                if not employer_spouse_nationality == om_constants.FullNationsChoices.SINGAPORE:
+                    error_msg = _('This employer\'s spouse must be a citizen of Singapore')
+                    raise ValidationError(error_msg)
         return cleaned_data
 
     def save(self):
