@@ -343,16 +343,16 @@ class Advertisement(models.Model):
         q4_start = date(year, 10, 1)
         today = date.today()
         if self.quarter == QuarterChoices.ONE:
-            return q1_start if today < q1_start else today
+            return q1_start if today > q1_start else today
 
         elif self.quarter == QuarterChoices.TWO:
-            return q2_start if today < q2_start else today
+            return q2_start if today > q2_start else today
 
         elif self.quarter == QuarterChoices.THREE:
-            return q3_start if today < q3_start else today
+            return q3_start if today > q3_start else today
 
         elif self.quarter == QuarterChoices.FOUR:
-            return q4_start if today < q4_start else today
+            return q4_start if today > q4_start else today
 
     def get_quarter_end(self):
         year = datetime.now().year
