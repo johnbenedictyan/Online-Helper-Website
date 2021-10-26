@@ -28,7 +28,8 @@ from django.views.generic.edit import (CreateView, DeleteView, FormView,
                                        UpdateView)
 from employer_documentation.models import CaseStatus, Employer, EmployerDoc
 from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
-from maid.constants import MaidFoodPreferenceChoices
+from maid.constants import (MaidDietaryRestrictionChoices,
+                            MaidFoodPreferenceChoices)
 from maid.forms import (MaidAboutFDWForm, MaidExperienceForm, MaidForm,
                         MaidLanguagesAndFHPDRForm)
 from maid.formsets import (MaidEmploymentHistoryFormSet,
@@ -513,7 +514,7 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
                     'food_handling_pork': 'False',
                 })
         try:
-            food_handling_pork = MaidFoodHandlingPreference.objects.get(
+            food_handling_beef = MaidFoodHandlingPreference.objects.get(
                 maid__pk=self.maid_id,
                 preference=MaidFoodPreferenceChoices.BEEF
             )
@@ -529,7 +530,7 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
                     'food_handling_beef': 'False',
                 })
         try:
-            food_handling_pork = MaidFoodHandlingPreference.objects.get(
+            food_handling_veg = MaidFoodHandlingPreference.objects.get(
                 maid__pk=self.maid_id,
                 preference=MaidFoodPreferenceChoices.VEG
             )
@@ -547,7 +548,7 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
         try:
             dietary_restriction_pork = MaidDietaryRestriction.objects.get(
                 maid__pk=self.maid_id,
-                restriction=MaidFoodPreferenceChoices.PORK
+                restriction=MaidDietaryRestrictionChoices.PORK
             )
         except MaidDietaryRestriction.DoesNotExist:
             pass
@@ -563,7 +564,7 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
         try:
             dietary_restriction_beef = MaidDietaryRestriction.objects.get(
                 maid__pk=self.maid_id,
-                restriction=MaidFoodPreferenceChoices.BEEF
+                restriction=MaidDietaryRestrictionChoices.BEEF
             )
         except MaidDietaryRestriction.DoesNotExist:
             pass
@@ -579,7 +580,7 @@ class MaidLanguagesAndFHPDRFormView(DashboardMaidSubFormView):
         try:
             dietary_restriction_veg = MaidDietaryRestriction.objects.get(
                 maid__pk=self.maid_id,
-                restriction=MaidFoodPreferenceChoices.VEG
+                restriction=MaidDietaryRestrictionChoices.VEG
             )
         except MaidDietaryRestriction.DoesNotExist:
             pass
