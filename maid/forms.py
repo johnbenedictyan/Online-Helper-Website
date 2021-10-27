@@ -31,17 +31,6 @@ from .models import (Maid, MaidCooking, MaidDietaryRestriction,
 
 
 class MaidForm(forms.ModelForm):
-    # date_of_birth = forms.DateField(
-    #     widget=CustomDateInput(),
-    #     input_formats=['%d %b %Y']
-    # )
-
-    # passport_expiry = forms.DateField(
-    #     widget=CustomDateInput(),
-    #     input_formats=['%d %b %Y'],
-    #     required=False
-    # )
-
     class Meta:
         model = Maid
         exclude = [
@@ -56,9 +45,9 @@ class MaidForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.FIELD_MAXLENGTH = 20
         self.initial.update({
-            'passport_number': self.instance.get_passport_number()
+            'passport_number': self.instance.get_passport_number(),
+            'fin_number': self.instance.get_fin_number()
         })
-        self.initial.update({'fin_number': self.instance.get_fin_number()})
 
         self.helper = FormHelper()
         self.helper.layout = Layout(

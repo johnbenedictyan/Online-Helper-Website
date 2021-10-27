@@ -143,13 +143,6 @@ if DEBUG:
             'OPTIONS': {'sslmode': 'require'},
         }
     }
-# elif 'test' in sys.argv:
-#     DATABASES = {
-#         'default': {
-#             'ENGINE': 'django.db.backends.sqlite3',
-#             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#         }
-#     }
 else:
     DATABASES = {
         'default': dj_database_url.parse(
@@ -205,15 +198,18 @@ if USE_S3:
     AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
     AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
     AWS_IS_GZIPPED = True
-    # s3 static settings
+
+    # S3 Static Settings
     STATIC_LOCATION = 'static'
     STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
     STATICFILES_STORAGE = 'onlinemaid.storage_backends.StaticStorage'
-    # s3 public media settings
+
+    # S3 Public Media Settings
     PUBLIC_MEDIA_LOCATION = 'media'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
     DEFAULT_FILE_STORAGE = 'onlinemaid.storage_backends.PublicMediaStorage'
-    # s3 private media settings
+
+    # S3 Private Media Settings
     PRIVATE_MEDIA_LOCATION = 'private'
     PRIVATE_FILE_STORAGE = 'onlinemaid.storage_backends.PrivateMediaStorage'
 else:
@@ -271,8 +267,6 @@ SOCIAL_AUTH_PIPELINE = (
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_URL = 'sign_in'
-# LOGIN_REDIRECT_URL = 'home'
-
 
 # Email Backend
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -307,26 +301,26 @@ SITE_ID = 1
 # Sentry
 if not DEBUG:
     sentry_sdk.init(
-    dsn="https://427df046aa204ab9974ee95bc992c5ae@o525150.ingest.sentry.io/5638723",
-    integrations=[DjangoIntegration()],
+        dsn="https://427df046aa204ab9974ee95bc992c5ae@o525150.ingest.sentry.io/5638723",
+        integrations=[DjangoIntegration()],
 
-    # Set traces_sample_rate to 1.0 to capture 100%
-    # of transactions for performance monitoring.
-    # We recommend adjusting this value in production,
-    traces_sample_rate=1.0,
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production,
+        traces_sample_rate=1.0,
 
-    # If you wish to associate users to errors (assuming you are using
-    # django.contrib.auth) you may enable sending PII data.
-    send_default_pii=True,
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=True,
 
-    # By default the SDK will try to use the SENTRY_RELEASE
-    # environment variable, or infer a git commit
-    # SHA as release, however you may want to set
-    # something more human-readable.
-    # release="myapp@1.0.0",
-)
+        # By default the SDK will try to use the SENTRY_RELEASE
+        # environment variable, or infer a git commit
+        # SHA as release, however you may want to set
+        # something more human-readable.
+        # release="myapp@1.0.0",
+    )
 
-# Pagination
+# Default Pagination Settings
 MAID_PAGINATE_BY = 12
 AGENCY_PAGINATE_BY = 12
 DASHBOARD_PAGINATE_BY = 10
@@ -357,7 +351,6 @@ ACCOUNT_UUID_NAMESPACE = os.environ.get('ACCOUNT_UUID_NAMESPACE')
 
 # Django Other Settings
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-
 ADMIN_ID = os.environ.get('ADMIN_ID')
 
 # Django REST Framework
