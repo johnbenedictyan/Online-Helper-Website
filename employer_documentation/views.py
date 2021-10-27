@@ -31,9 +31,9 @@ from .forms import (CaseStatusForm, ChallengeForm, DocSafetyAgreementForm,
                     EmployerIncomeDetailsForm, EmployerJointApplicantForm,
                     EmployerSignatureForm, EmployerSponsorForm,
                     EmployerWithJointApplicantSignatureForm,
-                    EmployerWithOneSponsorForm,
+                    EmployerWithOneSponsorSignatureForm,
                     EmployerWithSpouseSignatureForm,
-                    EmployerWithTwoSponsorForm, HandoverSignatureForm,
+                    EmployerWithTwoSponsorSignatureForm, HandoverSignatureForm,
                     RemainingAmountDetailForm, SignatureForm)
 from .formset import (EmployerHouseholdFormSet, EmployerHouseholdFormSetHelper,
                       MaidInventoryFormSet, MaidInventoryFormSetHelper)
@@ -1440,8 +1440,8 @@ class SignatureFormView(EmployerDocAccessMixin, FormView):
         case_type_form_class_map = {
             'SINGLE': EmployerSignatureForm,
             'SPOUSE': EmployerWithSpouseSignatureForm,
-            'SPONSR1': EmployerWithOneSponsorForm,
-            'SPONSR2': EmployerWithTwoSponsorForm,
+            'SPONSR1': EmployerWithOneSponsorSignatureForm,
+            'SPONSR2': EmployerWithTwoSponsorSignatureForm,
             'JNT_AP': EmployerWithJointApplicantSignatureForm,
         }
         return case_type_form_class_map[self.object.get_case_type()]

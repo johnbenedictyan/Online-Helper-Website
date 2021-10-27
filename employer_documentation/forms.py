@@ -849,7 +849,7 @@ class EmployerSponsorForm(forms.ModelForm):
                             Row(
                                 Column(
                                     'sponsor_1_marital_status',
-                                    css_class='form-group col-md-12 pl-md-3',
+                                    css_class='form-group col-md-12 pr-md-3',
                                 )
                             ),
                             # Sponsor 1 spouse
@@ -941,7 +941,7 @@ class EmployerSponsorForm(forms.ModelForm):
                             Row(
                                 Column(
                                     'sponsor_2_required',
-                                    css_class='form-group col-md-12 pl-md-3',
+                                    css_class='form-group col-md-12 pr-md-3',
                                 )
                             ),
                         ),
@@ -1024,7 +1024,7 @@ class EmployerSponsorForm(forms.ModelForm):
                             Row(
                                 Column(
                                     'sponsor_2_marital_status',
-                                    css_class='form-group col-md-12 sponsor-2',
+                                    css_class='form-group col-md-12 sponsor-2 pr-md-3',
                                 )
                             ),
                             # Sponsor 2 spouse
@@ -1037,17 +1037,17 @@ class EmployerSponsorForm(forms.ModelForm):
                                     Row(
                                         Column(
                                             'sponsor_2_marriage_sg_registered',
-                                            css_class='form-group col-md-12 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2 pr-md-3',
                                         ),
                                         Column(
                                             'sponsor_2_spouse_name',
-                                            css_class='form-group col-md-12 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2 pl-md-3',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_2_spouse_gender',
-                                            css_class='form-group col-md-12 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2 pr-md-3',
                                         ),
                                         Column(
                                             Field(
@@ -1062,29 +1062,29 @@ class EmployerSponsorForm(forms.ModelForm):
                                     Row(
                                         Column(
                                             'sponsor_2_spouse_nationality',
-                                            css_class='form-group col-md-12 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2 pr-md-3',
                                         ),
                                         Column(
                                             'sponsor_2_spouse_residential_status',
-                                            css_class='form-group col-md-12 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2 pl-md-3',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_2_spouse_nric_num',
-                                            css_class='form-group col-md-12 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2 pr-md-3',
                                             id='sponsor2spouse_id_nric',
                                         ),
                                         Column(
                                             'sponsor_2_spouse_fin_num',
-                                            css_class='form-group col-md-12 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2 pl-md-3',
                                             id='sponsor2spouse_id_fin',
                                         )
                                     ),
                                     Row(
                                         Column(
                                             'sponsor_2_spouse_passport_num',
-                                            css_class='form-group col-md-12 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2 pr-md-3',
                                         ),
                                         Column(
                                             Field(
@@ -1093,7 +1093,7 @@ class EmployerSponsorForm(forms.ModelForm):
                                                 onfocus="(this.type='date')",
                                                 placeholder='Sponsor 2 spouse passport expiry date',
                                             ),
-                                            css_class='form-group col-md-12 spouse-2',
+                                            css_class='form-group col-md-12 spouse-2 pl-md-3',
                                         ),
                                         id='sponsor2spouse_id_passport',
                                     ),
@@ -3752,7 +3752,7 @@ class EmployerWithSpouseSignatureForm(forms.Form):
         )
 
 
-class EmployerWithOneSponsorForm(forms.Form):
+class EmployerWithOneSponsorSignatureForm(forms.Form):
     employer_signature = forms.CharField(
         widget=forms.HiddenInput()
     )
@@ -3831,7 +3831,7 @@ class EmployerWithOneSponsorForm(forms.Form):
         )
 
 
-class EmployerWithTwoSponsorForm(forms.Form):
+class EmployerWithTwoSponsorSignatureForm(forms.Form):
     employer_signature = forms.CharField(
         widget=forms.HiddenInput()
     )
