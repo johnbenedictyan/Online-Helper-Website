@@ -12,3 +12,21 @@
     {% endblock post_form_section %}
 </div>
 {% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function () {
+        $("#toggle-password-visibility").on('click', function (event) {
+            event.preventDefault();
+            if ($('#id_password').attr("type") == "text") {
+                $('#id_password').attr('type', 'password');
+                $('#toggle-password-visibility i').addClass("fa-eye-slash");
+                $('#toggle-password-visibility i').removeClass("fa-eye");
+            } else if ($('#id_password').attr("type") == "password") {
+                $('#id_password').attr('type', 'text');
+                $('#toggle-password-visibility i').removeClass("fa-eye-slash");
+                $('#toggle-password-visibility i').addClass("fa-eye");
+            }
+        });
+    });
+</script>
+{% endblock js %}

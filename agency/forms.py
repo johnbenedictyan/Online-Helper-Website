@@ -1,3 +1,4 @@
+from crispy_forms.bootstrap import FieldWithButtons, StrictButton
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Column, Div, Layout, Row, Submit
 from django import forms
@@ -450,7 +451,14 @@ class AgencyOwnerCreationForm(forms.ModelForm):
                     css_class='form-group col-md-12 pr-md-3'
                 ),
                 Column(
-                    'password',
+                    FieldWithButtons(
+                        'password',
+                        StrictButton(
+                            '<i class="fa fa-eye-slash" aria-hidden="true"></i>',
+                            css_class='btn-outline-primary',
+                            css_id='toggle-password-visibility'
+                        )
+                    ),
                     css_class='form-group col-md-12'
                 ),
                 css_class='form-row'
@@ -598,7 +606,14 @@ class AgencyEmployeeForm(forms.ModelForm):
                     css_class='form-group col-lg-12 pr-md-3'
                 ),
                 Column(
-                    'password',
+                    FieldWithButtons(
+                        'password',
+                        StrictButton(
+                            '<i class="fa fa-eye-slash" aria-hidden="true"></i>',
+                            css_class='btn-outline-primary',
+                            css_id='toggle-password-visibility'
+                        )
+                    ),
                     css_class='form-group col-lg-12 pl-md-3'
                 ),
                 css_class='form-row'
