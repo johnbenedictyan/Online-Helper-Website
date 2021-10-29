@@ -20,8 +20,6 @@ from .models import (GeneralEnquiry, MaidShortlistedEnquiryIM,
                      ShortlistedEnquiry)
 
 
-
-
 class GeneralEnquiryView(SuccessMessageMixin, CreateView):
     context_object_name = 'general_enquiry'
     form_class = GeneralEnquiryForm
@@ -32,7 +30,7 @@ class GeneralEnquiryView(SuccessMessageMixin, CreateView):
     success_message = 'General Enquiry created'
 
     def form_valid(self, form) -> res:
-        if self.request.user:
+        if self.request.user.is_authenticated:
             form.instance.potential_employer = PotentialEmployer.objects.get(
                 user=self.request.user
             )

@@ -19,7 +19,6 @@ from .constants import (
 from .validators import validate_links
 
 
-
 class GeneralEnquiry(models.Model):
     potential_employer = models.ForeignKey(
         PotentialEmployer,
