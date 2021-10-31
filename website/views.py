@@ -8,7 +8,6 @@ from django.views.generic.base import RedirectView, TemplateView
 from django.views.generic.list import ListView
 from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
 from maid.filters import MiniMaidFilter
-# from payment.models import SubscriptionProduct
 from sentry_sdk import last_event_id
 
 

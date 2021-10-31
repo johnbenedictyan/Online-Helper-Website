@@ -72,8 +72,6 @@ def maid_main_responsibility(maid):
         )
 
 
-
-
 @receiver(post_save, sender=Maid)
 def maid_counter(sender, instance, created, **kwargs):
     agency = instance.agency

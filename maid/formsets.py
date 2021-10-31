@@ -1,9 +1,6 @@
-
-
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Column, Field, Layout, Row
 from django.forms.models import inlineformset_factory
-
 
 from .forms import MaidEmploymentHistoryForm, MaidLoanTransactionForm
 from .models import Maid, MaidEmploymentHistory, MaidLoanTransaction

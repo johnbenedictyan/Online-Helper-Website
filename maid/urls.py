@@ -5,8 +5,6 @@ from .views import (FeaturedMaidListView, MaidDelete, MaidDetail, MaidList,
                     MaidToggleFeatured, MaidTogglePublished,
                     PdfMaidBiodataView)
 
-
-
 urlpatterns = [
     path(
         'delete/',

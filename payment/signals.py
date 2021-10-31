@@ -6,10 +6,10 @@ from .constants import planLimitMap, planStatusChoices
 from .models import Subscription
 
 
-
 @receiver(post_save, sender=Subscription)
 def provision_subscription(sender, instance, created, **kwargs):
-    agency = instance.customer.agency
+    # TODO
+    # agency = instance.customer.agency
     # if instance.status == planStatusChoices.ACTIVE:
     #     if planLimitMap[instance.stripe_id]['type'] == 'plan':
     #         agency.amount_of_biodata_allowed = planLimitMap[

@@ -1,17 +1,12 @@
-
 from django.urls import path
 from django.urls.conf import include
 
-
-from .views import (
-    DeactivateGeneralEnquiryView, ToggleApproveEnquiryView,
-    SuccessfulEnquiryView, EnquiryListView, GeneralEnquiryView,
-    ApproveGeneralEnquiryView, ApproveShortlistedlEnquiryView,
-    RejectGeneralEnquiryView, RejectShortlistedEnquiryView,
-    AcceptShortlistedEnquiry, RejectShortlistedEnquiry
-)
-
-
+from .views import (AcceptShortlistedEnquiry, ApproveGeneralEnquiryView,
+                    ApproveShortlistedEnquiryView,
+                    DeactivateGeneralEnquiryView, EnquiryListView,
+                    GeneralEnquiryView, RejectGeneralEnquiryView,
+                    RejectShortlistedEnquiry, RejectShortlistedEnquiryView,
+                    SuccessfulEnquiryView, ToggleApproveEnquiryView)
 
 urlpatterns = [
     path(
@@ -44,7 +39,7 @@ urlpatterns = [
             ),
             path(
                 'shortlisted/<int:pk>/',
-                ApproveShortlistedlEnquiryView.as_view(),
+                ApproveShortlistedEnquiryView.as_view(),
                 name='approve_shortlisted_enquiry'
             )
         ])

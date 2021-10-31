@@ -3,7 +3,7 @@ from typing import Any, Dict, Optional
 
 import stripe
 from advertisement.models import (Advertisement, AdvertisementLocation,
-                                  QuarterChoices, YearChoices)
+                                  QuarterChoices)
 from agency.mixins import AgencyOwnerRequiredMixin, GetAuthorityMixin
 from django.conf import settings
 from django.contrib import messages

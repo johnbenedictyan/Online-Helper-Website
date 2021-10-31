@@ -1,22 +1,17 @@
 from datetime import date
 
-
+from accounts.models import PotentialEmployer, User
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from maid.models import Maid, MaidLanguage, MaidResponsibility
 
+from .constants import (MAID_NATIONALITY_CHOICES, MAID_TYPE_CHOICES,
+                        NO_PREFERENCE, PROPERTY_2_ROOM_HDB, PROPERTY_CHOICES,
+                        EnquiryStatusChoices)
+from .validators import validate_links
 
 # from .validators import validate_links, validate_obscene_language
-
-from accounts.models import PotentialEmployer, User
-from maid.models import Maid, MaidResponsibility, MaidLanguage
-
-
-from .constants import (
-    PROPERTY_CHOICES, PROPERTY_2_ROOM_HDB, MAID_NATIONALITY_CHOICES,
-    MAID_TYPE_CHOICES, NO_PREFERENCE, EnquiryStatusChoices
-)
-from .validators import validate_links
 
 
 class GeneralEnquiry(models.Model):

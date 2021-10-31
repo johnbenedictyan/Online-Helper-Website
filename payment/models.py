@@ -1,7 +1,8 @@
 from agency.models import Agency
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from .constants import planStatusChoices, PlanIntervals, PlanType
+
+from .constants import PlanIntervals, PlanType, planStatusChoices
 
 
 class Invoice(models.Model):

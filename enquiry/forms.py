@@ -1,23 +1,14 @@
-
-from django import forms
-
-
 # from captcha.fields import ReCaptchaField
 # from captcha.widgets import ReCaptchaV3
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Layout, Submit, Row, Column, Field
-
-from maid.models import MaidResponsibility, MaidLanguage
+from crispy_forms.layout import HTML, Column, Field, Layout, Row, Submit
+from django import forms
+from maid.models import MaidLanguage, MaidResponsibility
 from onlinemaid.widgets import OMCustomTextarea
 
-
-from .constants import MAID_TYPE_CHOICES, MAID_NATIONALITY_CHOICES
+from .constants import MAID_NATIONALITY_CHOICES, MAID_TYPE_CHOICES
 from .fields import MaidResponsibilityChoiceField
 from .models import GeneralEnquiry, ShortlistedEnquiry
-
-
-
-
 
 
 class GeneralEnquiryForm(forms.ModelForm):

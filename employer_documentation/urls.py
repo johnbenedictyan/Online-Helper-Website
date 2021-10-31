@@ -1,4 +1,3 @@
-
 from django.urls import include, path
 
 from .views import (CaseStatusAPIView, CaseStatusUpdateView, ChallengeFormView,

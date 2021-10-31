@@ -142,7 +142,7 @@ class ApproveGeneralEnquiryView(BaseApproveEnquiryView):
     object_class = GeneralEnquiry
 
 
-class ApproveShortlistedlEnquiryView(BaseApproveEnquiryView):
+class ApproveShortlistedEnquiryView(BaseApproveEnquiryView):
     object_class = ShortlistedEnquiry
 
 
