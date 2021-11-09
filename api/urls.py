@@ -1,6 +1,20 @@
-from rest_framework import routers
+from django.urls.conf import include, path
 
-from .views import MaidViewSet
+from .views import MaidListAPIView, MaidRetrieveAPIView
 
-router = routers.DefaultRouter()
-router.register(r'maids', MaidViewSet)
+
+urlpatterns = [
+    path(
+        'maids/',
+        include([
+            path(
+                '',
+                MaidListAPIView.as_view()
+            ),
+            path(
+                '<int:pk>/',
+                MaidRetrieveAPIView.as_view()
+            )
+        ])
+    )
+]

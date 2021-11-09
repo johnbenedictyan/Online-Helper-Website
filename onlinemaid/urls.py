@@ -29,7 +29,7 @@ from django_otp.admin import OTPAdminSite
 from accounts.urls import urlpatterns as accounts_urls
 from advertisement.urls import urlpatterns as advertisement_urls
 from agency.urls import urlpatterns as agency_urls
-from api.urls import router as api_router
+from api.urls import urlpatterns as api_urls
 from dashboard.urls import urlpatterns as dashboard_urls
 from employer_documentation.urls import urlpatterns as employer_doc_urls
 from maid.urls import urlpatterns as maid_urls
@@ -65,7 +65,7 @@ urlpatterns = [
     path('accounts/', include(accounts_urls)),
     path('advertisements/', include(advertisement_urls)),
     path('agencies/', include(agency_urls)),
-    path('api/', include(api_router.urls)),
+    path('api/', include(api_urls)),
     path('dashboard/', include(dashboard_urls)),
     path('e-d/', include(employer_doc_urls)),
     path('maids/', include(maid_urls)),

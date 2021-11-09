@@ -8,6 +8,7 @@ from .models import Subscription
 
 @receiver(post_save, sender=Subscription)
 def provision_subscription(sender, instance, created, **kwargs):
+    pass
     # TODO
     # agency = instance.customer.agency
     # if instance.status == planStatusChoices.ACTIVE:
