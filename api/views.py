@@ -1,5 +1,7 @@
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+import random
+
 from maid.models import Maid
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework_api_key.permissions import HasAPIKey
 
 from .serializers import MaidSerializer, SlimMaidSerializer
@@ -41,7 +43,10 @@ class SimilarMaidListAPIView(ListAPIView):
                 ).exclude(
                     pk=self.maid_id
                 ).distinct()
-                return qs
+                if qs.count() <= 4:
+                    return qs
+                else:
+                    return random.choices(qs, 4)
         else:
             return None
 
