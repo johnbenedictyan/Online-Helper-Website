@@ -164,5 +164,5 @@ class SlimMaidSerializer(ModelSerializer):
         model = Maid
         fields = [
             'pk', 'name', 'photo', 'maid_type', 'marital_status',
-            'country_of_origin', 'get_age'
+            'country_of_origin', 'age'
         ]
