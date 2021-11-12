@@ -30,11 +30,11 @@ class MaidSerializer(ModelSerializer):
     class Meta:
         model = Maid
         fields = [
-            'reference_number', 'name', 'photo', 'maid_type', 'marital_status',
-            'number_of_children', 'age_of_children', 'number_of_siblings',
-            'country_of_origin', 'expected_salary', 'expected_days_off',
-            'date_of_birth', 'height', 'weight', 'place_of_birth', 'address_1',
-            'address_2', 'repatriation_airport', 'religion', 'contact_number',
-            'education_level', 'about_me', 'email', 'languages',
-            'responsibilities'
+            'pk', 'reference_number', 'name', 'photo', 'maid_type',
+            'marital_status', 'number_of_children', 'age_of_children',
+            'number_of_siblings', 'country_of_origin', 'expected_salary',
+            'expected_days_off', 'date_of_birth', 'height', 'weight',
+            'place_of_birth', 'address_1', 'address_2', 'repatriation_airport',
+            'religion', 'contact_number', 'education_level', 'about_me',
+            'email', 'languages', 'responsibilities'
         ]
