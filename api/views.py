@@ -6,11 +6,13 @@ from .serializers import MaidSerializer
 
 
 class MaidRetrieveAPIView(RetrieveAPIView):
+    permission_classes = [HasAPIKey]
     queryset = Maid.objects.all()
     serializer_class = MaidSerializer
 
 
 class SimilarMaidListAPIView(ListAPIView):
+    permission_classes = [HasAPIKey]
     queryset = Maid.objects.all()
     serializer_class = MaidSerializer
     maid_id = None
