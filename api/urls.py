@@ -1,7 +1,6 @@
 from django.urls.conf import include, path
 
-from .views import MaidListAPIView, MaidRetrieveAPIView
-
+from .views import MaidListAPIView, MaidRetrieveAPIView, SimilarMaidListAPIView
 
 urlpatterns = [
     path(
@@ -13,7 +12,17 @@ urlpatterns = [
             ),
             path(
                 '<int:pk>/',
-                MaidRetrieveAPIView.as_view()
+                include([
+                    path(
+                        '',
+                        MaidRetrieveAPIView.as_view()
+                    ),
+                    path(
+                        'similar/',
+                        SimilarMaidListAPIView.as_view()
+                    )
+                ])
+
             )
         ])
     )
