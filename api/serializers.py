@@ -1,3 +1,4 @@
+from rest_framework.fields import IntegerField
 from maid.models import (Maid, MaidCooking, MaidDietaryRestriction,
                          MaidDisabledCare, MaidElderlyCare,
                          MaidEmploymentHistory, MaidFoodHandlingPreference,
@@ -157,6 +158,7 @@ class SlimMaidSerializer(ModelSerializer):
     maid_type = CharField(source='get_maid_type_display')
     marital_status = CharField(source='get_marital_status_display')
     country_of_origin = CharField(source='get_country_of_origin_display')
+    age = IntegerField(source='get_age')
 
     class Meta:
         model = Maid
