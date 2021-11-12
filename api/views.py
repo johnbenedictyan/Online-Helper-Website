@@ -19,9 +19,9 @@ class SimilarMaidListAPIView(ListAPIView):
     serializer_class = SlimMaidSerializer
     maid_id = None
 
-    def get(self, request, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         self.maid_id = kwargs.pop('pk')
-        return super().get(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         api_auth_id = self.request.META.get('HTTP_AGENCY_AUTH_ID', None)
