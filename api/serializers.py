@@ -74,6 +74,12 @@ class MaidInfantChildCareSerializer(ModelSerializer):
 
 
 class MaidLanguageProficiencySerializer(ModelSerializer):
+    english = CharField(source='get_english_display')
+    malay = CharField(source='get_malay_display')
+    mandarin = CharField(source='get_mandarin_display')
+    chinese_dialect = CharField(source='get_chinese_dialect_display')
+    hindi = CharField(source='get_hindi_display')
+    tamil = CharField(source='get_tamil_display')
 
     class Meta:
         model = MaidLanguageProficiency
