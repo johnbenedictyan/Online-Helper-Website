@@ -18,7 +18,7 @@ from .constants import (CookingRemarksChoices, DisabledCareRemarksChoices,
                         ElderlyCareRemarksChoices,
                         GeneralHouseworkRemarksChoices,
                         InfantChildCareRemarksChoices, MaidAssessmentChoices,
-                        MaidDietaryRestrictionChoices,
+                        MaidDietaryRestrictionChoices, MaidExperienceChoices,
                         MaidFoodPreferenceChoices,
                         MaidLanguageProficiencyChoices,
                         MaidPassportStatusChoices)
@@ -777,7 +777,8 @@ class MaidExperienceForm(forms.Form):
     cfi_experience = forms.ChoiceField(
         label=_('Experience'),
         required=True,
-        choices=TrueFalseChoices('Experience', 'No experience')
+        choices=MaidExperienceChoices.choices,
+        initial=MaidExperienceChoices.NO
     )
 
     cfi_remarks = forms.ChoiceField(
@@ -808,7 +809,8 @@ class MaidExperienceForm(forms.Form):
     cfe_experience = forms.ChoiceField(
         label=_('Experience'),
         required=True,
-        choices=TrueFalseChoices('Experience', 'No experience')
+        choices=MaidExperienceChoices.choices,
+        initial=MaidExperienceChoices.NO
     )
 
     cfe_remarks = forms.ChoiceField(
@@ -839,7 +841,8 @@ class MaidExperienceForm(forms.Form):
     cfd_experience = forms.ChoiceField(
         label=_('Experience'),
         required=True,
-        choices=TrueFalseChoices('Experience', 'No experience')
+        choices=MaidExperienceChoices.choices,
+        initial=MaidExperienceChoices.NO
     )
 
     cfd_remarks = forms.ChoiceField(
@@ -870,7 +873,8 @@ class MaidExperienceForm(forms.Form):
     geh_experience = forms.ChoiceField(
         label=_('Experience'),
         required=True,
-        choices=TrueFalseChoices('Experience', 'No experience')
+        choices=MaidExperienceChoices.choices,
+        initial=MaidExperienceChoices.NO
     )
 
     geh_remarks = forms.ChoiceField(
@@ -901,7 +905,8 @@ class MaidExperienceForm(forms.Form):
     cok_experience = forms.ChoiceField(
         label=_('Experience '),
         required=True,
-        choices=TrueFalseChoices('Experience', 'No experience')
+        choices=MaidExperienceChoices.choices,
+        initial=MaidExperienceChoices.NO
     )
 
     cok_remarks = forms.ChoiceField(
