@@ -46,7 +46,7 @@ class SimilarMaidListAPIView(ListAPIView):
                 if qs.count() <= 4:
                     return qs
                 else:
-                    return random.choices(qs, 4)
+                    return random.choices(list(qs), 4)
         else:
             return None
 
