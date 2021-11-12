@@ -25,6 +25,8 @@ class MaidResponsibilitySerializer(ModelSerializer):
 
 class MaidCookingSerializer(ModelSerializer):
     willingness = CharField(source='get_willingness_display')
+    experience = CharField(source='get_experience_display')
+    remarks = CharField(source='get_remarks_display')
 
     class Meta:
         model = MaidCooking
@@ -33,6 +35,8 @@ class MaidCookingSerializer(ModelSerializer):
 
 class MaidDisabledCareSerializer(ModelSerializer):
     willingness = CharField(source='get_willingness_display')
+    experience = CharField(source='get_experience_display')
+    remarks = CharField(source='get_remarks_display')
 
     class Meta:
         model = MaidDisabledCare
@@ -41,6 +45,8 @@ class MaidDisabledCareSerializer(ModelSerializer):
 
 class MaidElderlyCareSerializer(ModelSerializer):
     willingness = CharField(source='get_willingness_display')
+    experience = CharField(source='get_experience_display')
+    remarks = CharField(source='get_remarks_display')
 
     class Meta:
         model = MaidElderlyCare
@@ -49,6 +55,8 @@ class MaidElderlyCareSerializer(ModelSerializer):
 
 class MaidGeneralHouseworkSerializer(ModelSerializer):
     willingness = CharField(source='get_willingness_display')
+    experience = CharField(source='get_experience_display')
+    remarks = CharField(source='get_remarks_display')
 
     class Meta:
         model = MaidGeneralHousework
@@ -57,6 +65,8 @@ class MaidGeneralHouseworkSerializer(ModelSerializer):
 
 class MaidInfantChildCareSerializer(ModelSerializer):
     willingness = CharField(source='get_willingness_display')
+    experience = CharField(source='get_experience_display')
+    remarks = CharField(source='get_remarks_display')
 
     class Meta:
         model = MaidInfantChildCare
