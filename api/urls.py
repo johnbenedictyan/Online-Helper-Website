@@ -1,6 +1,6 @@
 from django.urls.conf import include, path
 
-from .views import MaidListAPIView, MaidRetrieveAPIView, SimilarMaidListAPIView
+from .views import GeneralEnquiryCreateAPIView, MaidListAPIView, MaidRetrieveAPIView, SimilarMaidListAPIView
 
 urlpatterns = [
     path(
@@ -24,6 +24,15 @@ urlpatterns = [
                 ])
 
             )
+        ])
+    ),
+    path(
+        'enquiries/',
+        include([
+            path(
+                '',
+                GeneralEnquiryCreateAPIView.as_view()
+            ),
         ])
     )
 ]

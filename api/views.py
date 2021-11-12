@@ -1,10 +1,12 @@
 import random
 
+from enquiry.models import GeneralEnquiry
 from maid.models import Maid
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework_api_key.permissions import HasAPIKey
 
-from .serializers import MaidSerializer, SlimMaidSerializer
+from .serializers import (GeneralEnquiryModelSerializer, MaidSerializer,
+                          SlimMaidSerializer)
 
 
 class MaidRetrieveAPIView(RetrieveAPIView):
@@ -62,3 +64,8 @@ class MaidListAPIView(ListAPIView):
             return self.queryset.filter(agency__api_auth_id=api_auth_id)
         else:
             return None
+
+
+class GeneralEnquiryCreateAPIView(CreateAPIView):
+    queryset = GeneralEnquiry.objects.all()
+    serializer_class = GeneralEnquiryModelSerializer

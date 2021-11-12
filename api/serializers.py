@@ -1,10 +1,11 @@
-from rest_framework.fields import IntegerField
+from enquiry.models import GeneralEnquiry
 from maid.models import (Maid, MaidCooking, MaidDietaryRestriction,
                          MaidDisabledCare, MaidElderlyCare,
                          MaidEmploymentHistory, MaidFoodHandlingPreference,
                          MaidGeneralHousework, MaidInfantChildCare,
                          MaidLanguage, MaidLanguageProficiency,
                          MaidLoanTransaction, MaidResponsibility)
+from rest_framework.fields import IntegerField
 from rest_framework.serializers import CharField, ModelSerializer
 
 
@@ -167,3 +168,9 @@ class SlimMaidSerializer(ModelSerializer):
             'pk', 'name', 'photo', 'maid_type', 'marital_status',
             'country_of_origin', 'age'
         ]
+
+
+class GeneralEnquiryModelSerializer(ModelSerializer):
+    class Meta:
+        model = GeneralEnquiry
+        fields = '__all__'
