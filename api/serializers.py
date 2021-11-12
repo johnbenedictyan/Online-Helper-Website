@@ -66,25 +66,25 @@ class MaidLanguageProficiencySerializer(ModelSerializer):
 class MaidMaidFoodHandlingPreferenceSerializer(ModelSerializer):
     class Meta:
         model = MaidFoodHandlingPreference
-        fields = '__all__'
+        exclude = ['id', 'maid']
 
 
 class MaidDietaryRestrictionSerializer(ModelSerializer):
     class Meta:
         model = MaidDietaryRestriction
-        fields = '__all__'
+        exclude = ['id', 'maid']
 
 
 class MaidEmploymentHistorySerializer(ModelSerializer):
     class Meta:
         model = MaidEmploymentHistory
-        fields = '__all__'
+        exclude = ['id', 'maid']
 
 
 class MaidLoanTransactionSerializer(ModelSerializer):
     class Meta:
         model = MaidLoanTransaction
-        fields = '__all__'
+        exclude = ['id', 'maid']
 
 
 class MaidSerializer(ModelSerializer):
