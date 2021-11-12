@@ -24,18 +24,23 @@ class MaidResponsibilitySerializer(ModelSerializer):
 
 
 class MaidCookingSerializer(ModelSerializer):
+    willingness = CharField(source='get_willingness_display')
+
     class Meta:
         model = MaidCooking
         exclude = ['id', 'maid']
 
 
 class MaidDisabledCareSerializer(ModelSerializer):
+    willingness = CharField(source='get_willingness_display')
+
     class Meta:
         model = MaidDisabledCare
         exclude = ['id', 'maid']
 
 
 class MaidElderlyCareSerializer(ModelSerializer):
+    willingness = CharField(source='get_willingness_display')
 
     class Meta:
         model = MaidElderlyCare
@@ -43,6 +48,7 @@ class MaidElderlyCareSerializer(ModelSerializer):
 
 
 class MaidGeneralHouseworkSerializer(ModelSerializer):
+    willingness = CharField(source='get_willingness_display')
 
     class Meta:
         model = MaidGeneralHousework
@@ -50,6 +56,7 @@ class MaidGeneralHouseworkSerializer(ModelSerializer):
 
 
 class MaidInfantChildCareSerializer(ModelSerializer):
+    willingness = CharField(source='get_willingness_display')
 
     class Meta:
         model = MaidInfantChildCare
@@ -63,7 +70,7 @@ class MaidLanguageProficiencySerializer(ModelSerializer):
         exclude = ['id', 'maid']
 
 
-class MaidMaidFoodHandlingPreferenceSerializer(ModelSerializer):
+class MaidFoodHandlingPreferenceSerializer(ModelSerializer):
     class Meta:
         model = MaidFoodHandlingPreference
         exclude = ['id', 'maid']
@@ -101,7 +108,7 @@ class MaidSerializer(ModelSerializer):
     general_housework = MaidGeneralHouseworkSerializer(read_only=True)
     cooking = MaidCookingSerializer(read_only=True)
     language_proficiency = MaidLanguageProficiencySerializer(read_only=True)
-    food_handling_preferences = MaidMaidFoodHandlingPreferenceSerializer(
+    food_handling_preferences = MaidFoodHandlingPreferenceSerializer(
         read_only=True, many=True)
     dietary_restrictions = MaidDietaryRestrictionSerializer(
         read_only=True, many=True)
