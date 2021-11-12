@@ -37,7 +37,7 @@ class SimilarMaidListAPIView(ListAPIView):
             else:
                 languages = target_maid.languages.all()
                 country_of_origin = target_maid.country_of_origin
-                qs = Maid.objects.filter(
+                qs = qs.filter(
                     country_of_origin=country_of_origin,
                     languages__in=languages
                 ).exclude(
