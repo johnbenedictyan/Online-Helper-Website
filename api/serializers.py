@@ -137,11 +137,12 @@ class MaidSerializer(ModelSerializer):
         read_only=True, many=True)
     loan_transactions = MaidLoanTransactionSerializer(
         read_only=True, many=True)
+    age = IntegerField(read_only=True)
 
     class Meta:
         model = Maid
         fields = [
-            'pk', 'reference_number', 'name', 'photo', 'maid_type',
+            'pk', 'reference_number', 'name', 'photo', 'maid_type', 'age',
             'marital_status', 'number_of_children', 'age_of_children',
             'number_of_siblings', 'country_of_origin', 'expected_salary',
             'expected_days_off', 'date_of_birth', 'height', 'weight',
