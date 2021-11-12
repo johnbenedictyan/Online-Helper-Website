@@ -2,7 +2,7 @@ import random
 
 from enquiry.models import GeneralEnquiry
 from maid.models import Maid
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveAPIView
 from rest_framework_api_key.permissions import HasAPIKey
 
 from .serializers import (GeneralEnquiryModelSerializer, MaidSerializer,
@@ -66,6 +66,6 @@ class MaidListAPIView(ListAPIView):
             return None
 
 
-class GeneralEnquiryCreateAPIView(CreateAPIView):
+class GeneralEnquiryListCreateAPIView(ListCreateAPIView):
     queryset = GeneralEnquiry.objects.all()
     serializer_class = GeneralEnquiryModelSerializer

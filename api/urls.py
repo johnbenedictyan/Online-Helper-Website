@@ -1,6 +1,7 @@
 from django.urls.conf import include, path
 
-from .views import GeneralEnquiryCreateAPIView, MaidListAPIView, MaidRetrieveAPIView, SimilarMaidListAPIView
+from .views import (GeneralEnquiryListCreateAPIView, MaidListAPIView,
+                    MaidRetrieveAPIView, SimilarMaidListAPIView)
 
 urlpatterns = [
     path(
@@ -31,7 +32,7 @@ urlpatterns = [
         include([
             path(
                 '',
-                GeneralEnquiryCreateAPIView.as_view()
+                GeneralEnquiryListCreateAPIView.as_view()
             ),
         ])
     )
