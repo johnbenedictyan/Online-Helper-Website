@@ -170,7 +170,22 @@ class SlimMaidSerializer(ModelSerializer):
         ]
 
 
+class MaidResponsibilityModelSerializer(ModelSerializer):
+    class Meta:
+        model = MaidResponsibility
+        fields = '__all__'
+
+
+class MaidLanguageModelSerializer(ModelSerializer):
+    class Meta:
+        model = MaidLanguage
+        fields = '__all__'
+
+
 class GeneralEnquiryModelSerializer(ModelSerializer):
+    maid_responsibility = MaidResponsibilityModelSerializer(many=True)
+    languages_spoken = MaidLanguageModelSerializer(many=True)
+
     class Meta:
         model = GeneralEnquiry
         fields = '__all__'
