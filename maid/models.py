@@ -319,7 +319,7 @@ class Maid(models.Model):
         return plaintext
 
     @property
-    def get_age(self):
+    def age(self):
         today = timezone.now().date()
         try:
             birthday_current_year = self.date_of_birth.replace(
