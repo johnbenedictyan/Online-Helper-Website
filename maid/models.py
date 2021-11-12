@@ -318,6 +318,7 @@ class Maid(models.Model):
         )
         return plaintext
 
+    @property
     def get_age(self):
         today = timezone.now().date()
         try:
