@@ -101,7 +101,7 @@ class MaidSerializer(ModelSerializer):
     general_housework = MaidGeneralHouseworkSerializer(read_only=True)
     cooking = MaidCookingSerializer(read_only=True)
     language_proficiency = MaidLanguageProficiencySerializer(read_only=True)
-    food_handling_preferences = MaidFoodHandlingPreference(
+    food_handling_preferences = MaidMaidFoodHandlingPreferenceSerializer(
         read_only=True, many=True)
     dietary_restrictions = MaidDietaryRestrictionSerializer(
         read_only=True, many=True)
