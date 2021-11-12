@@ -24,35 +24,41 @@ class MaidResponsibilitySerializer(ModelSerializer):
 class MaidCookingSerializer(ModelSerializer):
     class Meta:
         model = MaidCooking
+        fields = '__all__'
 
 
 class MaidDisabledCareSerializer(ModelSerializer):
     class Meta:
         model = MaidDisabledCare
+        fields = '__all__'
 
 
 class MaidElderlyCareSerializer(ModelSerializer):
 
     class Meta:
         model = MaidElderlyCare
+        fields = '__all__'
 
 
 class MaidGeneralHouseworkSerializer(ModelSerializer):
 
     class Meta:
         model = MaidGeneralHousework
+        fields = '__all__'
 
 
 class MaidInfantChildCareSerializer(ModelSerializer):
 
     class Meta:
         model = MaidInfantChildCare
+        fields = '__all__'
 
 
 class MaidLanguageProficiencySerializer(ModelSerializer):
 
     class Meta:
         model = MaidLanguageProficiency
+        fields = '__all__'
 
 
 class MaidSerializer(ModelSerializer):
