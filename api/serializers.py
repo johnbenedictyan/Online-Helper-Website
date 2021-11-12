@@ -158,7 +158,7 @@ class SlimMaidSerializer(ModelSerializer):
     maid_type = CharField(source='get_maid_type_display')
     marital_status = CharField(source='get_marital_status_display')
     country_of_origin = CharField(source='get_country_of_origin_display')
-    age = IntegerField(source='get_age', read_only=True)
+    age = IntegerField(read_only=True)
 
     class Meta:
         model = Maid
