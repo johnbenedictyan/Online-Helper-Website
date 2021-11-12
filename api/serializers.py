@@ -87,12 +87,16 @@ class MaidLanguageProficiencySerializer(ModelSerializer):
 
 
 class MaidFoodHandlingPreferenceSerializer(ModelSerializer):
+    preference = CharField(source='get_preference_display')
+
     class Meta:
         model = MaidFoodHandlingPreference
         exclude = ['id', 'maid']
 
 
 class MaidDietaryRestrictionSerializer(ModelSerializer):
+    restriction = CharField(source='get_restriction_display')
+
     class Meta:
         model = MaidDietaryRestriction
         exclude = ['id', 'maid']
