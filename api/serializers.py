@@ -151,3 +151,16 @@ class MaidSerializer(ModelSerializer):
             'language_proficiency', 'food_handling_preferences',
             'dietary_restrictions', 'employment_history', 'loan_transactions'
         ]
+
+
+class SlimMaidSerializer(ModelSerializer):
+    maid_type = CharField(source='get_maid_type_display')
+    marital_status = CharField(source='get_marital_status_display')
+    country_of_origin = CharField(source='get_country_of_origin_display')
+
+    class Meta:
+        model = Maid
+        fields = [
+            'pk', 'name', 'photo', 'maid_type', 'marital_status',
+            'country_of_origin'
+        ]
