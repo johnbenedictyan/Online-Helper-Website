@@ -183,9 +183,29 @@ class MaidLanguageModelSerializer(ModelSerializer):
 
 
 class GeneralEnquiryModelSerializer(ModelSerializer):
-    maid_responsibility = MaidResponsibilityModelSerializer(many=True)
-    languages_spoken = MaidLanguageModelSerializer(many=True)
+    maid_responsibility = MaidResponsibilityModelSerializer(
+        many=True, read_only=True)
+    languages_spoken = MaidLanguageModelSerializer(many=True, read_only=True)
 
     class Meta:
         model = GeneralEnquiry
         fields = '__all__'
+
+    def create(self, validated_data):
+        maid_responsibilities = validated_data.pop('maid_responsibility')
+        languages_spoken = validated_data.pop('languages_spoken')
+        instance = GeneralEnquiry.objects.create(**validated_data)
+
+        for i in maid_responsibilities:
+            selected_maid_responsibilities = MaidResponsibility.objects.get(
+                name=i['name']
+            )
+            instance.maid_responsibility.add(selected_maid_responsibilities)
+
+        for i in languages_spoken:
+            selected_maid_language = MaidLanguage.objects.get(
+                language=i['language']
+            )
+            instance.languages_spoken.add(selected_maid_language)
+
+        return instance
