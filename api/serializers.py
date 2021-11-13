@@ -183,9 +183,8 @@ class MaidLanguageModelSerializer(ModelSerializer):
 
 
 class GeneralEnquiryModelSerializer(ModelSerializer):
-    maid_responsibility = MaidResponsibilityModelSerializer(
-        many=True, read_only=True)
-    languages_spoken = MaidLanguageModelSerializer(many=True, read_only=True)
+    maid_responsibility = MaidResponsibilityModelSerializer(many=True)
+    languages_spoken = MaidLanguageModelSerializer(many=True)
 
     class Meta:
         model = GeneralEnquiry
