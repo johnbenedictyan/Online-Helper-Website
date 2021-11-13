@@ -191,7 +191,6 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        raise Exception(validated_data)
         maid_responsibilities = validated_data.pop('maid_responsibility')
         languages_spoken = validated_data.pop('languages_spoken')
         instance = GeneralEnquiry.objects.create(**validated_data)
