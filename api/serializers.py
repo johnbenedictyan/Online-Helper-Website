@@ -350,10 +350,6 @@ class PotentialEmployerModelSerializer(ModelSerializer):
                     uuid.UUID(settings.API_ACCOUNT_UUID_NAMESPACE),
                     str(i.user.pk)
                 ) == data:
-                    raise Exception(i.user.pk, data, uuid.uuid5(
-                        uuid.UUID(settings.API_ACCOUNT_UUID_NAMESPACE),
-                        str(i.user.pk)
-                    ))
                     flag = True
         except Exception as e:
             raise Exception(e)

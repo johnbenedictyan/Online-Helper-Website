@@ -258,8 +258,12 @@ class ValidatePEUUIDAPIView(GenericAPIView):
     def post(self, request, *args, **kwargs):
         pe_uuid = request.data.get('pe_uuid')
         serializer = self.get_serializer()
-        res = serializer.validate_uuid(data=pe_uuid)
-        if res:
-            return Response('Unsuccessful', status=400)
+        try:
+            res = serializer.validate_uuid(data=pe_uuid)
+        except Exception as e:
+            raise Exception(e)
         else:
-            return Response('Successful', status=200)
+            if res:
+                return Response('Successful', status=200)
+            else:
+                return Response('Unsuccessful', status=400)
