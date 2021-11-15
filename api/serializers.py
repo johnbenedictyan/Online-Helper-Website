@@ -1,3 +1,8 @@
+import uuid
+
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from enquiry.models import GeneralEnquiry
 from maid.models import (Maid, MaidCooking, MaidDietaryRestriction,
                          MaidDisabledCare, MaidElderlyCare,
@@ -5,7 +10,10 @@ from maid.models import (Maid, MaidCooking, MaidDietaryRestriction,
                          MaidGeneralHousework, MaidInfantChildCare,
                          MaidLanguage, MaidLanguageProficiency,
                          MaidLoanTransaction, MaidResponsibility)
-from rest_framework.fields import IntegerField
+from onlinemaid.constants import EMPLOYERS
+from project.accounts.models import PotentialEmployer
+from rest_framework import serializers
+from rest_framework.fields import EmailField, IntegerField
 from rest_framework.serializers import CharField, ModelSerializer
 
 
@@ -208,3 +216,69 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
             instance.languages_spoken.add(selected_maid_language)
 
         return instance
+
+
+class PotentialEmployerModelSerializer(ModelSerializer):
+    class Meta:
+        model = PotentialEmployer
+        fields = '__all__'
+
+    # def identify(self, email):
+    #     try:
+    #         pe = PotentialEmployer.objects.get(
+    #             email=email
+    #         )
+    #     except PotentialEmployer.DoesNotExist as e:
+    #         print(e)
+    #     else:
+    #         return pe
+
+    # def auth(self, validated_data):
+    #     pe = self.identify(validated_data.get('email'))
+    #     if pe:
+    #         flag = pe.user.check_password(validated_data.get('password'))
+    #         if flag:
+    #             return pe
+
+
+class AgencyUserSerializer(serializers.Serializer):
+    agency_license_number = CharField()
+    email = EmailField()
+    password = CharField()
+
+    def identify(self, email):
+        try:
+            pe = PotentialEmployer.objects.get(
+                email=email
+            )
+        except PotentialEmployer.DoesNotExist as e:
+            print(e)
+        else:
+            return pe
+
+    def create(self, validated_data):
+        try:
+            new_user = get_user_model().objects.create_user(
+                email=validated_data.get('email'),
+                password=validated_data.get('password')
+            )
+        except Exception:
+            pass
+        else:
+            potential_employer_group = Group.objects.get(
+                name=EMPLOYERS
+            )
+            potential_employer_group.user_set.add(
+                new_user
+            )
+            instance = PotentialEmployer.objects.create(
+                user=new_user
+            )
+            return instance
+
+    def auth(self, validated_data):
+        pe = self.identify(validated_data.get('email'))
+        if pe:
+            flag = pe.user.check_password(validated_data.get('password'))
+            if flag:
+                return uuid.uuid5(settings.API_ACCOUNT_UUID_NAMESPACE, pe.pk)
