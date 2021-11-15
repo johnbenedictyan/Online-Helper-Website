@@ -262,6 +262,7 @@ class PotentialEmployerModelSerializer(ModelSerializer):
             raise Exception(e)
         else:
             flag = user.check_password(data.get('password'))
+            raise Exception(user, flag)
             if flag:
                 return uuid.uuid5(settings.API_ACCOUNT_UUID_NAMESPACE, user.pk)
             else:
