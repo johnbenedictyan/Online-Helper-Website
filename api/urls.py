@@ -2,7 +2,9 @@ from django.urls.conf import include, path
 
 from .views import (GeneralEnquiryListCreateAPIView, MaidListAPIView,
                     MaidRetrieveAPIView, PotentialEmployerListCreateAPIView,
-                    PotentialEmployerLoginAPIView, SimilarMaidListAPIView)
+                    PotentialEmployerLoginAPIView,
+                    ShortlistedEnquiryListCreateAPIView,
+                    SimilarMaidListAPIView)
 
 urlpatterns = [
     path(
@@ -35,6 +37,10 @@ urlpatterns = [
                 '',
                 GeneralEnquiryListCreateAPIView.as_view()
             ),
+            path(
+                'shortlisted',
+                ShortlistedEnquiryListCreateAPIView.as_view()
+            )
         ])
     ),
     path(

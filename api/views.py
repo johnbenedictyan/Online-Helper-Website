@@ -1,10 +1,9 @@
-from datetime import timedelta
 import random
-
-from django.utils import timezone
+from datetime import timedelta
 
 from accounts.models import PotentialEmployer
-from enquiry.models import GeneralEnquiry
+from django.utils import timezone
+from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
 from maid.constants import (MaidLanguageChoices, MaidNationalityChoices,
                             MaidResponsibilityChoices, TypeOfMaidChoices)
 from maid.models import Maid, MaidLanguage, MaidResponsibility
@@ -16,7 +15,9 @@ from rest_framework.response import Response
 from rest_framework_api_key.permissions import HasAPIKey
 
 from .serializers import (GeneralEnquiryModelSerializer, MaidSerializer,
-                          PotentialEmployerModelSerializer, SlimMaidSerializer)
+                          PotentialEmployerModelSerializer,
+                          ShortlistedEnquiryModelSerializer,
+                          SlimMaidSerializer)
 
 
 class MaidRetrieveAPIView(RetrieveAPIView):
@@ -98,7 +99,8 @@ class MaidListAPIView(ListAPIView):
                         'SriLankan': MaidNationalityChoices.SRI_LANKA
                     }
                     qs = qs.filter(
-                        country_of_origin=maid_nationality_map[maid_nationality]
+                        country_of_origin=maid_nationality_map[
+                            maid_nationality]
                     )
 
                 maid_marital_status = query_params.get("marital_status")
@@ -112,7 +114,8 @@ class MaidListAPIView(ListAPIView):
                         'single-parent': MaritalStatusChoices.SINGLE_PARENT
                     }
                     qs = qs.filter(
-                        marital_status=maid_marital_status_map[maid_marital_status]
+                        marital_status=maid_marital_status_map[
+                            maid_marital_status]
                     )
 
                 maid_min_age = query_params.get("min_age")
@@ -199,6 +202,9 @@ class GeneralEnquiryListCreateAPIView(ListCreateAPIView):
     queryset = GeneralEnquiry.objects.all()
     serializer_class = GeneralEnquiryModelSerializer
 
+class ShortlistedEnquiryListCreateAPIView(ListCreateAPIView):
+    queryset = ShortlistedEnquiry.objects.all()
+    serializer_class = ShortlistedEnquiryModelSerializer
 
 class PotentialEmployerListCreateAPIView(ListCreateAPIView):
     queryset = PotentialEmployer.objects.all()
@@ -236,3 +242,4 @@ class PotentialEmployerLoginAPIView(GenericAPIView):
             return Response(res, status=400)
         else:
             return Response(res, status=200)
+

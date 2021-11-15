@@ -1,12 +1,10 @@
 import uuid
 
-from rest_framework import serializers
-
 from accounts.models import PotentialEmployer
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from enquiry.models import GeneralEnquiry
+from enquiry.models import GeneralEnquiry, ShortlistedEnquiry
 from maid.models import (Maid, MaidCooking, MaidDietaryRestriction,
                          MaidDisabledCare, MaidElderlyCare,
                          MaidEmploymentHistory, MaidFoodHandlingPreference,
@@ -14,6 +12,7 @@ from maid.models import (Maid, MaidCooking, MaidDietaryRestriction,
                          MaidLanguage, MaidLanguageProficiency,
                          MaidLoanTransaction, MaidResponsibility)
 from onlinemaid.constants import EMPLOYERS
+from rest_framework import serializers
 from rest_framework.fields import IntegerField, UUIDField
 from rest_framework.serializers import CharField, ModelSerializer
 
@@ -238,6 +237,65 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
                 language=i['language']
             )
             instance.languages_spoken.add(selected_maid_language)
+
+        return instance
+
+
+class ShortlistedEnquiryModelSerializer(ModelSerializer):
+    maid_responsibility = MaidResponsibilityModelSerializer(many=True)
+    languages_spoken = MaidLanguageModelSerializer(many=True)
+    maids = serializers.PrimaryKeyRelatedField(many=True)
+    potential_employer = UUIDField()
+
+    class Meta:
+        model = ShortlistedEnquiry
+        fields = '__all__'
+
+    def create(self, validated_data):
+        maid_responsibilities = validated_data.pop('maid_responsibility')
+        languages_spoken = validated_data.pop('languages_spoken')
+        maids = validated_data.pop('maids')
+        potential_employer = validated_data.pop('potential_employer')
+
+        # TODO: CHANGE THIS INEFFICIENT PSEUDO DE-HASH CODE
+        pe_pk = None
+        try:
+            for i in PotentialEmployer.objects.all():
+                if uuid.uuid5(
+                    uuid.UUID(settings.API_ACCOUNT_UUID_NAMESPACE),
+                    str(i.user.pk)
+                ) == potential_employer:
+                    pe_pk = i.user.pk
+        except Exception as e:
+            raise Exception(e)
+        else:
+            if pe_pk:
+                instance = PotentialEmployer.objects.get(
+                    user__pk=pe_pk
+                )
+                validated_data.update({
+                    'potential_employer': instance
+                })
+
+        instance = ShortlistedEnquiry.objects.create(**validated_data)
+
+        for i in maid_responsibilities:
+            selected_maid_responsibilities = MaidResponsibility.objects.get(
+                name=i['name']
+            )
+            instance.maid_responsibility.add(selected_maid_responsibilities)
+
+        for i in languages_spoken:
+            selected_maid_language = MaidLanguage.objects.get(
+                language=i['language']
+            )
+            instance.languages_spoken.add(selected_maid_language)
+
+        for i in maids:
+            selected_maid = Maid.objects.get(
+                pk=i
+            )
+            instance.maids.add(selected_maid)
 
         return instance
 
