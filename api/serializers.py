@@ -349,7 +349,7 @@ class PotentialEmployerModelSerializer(ModelSerializer):
                 if uuid.uuid5(
                     uuid.UUID(settings.API_ACCOUNT_UUID_NAMESPACE),
                     str(i.user.pk)
-                ) == data:
+                ) == uuid.UUID(data):
                     flag = True
         except Exception as e:
             raise Exception(e)
