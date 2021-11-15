@@ -1,4 +1,7 @@
+from datetime import timedelta
 import random
+
+from django.utils import timezone
 
 from accounts.models import PotentialEmployer
 from enquiry.models import GeneralEnquiry
@@ -112,12 +115,22 @@ class MaidListAPIView(ListAPIView):
                         marital_status=maid_marital_status_map[maid_marital_status]
                     )
 
-
                 maid_min_age = query_params.get("min_age")
                 maid_max_age = query_params.get("max_age")
+
+                time_now = timezone.now()
+                start_date = time_now - timedelta(
+                    365 * int(int(maid_max_age) + 1) +
+                    int(int(maid_max_age) // 4)
+                )
+                end_date = time_now - timedelta(
+                    365 * int(int(maid_min_age)) + int(int(maid_min_age) // 4)
+                )
                 qs = qs.filter(
-                    age__gt=maid_min_age,
-                    age__lt=maid_max_age
+                    date_of_birth__range=(
+                        start_date,
+                        end_date
+                    )
                 )
 
                 language_list = []
