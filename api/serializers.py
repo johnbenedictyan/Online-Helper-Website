@@ -218,7 +218,15 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
         return instance
 
 
+class UserModelSerializer(ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = '__all__'
+
+
 class PotentialEmployerModelSerializer(ModelSerializer):
+    user =UserModelSerializer()
+
     class Meta:
         model = PotentialEmployer
         fields = '__all__'
