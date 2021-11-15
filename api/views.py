@@ -199,21 +199,25 @@ class MaidListAPIView(ListAPIView):
 
 
 class GeneralEnquiryListCreateAPIView(ListCreateAPIView):
+    permission_classes = [HasAPIKey]
     queryset = GeneralEnquiry.objects.all()
     serializer_class = GeneralEnquiryModelSerializer
 
 
 class ShortlistedEnquiryListCreateAPIView(ListCreateAPIView):
+    permission_classes = [HasAPIKey]
     queryset = ShortlistedEnquiry.objects.all()
     serializer_class = ShortlistedEnquiryModelSerializer
 
 
 class PotentialEmployerListCreateAPIView(ListCreateAPIView):
+    permission_classes = [HasAPIKey]
     queryset = PotentialEmployer.objects.all()
     serializer_class = PotentialEmployerModelSerializer
 
 
 class PotentialEmployerLoginAPIView(GenericAPIView):
+    permission_classes = [HasAPIKey]
     queryset = PotentialEmployer.objects.all()
     serializer_class = PotentialEmployerModelSerializer
     lookup_field = 'user__email'
