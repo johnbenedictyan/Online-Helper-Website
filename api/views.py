@@ -2,13 +2,13 @@ import random
 
 from enquiry.models import GeneralEnquiry
 from maid.models import Maid
-from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveAPIView
+from accounts.models import PotentialEmployer
+from rest_framework.generics import (CreateAPIView, ListAPIView,
+                                     ListCreateAPIView, RetrieveAPIView)
 from rest_framework_api_key.permissions import HasAPIKey
 
-from project.accounts.models import PotentialEmployer
-
-from .serializers import (GeneralEnquiryModelSerializer, MaidSerializer, PotentialEmployerModelSerializer,
-                          SlimMaidSerializer)
+from .serializers import (GeneralEnquiryModelSerializer, MaidSerializer,
+                          PotentialEmployerModelSerializer, SlimMaidSerializer)
 
 
 class MaidRetrieveAPIView(RetrieveAPIView):
