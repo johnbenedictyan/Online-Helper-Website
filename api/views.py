@@ -105,8 +105,7 @@ class PotentialEmployerLoginAPIView(GenericAPIView):
         serializer = self.get_serializer(instance)
         try:
             res = serializer.auth(data=user_details)
-        except Exception as e:
-            raise Exception(e)
+        except Exception:
             res = {
                 'message': 'Unsuccessful Login'
             }
