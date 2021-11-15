@@ -1,10 +1,3 @@
-# Imports from the system
-
-
-
-
-from enquiry.forms import GeneralEnquiryForm
-
 # Start of Context Processors
 
 
@@ -33,12 +26,6 @@ def authority(request):
 def cartcount(request):
     return {
         'cart_count': len(request.session.get('cart', []))
-    }
-
-
-def enquiry_form(request):
-    return {
-        'enquiry_form': GeneralEnquiryForm()
     }
 
 
