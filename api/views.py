@@ -108,7 +108,7 @@ class PotentialEmployerLoginAPIView(GenericAPIView):
         except Exception as e:
             res = {
                 'message': 'Unsuccessful Login',
-                'error': e
+                'error': dict(e)
             }
             return Response(res, status=400)
         else:
