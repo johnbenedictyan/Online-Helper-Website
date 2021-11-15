@@ -1,13 +1,12 @@
 import random
 
-from django.db.models import query
-from rest_framework.response import Response
-
+from accounts.models import PotentialEmployer
 from enquiry.models import GeneralEnquiry
 from maid.models import Maid
-from accounts.models import PotentialEmployer
-from rest_framework.generics import (CreateAPIView, GenericAPIView, ListAPIView,
-                                     ListCreateAPIView, RetrieveAPIView, get_object_or_404)
+from rest_framework.generics import (GenericAPIView, ListAPIView,
+                                     ListCreateAPIView, RetrieveAPIView,
+                                     get_object_or_404)
+from rest_framework.response import Response
 from rest_framework_api_key.permissions import HasAPIKey
 
 from .serializers import (GeneralEnquiryModelSerializer, MaidSerializer,

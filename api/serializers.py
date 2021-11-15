@@ -12,8 +12,7 @@ from maid.models import (Maid, MaidCooking, MaidDietaryRestriction,
                          MaidLanguage, MaidLanguageProficiency,
                          MaidLoanTransaction, MaidResponsibility)
 from onlinemaid.constants import EMPLOYERS
-from rest_framework import serializers
-from rest_framework.fields import EmailField, IntegerField
+from rest_framework.fields import IntegerField
 from rest_framework.serializers import CharField, ModelSerializer
 
 
