@@ -248,8 +248,6 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
 
 
 class ShortlistedEnquiryModelSerializer(ModelSerializer):
-    maid_responsibility = MaidResponsibilityModelSerializer(many=True)
-    languages_spoken = MaidLanguageModelSerializer(many=True)
     maids = PKMaidSerializer(many=True)
     potential_employer = UUIDField()
 
@@ -258,8 +256,6 @@ class ShortlistedEnquiryModelSerializer(ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        maid_responsibilities = validated_data.pop('maid_responsibility')
-        languages_spoken = validated_data.pop('languages_spoken')
         maids = validated_data.pop('maids')
         potential_employer = validated_data.pop('potential_employer')
 
@@ -284,18 +280,6 @@ class ShortlistedEnquiryModelSerializer(ModelSerializer):
                 })
 
         instance = ShortlistedEnquiry.objects.create(**validated_data)
-
-        for i in maid_responsibilities:
-            selected_maid_responsibilities = MaidResponsibility.objects.get(
-                name=i['name']
-            )
-            instance.maid_responsibility.add(selected_maid_responsibilities)
-
-        for i in languages_spoken:
-            selected_maid_language = MaidLanguage.objects.get(
-                language=i['language']
-            )
-            instance.languages_spoken.add(selected_maid_language)
 
         for i in maids:
             selected_maid = Maid.objects.get(
