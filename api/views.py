@@ -1,10 +1,13 @@
 import random
 
+from django.db.models import query
+from rest_framework.response import Response
+
 from enquiry.models import GeneralEnquiry
 from maid.models import Maid
 from accounts.models import PotentialEmployer
-from rest_framework.generics import (CreateAPIView, ListAPIView,
-                                     ListCreateAPIView, RetrieveAPIView)
+from rest_framework.generics import (CreateAPIView, GenericAPIView, ListAPIView,
+                                     ListCreateAPIView, RetrieveAPIView, get_object_or_404)
 from rest_framework_api_key.permissions import HasAPIKey
 
 from .serializers import (GeneralEnquiryModelSerializer, MaidSerializer,
@@ -76,3 +79,37 @@ class GeneralEnquiryListCreateAPIView(ListCreateAPIView):
 class PotentialEmployerListCreateAPIView(ListCreateAPIView):
     queryset = PotentialEmployer.objects.all()
     serializer_class = PotentialEmployerModelSerializer
+
+
+class PotentialEmployerLoginAPIView(GenericAPIView):
+    queryset = PotentialEmployer.objects.all()
+    serializer_class = PotentialEmployerModelSerializer
+    lookup_field = 'user__email'
+
+    def get_object(self, email):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        # Perform the lookup filtering.
+
+        filter_kwargs = {self.lookup_field: email}
+        obj = get_object_or_404(queryset, **filter_kwargs)
+
+        # May raise a permission denied
+        self.check_object_permissions(self.request, obj)
+
+        return obj
+
+    def post(self, request, *args, **kwargs):
+        user_details = request.data.get('user')
+        instance = self.get_object(user_details.get('email'))
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            res = serializer.auth()
+        except Exception:
+            res = {
+                'message': 'Unsuccessful Login'
+            }
+            return Response(res, status=400)
+        else:
+            return Response(res, status=200)
