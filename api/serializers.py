@@ -196,7 +196,7 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
     languages_spoken = MaidLanguageModelSerializer(many=True)
     # potential_employer = serializers.PrimaryKeyRelatedField(
     #     many=True, read_only=True)
-    pe_uuid = UUIDField()
+    potential_employer = UUIDField()
 
     class Meta:
         model = GeneralEnquiry
@@ -205,7 +205,7 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
     def create(self, validated_data):
         maid_responsibilities = validated_data.pop('maid_responsibility')
         languages_spoken = validated_data.pop('languages_spoken')
-        pe_uuid = validated_data.pop('pe_uuid')
+        potential_employer = validated_data.pop('potential_employer')
 
         # TODO: CHANGE THIS INEFFICIENT PSEUDO DE-HASH CODE
         pe_pk = None
@@ -214,7 +214,7 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
                 if uuid.uuid5(
                     uuid.UUID(settings.API_ACCOUNT_UUID_NAMESPACE),
                     str(i.user.pk)
-                ) == pe_uuid:
+                ) == potential_employer:
                     pe_pk = i.user.pk
         except Exception as e:
             raise Exception(e)
