@@ -3,6 +3,12 @@ import random
 from accounts.models import PotentialEmployer
 from enquiry.models import GeneralEnquiry
 from maid.models import Maid
+from project.maid.constants import (MaidLanguageChoices,
+                                    MaidNationalityChoices,
+                                    MaidResponsibilityChoices,
+                                    TypeOfMaidChoices)
+from project.maid.models import MaidLanguage, MaidResponsibility
+from project.onlinemaid.constants import MaritalStatusChoices
 from rest_framework.generics import (GenericAPIView, ListAPIView,
                                      ListCreateAPIView, RetrieveAPIView,
                                      get_object_or_404)
@@ -68,10 +74,111 @@ class MaidListAPIView(ListAPIView):
             qs = self.queryset.filter(agency__api_auth_id=api_auth_id)
             if self.request.query_params:
                 query_params = self.request.query_params
-                raise Exception(query_params)
-                return qs
-            else:
-                return qs
+                # NP
+                maid_type = query_params.get("type")
+                if maid_type != 'NP':
+                    maid_type_map = {
+                        'N': TypeOfMaidChoices.NEW,
+                        'T': TypeOfMaidChoices.TRANSFER,
+                        'S': TypeOfMaidChoices.SINGAPORE_EXPERIENCE,
+                        'O': TypeOfMaidChoices.OVERSEAS_EXPERIENCE,
+                    }
+                    qs = qs.filter(
+                        maid_type=maid_type_map[maid_type]
+                    )
+
+                maid_nationality = query_params.get("nationality")
+                if maid_nationality != 'NP':
+                    maid_nationality_map = {
+                        'Filipino': MaidNationalityChoices.PHILIPPINES,
+                        'Indonesian': MaidNationalityChoices.INDONESIA,
+                        'Myanmarese': MaidNationalityChoices.MYANMAR,
+                        'Indian': MaidNationalityChoices.INDIA,
+                        'Cambodian': MaidNationalityChoices.CAMBODIA,
+                        'SriLankan': MaidNationalityChoices.SRI_LANKA
+                    }
+                    qs = qs.filter(
+                        country_of_origin=maid_nationality_map[maid_nationality]
+                    )
+
+                maid_marital_status = query_params.get("marital_status")
+                if maid_marital_status != 'NP':
+                    maid_marital_status_map = {
+                        'single': MaritalStatusChoices.SINGLE,
+                        'married': MaritalStatusChoices.MARRIED,
+                        'divorced': MaritalStatusChoices.DIVORCED,
+                        'widowed': MaritalStatusChoices.WIDOWED,
+                        'separated': MaritalStatusChoices.SEPARATED,
+                        'single-parent': MaritalStatusChoices.SINGLE_PARENT
+                    }
+                    qs = qs.filter(
+                        marital_status=maid_marital_status_map[maid_marital_status]
+                    )
+
+
+                maid_min_age = query_params.get("min_age")
+                maid_max_age = query_params.get("max_age")
+                qs = qs.filter(
+                    age__gt=maid_min_age,
+                    age__lt=maid_max_age
+                )
+
+                language_list = []
+                maid_sl_english = query_params.get("sl_english")
+                if maid_sl_english:
+                    language_list.append(MaidLanguage.objects.get(
+                        language=MaidLanguageChoices.ENGLISH))
+                maid_sl_mandarin = query_params.get("sl_mandarin")
+                if maid_sl_mandarin:
+                    language_list.append(MaidLanguage.objects.get(
+                        language=MaidLanguageChoices.MANDARIN))
+                maid_sl_chinese_dialect = query_params.get(
+                    "sl_chinese_dialect")
+                if maid_sl_chinese_dialect:
+                    language_list.append(MaidLanguage.objects.get(
+                        language=MaidLanguageChoices.CHINESE_DIALECT))
+                maid_sl_malay = query_params.get("sl_malay")
+                if maid_sl_malay:
+                    language_list.append(MaidLanguage.objects.get(
+                        language=MaidLanguageChoices.MALAY))
+                maid_sl_tamil_hindi = query_params.get("sl_tamil_hindi")
+                if maid_sl_tamil_hindi:
+                    language_list.append(MaidLanguage.objects.get(
+                        language=MaidLanguageChoices.HINDI_TAMIL))
+
+                qs = qs.filter(
+                    languages__in=language_list
+                )
+                responsibility_list = []
+                maid_resp_GEH = query_params.get("resp_GEH")
+                if maid_resp_GEH:
+                    responsibility_list.append(MaidResponsibility.objects.get(
+                        responsibility=MaidResponsibilityChoices.MAID_RESP_GENERAL_HOUSEWORK))
+
+                maid_resp_COK = query_params.get("resp_COK")
+                if maid_resp_COK:
+                    responsibility_list.append(MaidResponsibility.objects.get(
+                        responsibility=MaidResponsibilityChoices.MAID_RESP_COOKING))
+
+                maid_resp_CFI = query_params.get("resp_CFI")
+                if maid_resp_CFI:
+                    responsibility_list.append(MaidResponsibility.objects.get(
+                        responsibility=MaidResponsibilityChoices.MAID_RESP_CARE_FOR_INFANTS_CHILDREN))
+
+                maid_resp_CFE = query_params.get("resp_CFE")
+                if maid_resp_CFE:
+                    responsibility_list.append(MaidResponsibility.objects.get(
+                        responsibility=MaidResponsibilityChoices.MAID_RESP_CARE_FOR_ELDERLY))
+
+                maid_resp_CFD = query_params.get("resp_CFD")
+                if maid_resp_CFD:
+                    responsibility_list.append(MaidResponsibility.objects.get(
+                        responsibility=MaidResponsibilityChoices.MAID_RESP_CARE_FOR_DISABLED))
+
+                qs = qs.filter(
+                    responsibilities__in=responsibility_list
+                )
+            return qs
         else:
             return None
 
