@@ -221,15 +221,36 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
 class UserModelSerializer(ModelSerializer):
     class Meta:
         model = get_user_model()
-        fields = '__all__'
+        fields = ['email', 'password']
 
 
 class PotentialEmployerModelSerializer(ModelSerializer):
-    user =UserModelSerializer()
+    user = UserModelSerializer()
 
     class Meta:
         model = PotentialEmployer
         fields = '__all__'
+
+    def create(self, validated_data):
+        user_details = validated_data.pop('user')
+        try:
+            new_user = get_user_model().objects.create_user(
+                email=user_details.get('email'),
+                password=user_details.get('password')
+            )
+        except Exception:
+            pass
+        else:
+            potential_employer_group = Group.objects.get(
+                name=EMPLOYERS
+            )
+            potential_employer_group.user_set.add(
+                new_user
+            )
+            instance = PotentialEmployer.objects.create(
+                user=new_user
+            )
+            return instance
 
     # def identify(self, email):
     #     try:
