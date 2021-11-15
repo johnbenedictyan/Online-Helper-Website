@@ -207,10 +207,10 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
         pe_pk = None
         try:
             for i in PotentialEmployer.objects.all():
-                if str(uuid.uuid5(
+                if uuid.uuid5(
                     uuid.UUID(settings.API_ACCOUNT_UUID_NAMESPACE),
                     str(i.user.pk)
-                )) == pe_uuid:
+                ) == pe_uuid:
                     raise Exception(i.user.pk)
                     pe_pk = i.user.pk
         except Exception as e:
