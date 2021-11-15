@@ -249,16 +249,16 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
 
 
 class ShortlistedEnquiryModelSerializer(ModelSerializer):
-    # maids = PKMaidSerializer(many=True)
+    maids = PKMaidSerializer(many=True)
     potential_employer = UUIDField()
 
     class Meta:
         model = ShortlistedEnquiry
-        fields = '__all__'
+        exclude = ['maids']
 
     def create(self, validated_data):
-        # maids = validated_data.pop('maids')
-        raise Exception(validated_data)
+        maids = validated_data.pop('maids')
+        raise Exception(maids)
         potential_employer = validated_data.pop('potential_employer')
 
         # TODO: CHANGE THIS INEFFICIENT PSEUDO DE-HASH CODE

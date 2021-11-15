@@ -202,9 +202,11 @@ class GeneralEnquiryListCreateAPIView(ListCreateAPIView):
     queryset = GeneralEnquiry.objects.all()
     serializer_class = GeneralEnquiryModelSerializer
 
+
 class ShortlistedEnquiryListCreateAPIView(ListCreateAPIView):
     queryset = ShortlistedEnquiry.objects.all()
     serializer_class = ShortlistedEnquiryModelSerializer
+
 
 class PotentialEmployerListCreateAPIView(ListCreateAPIView):
     queryset = PotentialEmployer.objects.all()
@@ -242,4 +244,3 @@ class PotentialEmployerLoginAPIView(GenericAPIView):
             return Response(res, status=400)
         else:
             return Response(res, status=200)
-
