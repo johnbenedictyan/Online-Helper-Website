@@ -283,7 +283,7 @@ class ShortlistedEnquiryModelSerializer(ModelSerializer):
 
         for i in maids:
             selected_maid = Maid.objects.get(
-                pk=i
+                pk=i['pk']
             )
             instance.maids.add(selected_maid)
 
