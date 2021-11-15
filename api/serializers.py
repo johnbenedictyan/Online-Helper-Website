@@ -213,8 +213,8 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
                 )) == pe_uuid:
                     raise Exception(i.user.pk)
                     pe_pk = i.user.pk
-        except Exception:
-            pass
+        except Exception as e:
+            raise Exception(e)
         else:
             if pe_pk:
                 validated_data.update({
