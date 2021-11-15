@@ -256,7 +256,7 @@ class ShortlistedEnquiryModelSerializer(ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        maids = validated_data.pop('custom_maids')
+        maids = validated_data.pop('maids')
         potential_employer = validated_data.pop('potential_employer')
 
         # TODO: CHANGE THIS INEFFICIENT PSEUDO DE-HASH CODE
