@@ -102,8 +102,7 @@ class PotentialEmployerLoginAPIView(GenericAPIView):
     def post(self, request, *args, **kwargs):
         user_details = request.data.get('user')
         instance = self.get_object(user_details.get('email'))
-        serializer = self.get_serializer(instance, data=request.data)
-        serializer.is_valid(raise_exception=True)
+        serializer = self.get_serializer(instance)
         try:
             res = serializer.auth()
         except Exception:
