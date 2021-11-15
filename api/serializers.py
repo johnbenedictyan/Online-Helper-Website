@@ -249,7 +249,7 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
 
 
 class ShortlistedEnquiryModelSerializer(ModelSerializer):
-    maids = PKMaidSerializer(many=True)
+    custom_maids = PKMaidSerializer(many=True)
     potential_employer = UUIDField()
 
     class Meta:
@@ -257,7 +257,7 @@ class ShortlistedEnquiryModelSerializer(ModelSerializer):
         exclude = ['maids']
 
     def create(self, validated_data):
-        maids = validated_data.pop('maids')
+        maids = validated_data.pop('custom_maids')
         raise Exception(maids)
         potential_employer = validated_data.pop('potential_employer')
 
