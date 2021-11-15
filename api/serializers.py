@@ -282,6 +282,7 @@ class ShortlistedEnquiryModelSerializer(ModelSerializer):
         instance = ShortlistedEnquiry.objects.create(**validated_data)
 
         for i in maids:
+            raise Exception(i)
             selected_maid = Maid.objects.get(
                 pk=i['pk']
             )
