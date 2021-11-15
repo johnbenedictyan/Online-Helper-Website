@@ -205,7 +205,7 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
 
         # TODO: CHANGE THIS INEFFICIENT PSEUDO DE-HASH CODE
         pe_pk = None
-        for i in PotentialEmployer:
+        for i in PotentialEmployer.objects.all():
             if str(uuid.uuid5(
                 uuid.UUID(settings.API_ACCOUNT_UUID_NAMESPACE),
                 str(i.user.pk)
