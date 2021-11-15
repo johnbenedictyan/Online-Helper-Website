@@ -257,8 +257,6 @@ class ShortlistedEnquiryModelSerializer(ModelSerializer):
 
     def create(self, validated_data):
         maids = validated_data.pop('maids')
-        for i in maids:
-            raise Exception(i.keys(), i.values())
         potential_employer = validated_data.pop('potential_employer')
 
         # TODO: CHANGE THIS INEFFICIENT PSEUDO DE-HASH CODE
@@ -284,9 +282,8 @@ class ShortlistedEnquiryModelSerializer(ModelSerializer):
         instance = ShortlistedEnquiry.objects.create(**validated_data)
 
         for i in maids:
-            raise Exception(i.get('pk'))
             selected_maid = Maid.objects.get(
-                pk=i.get('pk')
+                pk=i['pk']
             )
             instance.maids.add(selected_maid)
 
