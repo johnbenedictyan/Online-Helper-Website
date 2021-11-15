@@ -1,5 +1,6 @@
 import uuid
 
+from accounts.models import PotentialEmployer
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
@@ -11,7 +12,6 @@ from maid.models import (Maid, MaidCooking, MaidDietaryRestriction,
                          MaidLanguage, MaidLanguageProficiency,
                          MaidLoanTransaction, MaidResponsibility)
 from onlinemaid.constants import EMPLOYERS
-from project.accounts.models import PotentialEmployer
 from rest_framework import serializers
 from rest_framework.fields import EmailField, IntegerField
 from rest_framework.serializers import CharField, ModelSerializer
