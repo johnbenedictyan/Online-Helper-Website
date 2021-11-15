@@ -1,7 +1,7 @@
 from django.urls.conf import include, path
 
 from .views import (GeneralEnquiryListCreateAPIView, MaidListAPIView,
-                    MaidRetrieveAPIView, PotentialEmployerCreateAPIView,
+                    MaidRetrieveAPIView, PotentialEmployerListCreateAPIView,
                     SimilarMaidListAPIView)
 
 urlpatterns = [
@@ -42,7 +42,7 @@ urlpatterns = [
         include([
             path(
                 'pe',
-                PotentialEmployerCreateAPIView.as_view()
+                PotentialEmployerListCreateAPIView.as_view()
             ),
         ])
     )

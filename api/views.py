@@ -73,6 +73,6 @@ class GeneralEnquiryListCreateAPIView(ListCreateAPIView):
     serializer_class = GeneralEnquiryModelSerializer
 
 
-class PotentialEmployerCreateAPIView(CreateAPIView):
+class PotentialEmployerListCreateAPIView(ListCreateAPIView):
     queryset = PotentialEmployer.objects.all()
     serializer_class = PotentialEmployerModelSerializer
