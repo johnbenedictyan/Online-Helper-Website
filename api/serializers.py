@@ -211,7 +211,6 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
                     uuid.UUID(settings.API_ACCOUNT_UUID_NAMESPACE),
                     str(i.user.pk)
                 ) == pe_uuid:
-                    raise Exception(i.user.pk)
                     pe_pk = i.user.pk
         except Exception as e:
             raise Exception(e)
