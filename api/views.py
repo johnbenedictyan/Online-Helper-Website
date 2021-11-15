@@ -156,38 +156,40 @@ class MaidListAPIView(ListAPIView):
                     language_list.append(MaidLanguage.objects.get(
                         language=MaidLanguageChoices.HINDI_TAMIL))
 
-                qs = qs.filter(
-                    languages__in=language_list
-                )
+                if language_list:
+                    qs = qs.filter(
+                        languages__in=language_list
+                    )
                 responsibility_list = []
                 maid_resp_GEH = query_params.get("resp_GEH")
                 if maid_resp_GEH:
                     responsibility_list.append(MaidResponsibility.objects.get(
-                        responsibility=MaidResponsibilityChoices.MAID_RESP_GENERAL_HOUSEWORK))
+                        name=MaidResponsibilityChoices.MAID_RESP_GENERAL_HOUSEWORK))
 
                 maid_resp_COK = query_params.get("resp_COK")
                 if maid_resp_COK:
                     responsibility_list.append(MaidResponsibility.objects.get(
-                        responsibility=MaidResponsibilityChoices.MAID_RESP_COOKING))
+                        name=MaidResponsibilityChoices.MAID_RESP_COOKING))
 
                 maid_resp_CFI = query_params.get("resp_CFI")
                 if maid_resp_CFI:
                     responsibility_list.append(MaidResponsibility.objects.get(
-                        responsibility=MaidResponsibilityChoices.MAID_RESP_CARE_FOR_INFANTS_CHILDREN))
+                        name=MaidResponsibilityChoices.MAID_RESP_CARE_FOR_INFANTS_CHILDREN))
 
                 maid_resp_CFE = query_params.get("resp_CFE")
                 if maid_resp_CFE:
                     responsibility_list.append(MaidResponsibility.objects.get(
-                        responsibility=MaidResponsibilityChoices.MAID_RESP_CARE_FOR_ELDERLY))
+                        name=MaidResponsibilityChoices.MAID_RESP_CARE_FOR_ELDERLY))
 
                 maid_resp_CFD = query_params.get("resp_CFD")
                 if maid_resp_CFD:
                     responsibility_list.append(MaidResponsibility.objects.get(
-                        responsibility=MaidResponsibilityChoices.MAID_RESP_CARE_FOR_DISABLED))
+                        name=MaidResponsibilityChoices.MAID_RESP_CARE_FOR_DISABLED))
 
-                qs = qs.filter(
-                    responsibilities__in=responsibility_list
-                )
+                if responsibility_list:
+                    qs = qs.filter(
+                        responsibilities__in=responsibility_list
+                    )
             return qs
         else:
             return None
