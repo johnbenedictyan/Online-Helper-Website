@@ -194,8 +194,8 @@ class MaidLanguageModelSerializer(ModelSerializer):
 class GeneralEnquiryModelSerializer(ModelSerializer):
     maid_responsibility = MaidResponsibilityModelSerializer(many=True)
     languages_spoken = MaidLanguageModelSerializer(many=True)
-    potential_employer = serializers.PrimaryKeyRelatedField(
-        many=True, read_only=True)
+    # potential_employer = serializers.PrimaryKeyRelatedField(
+    #     many=True, read_only=True)
     pe_uuid = UUIDField()
 
     class Meta:
@@ -220,8 +220,11 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
             raise Exception(e)
         else:
             if pe_pk:
+                instance = PotentialEmployer.objects.get(
+                    user__pk=pe_pk
+                )
                 validated_data.update({
-                    'potential_employer': pe_pk
+                    'potential_employer': instance
                 })
 
         instance = GeneralEnquiry.objects.create(**validated_data)
