@@ -2,13 +2,10 @@ import random
 
 from accounts.models import PotentialEmployer
 from enquiry.models import GeneralEnquiry
-from maid.models import Maid
-from project.maid.constants import (MaidLanguageChoices,
-                                    MaidNationalityChoices,
-                                    MaidResponsibilityChoices,
-                                    TypeOfMaidChoices)
-from project.maid.models import MaidLanguage, MaidResponsibility
-from project.onlinemaid.constants import MaritalStatusChoices
+from maid.constants import (MaidLanguageChoices, MaidNationalityChoices,
+                            MaidResponsibilityChoices, TypeOfMaidChoices)
+from maid.models import Maid, MaidLanguage, MaidResponsibility
+from onlinemaid.constants import MaritalStatusChoices
 from rest_framework.generics import (GenericAPIView, ListAPIView,
                                      ListCreateAPIView, RetrieveAPIView,
                                      get_object_or_404)
