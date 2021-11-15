@@ -2,7 +2,7 @@ from django.urls.conf import include, path
 
 from .views import (GeneralEnquiryListCreateAPIView, MaidListAPIView,
                     MaidRetrieveAPIView, PotentialEmployerListCreateAPIView,
-                    SimilarMaidListAPIView)
+                    PotentialEmployerLoginAPIView, SimilarMaidListAPIView)
 
 urlpatterns = [
     path(
@@ -41,9 +41,13 @@ urlpatterns = [
         'users/',
         include([
             path(
-                'pe',
+                'sign-up',
                 PotentialEmployerListCreateAPIView.as_view()
             ),
+            path(
+                'login',
+                PotentialEmployerLoginAPIView.as_view()
+            )
         ])
     )
 ]
