@@ -1,5 +1,7 @@
 import uuid
 
+from rest_framework import serializers
+
 from accounts.models import PotentialEmployer
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -192,7 +194,9 @@ class MaidLanguageModelSerializer(ModelSerializer):
 class GeneralEnquiryModelSerializer(ModelSerializer):
     maid_responsibility = MaidResponsibilityModelSerializer(many=True)
     languages_spoken = MaidLanguageModelSerializer(many=True)
-    potential_employer = UUIDField()
+    potential_employer = serializers.PrimaryKeyRelatedField(
+        many=True, read_only=True)
+    pe_uuid = UUIDField()
 
     class Meta:
         model = GeneralEnquiry
@@ -201,7 +205,7 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
     def create(self, validated_data):
         maid_responsibilities = validated_data.pop('maid_responsibility')
         languages_spoken = validated_data.pop('languages_spoken')
-        pe_uuid = validated_data.pop('potential_employer')
+        pe_uuid = validated_data.pop('pe_uuid')
 
         # TODO: CHANGE THIS INEFFICIENT PSEUDO DE-HASH CODE
         pe_pk = None
