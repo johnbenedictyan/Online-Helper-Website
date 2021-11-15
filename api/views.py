@@ -248,3 +248,18 @@ class PotentialEmployerLoginAPIView(GenericAPIView):
             return Response(res, status=400)
         else:
             return Response(res, status=200)
+
+
+class ValidatePEUUIDAPIView(GenericAPIView):
+    permission_classes = [HasAPIKey]
+    queryset = PotentialEmployer.objects.all()
+    serializer_class = PotentialEmployerModelSerializer
+
+    def post(self, request, *args, **kwargs):
+        pe_uuid = request.data.get('pe_uuid')
+        serializer = self.get_serializer()
+        res = serializer.validate_uuid(data=pe_uuid)
+        if res:
+            return Response('Unsuccessful', status=400)
+        else:
+            return Response('Successful', status=200)

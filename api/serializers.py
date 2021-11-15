@@ -342,6 +342,19 @@ class PotentialEmployerModelSerializer(ModelSerializer):
             else:
                 raise Exception('Wrong Password')
 
+    def validate_uuid(self, data):
+        flag = False
+        try:
+            for i in PotentialEmployer.objects.all():
+                if uuid.uuid5(
+                    uuid.UUID(settings.API_ACCOUNT_UUID_NAMESPACE),
+                    str(i.user.pk)
+                ) == data:
+                    flag = True
+        except Exception as e:
+            raise Exception(e)
+        else:
+            return flag
 
 # class AgencyUserSerializer(serializers.Serializer):
 #     agency_license_number = CharField()

@@ -4,7 +4,7 @@ from .views import (GeneralEnquiryListCreateAPIView, MaidListAPIView,
                     MaidRetrieveAPIView, PotentialEmployerListCreateAPIView,
                     PotentialEmployerLoginAPIView,
                     ShortlistedEnquiryListCreateAPIView,
-                    SimilarMaidListAPIView)
+                    SimilarMaidListAPIView, ValidatePEUUIDAPIView)
 
 urlpatterns = [
     path(
@@ -53,6 +53,10 @@ urlpatterns = [
             path(
                 'login',
                 PotentialEmployerLoginAPIView.as_view()
+            ),
+            path(
+                'validate',
+                ValidatePEUUIDAPIView.as_view()
             )
         ])
     )
