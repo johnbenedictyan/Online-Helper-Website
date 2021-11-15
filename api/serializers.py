@@ -13,7 +13,7 @@ from maid.models import (Maid, MaidCooking, MaidDietaryRestriction,
                          MaidLoanTransaction, MaidResponsibility)
 from onlinemaid.constants import EMPLOYERS
 from rest_framework import serializers
-from rest_framework.fields import IntegerField, UUIDField
+from rest_framework.fields import IntegerField, SerializerMethodField, UUIDField
 from rest_framework.serializers import CharField, ModelSerializer
 
 
@@ -208,7 +208,6 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
     def create(self, validated_data):
         maid_responsibilities = validated_data.pop('maid_responsibility')
         languages_spoken = validated_data.pop('languages_spoken')
-        raise Exception(maid_responsibilities)
         potential_employer = validated_data.pop('potential_employer')
 
         # TODO: CHANGE THIS INEFFICIENT PSEUDO DE-HASH CODE
@@ -249,16 +248,15 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
 
 
 class ShortlistedEnquiryModelSerializer(ModelSerializer):
-    custom_maids = PKMaidSerializer(many=True)
+    maids = PKMaidSerializer(many=True, read_only=True)
     potential_employer = UUIDField()
 
     class Meta:
         model = ShortlistedEnquiry
-        exclude = ['maids']
+        fields = '__all__'
 
     def create(self, validated_data):
         maids = validated_data.pop('custom_maids')
-        raise Exception(maids)
         potential_employer = validated_data.pop('potential_employer')
 
         # TODO: CHANGE THIS INEFFICIENT PSEUDO DE-HASH CODE
