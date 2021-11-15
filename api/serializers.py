@@ -205,16 +205,21 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
 
         # TODO: CHANGE THIS INEFFICIENT PSEUDO DE-HASH CODE
         pe_pk = None
-        for i in PotentialEmployer.objects.all():
-            if str(uuid.uuid5(
-                uuid.UUID(settings.API_ACCOUNT_UUID_NAMESPACE),
-                str(i.user.pk)
-            )) == pe_uuid:
-                pe_pk = i.user.pk
-        if pe_pk:
-            validated_data.update({
-                'potential_employer': pe_pk
-            })
+        try:
+            for i in PotentialEmployer.objects.all():
+                if str(uuid.uuid5(
+                    uuid.UUID(settings.API_ACCOUNT_UUID_NAMESPACE),
+                    str(i.user.pk)
+                )) == pe_uuid:
+                    raise Exception(i.user.pk)
+                    pe_pk = i.user.pk
+        except Exception:
+            pass
+        else:
+            if pe_pk:
+                validated_data.update({
+                    'potential_employer': pe_pk
+                })
 
         instance = GeneralEnquiry.objects.create(**validated_data)
 
