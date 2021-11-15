@@ -199,7 +199,7 @@ class MaidLanguageModelSerializer(ModelSerializer):
 class GeneralEnquiryModelSerializer(ModelSerializer):
     maid_responsibility = MaidResponsibilityModelSerializer(many=True)
     languages_spoken = MaidLanguageModelSerializer(many=True)
-    potential_employer = UUIDField()
+    potential_employer = UUIDField(required=False)
 
     class Meta:
         model = GeneralEnquiry
