@@ -252,61 +252,60 @@ class PotentialEmployerModelSerializer(ModelSerializer):
             )
             return instance
 
-    def auth(self, validated_data):
-        user_details = validated_data.pop('user')
+    def auth(self, data):
         user_model = get_user_model()
         try:
             user = user_model.objects.get(
-                email=user_details.get('email')
+                email=data.get('email')
             )
         except user_model.DoesNotExist as e:
             raise Exception(e)
         else:
-            flag = user.check_password(user_details.get('password'))
+            flag = user.check_password(data.get('password'))
             if flag:
                 return uuid.uuid5(settings.API_ACCOUNT_UUID_NAMESPACE, user.pk)
             else:
                 raise Exception('Wrong Password')
 
 
-class AgencyUserSerializer(serializers.Serializer):
-    agency_license_number = CharField()
-    email = EmailField()
-    password = CharField()
+# class AgencyUserSerializer(serializers.Serializer):
+#     agency_license_number = CharField()
+#     email = EmailField()
+#     password = CharField()
 
-    def identify(self, email):
-        try:
-            pe = PotentialEmployer.objects.get(
-                email=email
-            )
-        except PotentialEmployer.DoesNotExist as e:
-            print(e)
-        else:
-            return pe
+#     def identify(self, email):
+#         try:
+#             pe = PotentialEmployer.objects.get(
+#                 email=email
+#             )
+#         except PotentialEmployer.DoesNotExist as e:
+#             print(e)
+#         else:
+#             return pe
 
-    def create(self, validated_data):
-        try:
-            new_user = get_user_model().objects.create_user(
-                email=validated_data.get('email'),
-                password=validated_data.get('password')
-            )
-        except Exception:
-            pass
-        else:
-            potential_employer_group = Group.objects.get(
-                name=EMPLOYERS
-            )
-            potential_employer_group.user_set.add(
-                new_user
-            )
-            instance = PotentialEmployer.objects.create(
-                user=new_user
-            )
-            return instance
+#     def create(self, validated_data):
+#         try:
+#             new_user = get_user_model().objects.create_user(
+#                 email=validated_data.get('email'),
+#                 password=validated_data.get('password')
+#             )
+#         except Exception:
+#             pass
+#         else:
+#             potential_employer_group = Group.objects.get(
+#                 name=EMPLOYERS
+#             )
+#             potential_employer_group.user_set.add(
+#                 new_user
+#             )
+#             instance = PotentialEmployer.objects.create(
+#                 user=new_user
+#             )
+#             return instance
 
-    def auth(self, validated_data):
-        pe = self.identify(validated_data.get('email'))
-        if pe:
-            flag = pe.user.check_password(validated_data.get('password'))
-            if flag:
-                return uuid.uuid5(settings.API_ACCOUNT_UUID_NAMESPACE, pe.pk)
+#     def auth(self, validated_data):
+#         pe = self.identify(validated_data.get('email'))
+#         if pe:
+#             flag = pe.user.check_password(validated_data.get('password'))
+#             if flag:
+#                 return uuid.uuid5(settings.API_ACCOUNT_UUID_NAMESPACE, pe.pk)
