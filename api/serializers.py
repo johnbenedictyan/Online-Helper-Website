@@ -178,6 +178,12 @@ class SlimMaidSerializer(ModelSerializer):
         ]
 
 
+class PKMaidSerializer(ModelSerializer):
+    class Meta:
+        model = Maid
+        fields = ['pk']
+
+
 class MaidResponsibilityModelSerializer(ModelSerializer):
     class Meta:
         model = MaidResponsibility
@@ -244,7 +250,7 @@ class GeneralEnquiryModelSerializer(ModelSerializer):
 class ShortlistedEnquiryModelSerializer(ModelSerializer):
     maid_responsibility = MaidResponsibilityModelSerializer(many=True)
     languages_spoken = MaidLanguageModelSerializer(many=True)
-    maids = serializers.PrimaryKeyRelatedField(many=True)
+    maids = PKMaidSerializer(many=True)
     potential_employer = UUIDField()
 
     class Meta:
