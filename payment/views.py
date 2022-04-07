@@ -5,7 +5,7 @@ import stripe
 from advertisement.models import (Advertisement, AdvertisementLocation,
                                   QuarterChoices)
 from agency.mixins import AgencyOwnerRequiredMixin, GetAuthorityMixin
-from django.conf import settings
+from django.conf import  settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.query import QuerySet as QS
@@ -386,7 +386,7 @@ class CheckoutSession(View):
 
 class StripeWebhookView(View):
     http_method_names = ['post']
-    endpoint_secret = 'whsec_7VRZrfVz3dwOCo49n2uLdIyibwXpOdeo'
+    endpoint_secret = settings.STRIPE_WEBHOOK_KEY
 
     @method_decorator(csrf_exempt)
     def dispatch(self, request: req, *args: Any, **kwargs: Any) -> RESBASE:
