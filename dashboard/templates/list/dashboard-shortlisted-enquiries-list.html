@@ -1,0 +1,204 @@
+{% extends 'dashboard-base.html' %}
+{% load dashboard_tags %}
+{% block dashboard_section %}
+<section>
+    <div class="container-fluid min-height-75">
+        <div class="row">
+            <div class="col mb-3 ml-md-1">
+                <h4 class="fs-20">Shortlisted Enquiries</h4>
+            </div>
+        </div>
+        <div class="row bg-primary text-light mx-half py-3 border d-none d-xl-flex">
+            <div class="col col-2">
+                <h6 class="dashboard-table-header">S/N</h6>
+            </div>
+            <div class="col-4">
+                <h6 class="dashboard-table-header">Employer</h6>
+            </div>
+            <div class="col">
+                <h6 class="dashboard-table-header">Maid</h6>
+            </div>
+            <div class="col">
+                <h6 class="dashboard-table-header">Remarks</h6>
+            </div>
+            <div class="col-1">
+                <h6 class="dashboard-table-header">Date</h6>
+            </div>
+            <div class="col-2 text-center">
+                <h6 class="dashboard-table-header">Actions</h6>
+            </div>
+        </div>
+        {% for enquiry in enquiries %}
+        <div class="row {% cycle '' 'bg-light ' %} mx-half py-3 border border-top-0 d-none d-xl-flex">
+            <div class="col col-2">
+                <p class="mb-0">{{enquiry.pk}}</p>
+            </div>
+            <div class="col-4">
+                <p class="mb-1">Name: {{enquiry.name}}</p>
+                <p class="mb-1">Mobile: {{enquiry.mobile_number}}</p>
+                <p class="mb-0">Email: {{enquiry.email}}</p>
+            </div>
+            <div class="col">
+                {% for im in enquiry.maid_shortlist_enquiry_im.all|enquiryimfilter:agency_id %}
+                <div class="row">
+                    <div class="col mb-2">
+                        <div class="row">
+                            <div class="col-8">
+                                <p class="mb-0">Name:</p>
+                            </div>
+                            <div class="col">
+                                <p class="mb-0">{{im.maid.name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <p class="mb-0">Nationality:</p>
+                            </div>
+                            <div class="col">
+                                <p class="mb-0">{{im.maid.get_country_of_origin_display }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <p class="mb-0">Type:</p>
+                            </div>
+                            <div class="col">
+                                <p class="mb-0">{{im.maid.get_maid_type_display}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <p class="mb-0">Status:</p>
+                            </div>
+                            <div class="col">
+                                <p class="mb-0">{{im.get_status_display}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="col">
+                <p class="mb-0">{{enquiry.remarks}}</p>
+            </div>
+            <div class="col-1">
+                <p class="mb-0">{{enquiry.date_published}}</p>
+            </div>
+            <div class="col-2">
+                <div class="row justify-content-center">
+                    <a class="mx-1" href="#"><i class="far fa-edit"></i></a>
+                    <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="row mx-half py-3 border border-top-0 d-none d-xl-flex">
+            <div class="col text-center">
+                <p class="mb-0">No Enquiries</p>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="row d-xl-none">
+            {% for enquiry in enquiries %}
+            <div class="col-24 col-lg-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col py-2">
+                                <h5 class="card-title fs-16">#{{enquiry.pk}}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>Name:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{enquiry.name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>Mobile No:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{enquiry.mobile_number}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>Email:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{enquiry.email}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            {% for im in enquiry.maid_shortlist_enquiry_im.all|enquiryimfilter:agency_id %}
+                            <div class="col-24 my-2">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <p class="mb-0">Name:</p>
+                                            </div>
+                                            <div class="col">
+                                                <p class="mb-0">{{im.maid.name}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p class="mb-0">Nationality:</p>
+                                            </div>
+                                            <div class="col">
+                                                <p class="mb-0">{{im.maid.get_country_of_origin_display }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p class="mb-0">Type:</p>
+                                            </div>
+                                            <div class="col">
+                                                <p class="mb-0">{{im.maid.get_maid_type_display}}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <p class="mb-0">Status:</p>
+                                            </div>
+                                            <div class="col">
+                                                <p class="mb-0">{{im.get_status_display}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>Remarks:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{enquiry.remarks}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>Date Published:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{enquiry.date_published}}</p>
+                            </div>
+                        </div>
+                        <h6>Actions:</h6>
+                        <a class="mx-1" href="#"><i class="far fa-edit"></i></a>
+                        <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% include 'pagination.html' %}
+    </div>
+</section>
+{% endblock dashboard_section %}

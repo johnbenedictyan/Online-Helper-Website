@@ -1,0 +1,11 @@
+{% load static %}
+{% include 'components/27-ws-section/start.html' with bg_color='' section_id='cta-maids-section' narrow=True %}
+<div class="row">
+    <div class="col py-md-3 py-lg-4 py-xl-5 text-center">
+        <a href="{% url 'maid_list' %}?agency={{agency.pk}}" class="btn btn-xs-lg btn-primary cta-button w-xs-100"
+            data-aos="zoom-in" data-aos-duration="2000" data-aos-delay="400" data-aos-offset="-500">
+            <h6 class="mb-0 py-1">Search Maids based on requirement</h6>
+        </a>
+    </div>
+</div>
+{% include 'components/27-ws-section/end.html' %}

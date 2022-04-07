@@ -1,0 +1,356 @@
+{% extends 'dashboard-base.html' %}
+{% load crispy_forms_tags %}
+{% load dashboard_tags %}
+{% block dashboard_section %}
+<section>
+    <div class="container-fluid min-height-75">
+        <div class="row">
+            <div class="col mb-3 ml-1">
+                <h5 class="fs-20">FDW Biodata</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-24 col-md-18 mb-4 ml-md-1">
+                <form action="" method="get">
+                    <div class="row">
+                        <div class="col-24 col-md-10">
+                            {{filter.form.name|as_crispy_field}}
+                        </div>
+                        <div class="col-24 col-md-10">
+                            {{filter.form.status|as_crispy_field}}
+                        </div>
+                        <div class="col-24 col-md-3 mb-3 mt-auto">
+                            <a href="{% url 'dashboard_maid_list' %}"
+                                class="btn btn-outline-secondary form-control">Reset</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col text-right pb-2">
+                        <a href="{% url 'dashboard_maid_information_create' %}"
+                            class="btn btn-xs-lg btn-primary mr-1 fs-14">Add Biodata</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-right pb-1">
+                        <p class="mb-0 mr-1">Biodata Limit: {{biodata}}/{{biodata_allowed}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-right">
+                        <p class="mb-0 mr-1">Featured Limit: {{featured}}/{{feat_biodata_allowed}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row bg-primary text-light mx-half py-3 border d-none d-xl-flex">
+            <div class="col-2">
+                <h6 class="dashboard-table-header">S/N <i
+                        class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="serialNoSortToggle"></i></h6>
+            </div>
+            <div class="col-4">
+                <h6 class="dashboard-table-header">Name <i
+                        class="fas {% if order_by == 'name' %}fa-sort-alpha-down{% elif order_by == '-name' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="nameSortToggle"></i></h6>
+            </div>
+            <div class="col">
+                <h6 class="dashboard-table-header">Nationality <i
+                        class="fas {% if order_by == 'nationality' %}fa-sort-alpha-down{% elif order_by == '-nationality' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="nationalitySortToggle"></i></h6>
+            </div>
+            <div class="col">
+                <h6 class="dashboard-table-header">Type <i
+                        class="fas {% if order_by == 'type' %}fa-sort-alpha-down{% elif order_by == '-type' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="typeSortToggle"></i></h6>
+            </div>
+            <div class="col">
+                <h6 class="dashboard-table-header">PP Expiry <i
+                        class="fas {% if order_by == 'ppExpiry' %}fa-sort-amount-down{% elif order_by == '-ppExpiry' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="ppExpirySortToggle"></i></h6>
+            </div>
+            <div class="col">
+                <h6 class="dashboard-table-header">Status <i
+                        class="fas {% if order_by == 'status' %}fa-sort-alpha-down{% elif order_by == '-status' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="statusSortToggle"></i></h6>
+            </div>
+            <div class="col-4">
+                <h6 class="dashboard-table-header">Date Created <i
+                        class="fas {% if order_by == 'dateCreated' %}fa-sort-amount-down{% elif order_by == '-dateCreated' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="dateCreatedSortToggle"></i></h6>
+            </div>
+            <div class="col-2 text-center">
+                <h6 class="dashboard-table-header">Actions</h6>
+            </div>
+        </div>
+        {% for maid in maids %}
+        <div class="row{% cycle ' ' ' bg-light ' %}text-dark mx-half py-3 border border-top-0 d-none d-xl-flex">
+            <div class="col-2">
+                <p class="mb-0">{{forloop.counter}}</p>
+            </div>
+            <div class="col-4">
+                <p class="mb-0">{{maid.name}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{maid.get_country_of_origin_display}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{maid.get_maid_type_display}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{maid.passport_expiry|date:"j M Y"}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{maid.get_status_display}}</p>
+            </div>
+            <div class="col-4">
+                <p class="mb-0">{{maid.created_on|date:"j M Y"}}</p>
+            </div>
+            <div class="col-2">
+                <div class="row justify-content-center">
+                    <a class="mx-2" href="{% url 'dashboard_maid_information_update' maid.pk %}"><i class="far fa-edit"
+                            data-toggle="tooltip" data-placement="top" title="Update Maid Information"></i></a>
+                    <a class="mx-2" href="{% url 'dashboard_maid_detail' maid.pk %}"><i class="far fa-file-image"
+                            data-toggle="tooltip" data-placement="top" title="View Maid Information"></i></a>
+                    {% if maid.is_featured is False %}
+                    <a class="mx-2" href="{% url 'maid_toggle_featured' maid.pk %}"><i class="fas fa-star"
+                            data-toggle="tooltip" data-placement="top" title="Feature Maid"></i></a>
+                    {% else %}
+                    <a class="mx-2" href="{% url 'maid_toggle_featured' maid.pk %}"><i class="far fa-star"
+                            data-toggle="tooltip" data-placement="top" title="Unfeature Maid"></i></a>
+                    {% endif %}
+                    {% if maid.is_published is False %}
+                    <a class="mx-2" href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye"
+                            data-toggle="tooltip" data-placement="top" title="Publish Maid"></i></a>
+                    {% else %}
+                    <a class="mx-2" href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye-slash"
+                            data-toggle="tooltip" data-placement="top" title="Unpublish Maid"></i></a>
+                    {% endif %}
+                    <a class="mx-2" href="{% url 'dashboard_maid_delete' maid.pk %}"><i class="far fa-trash-alt"
+                            data-toggle="tooltip" data-placement="top" title="Delete Maid Information"></i></a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="row mx-half py-3 border border-top-0 d-none d-xl-flex">
+            <div class="col text-center">
+                <p class="mb-0">No Maids</p>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="row d-xl-none">
+            {% for maid in maids %}
+            <div class="col-24 col-lg-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col py-2">
+                                <h5 class="card-title fs-16">#{{maid.pk}} - {{maid.name}}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>Name:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{maid.name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>Nationality:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{maid.get_country_of_origin_display}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>Type:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{maid.get_maid_type_display}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>PP Expiry:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{maid.passport_expiry|date:"j M Y"}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>Status:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{maid.get_status_display}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>Date Created:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{maid.created_on|date:"j M Y"}}</p>
+                            </div>
+                        </div>
+                        <h6>Actions:</h6>
+                        <a class="mx-1" href="{% url 'dashboard_maid_information_update' maid.pk %}"><i
+                                class="far fa-edit"></i></a>
+                        <a class="mx-1" href="{% url 'dashboard_maid_detail' maid.pk %}"><i
+                                class="far fa-file-image"></i></a>
+                        {% if maid.is_published is False %}
+                        <a class="mx-1" href="{% url 'maid_toggle_published' maid.pk %}"><i class="fas fa-eye"></i></a>
+                        {% else %}
+                        <a class="mx-1" href="{% url 'maid_toggle_published' maid.pk %}"><i
+                                class="fas fa-eye-slash"></i></a>
+                        {% endif %}
+                        <a class="mx-1" href="{% url 'dashboard_maid_delete' maid.pk %}"><i class="far fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% include 'pagination.html' %}
+    </div>
+</section>
+{% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function () {
+        $('.sortToggle').on('click', function () {
+            $('.sortToggle').not(this).each(function () {
+                $(this).removeClass('fa-sort-alpha-up');
+                $(this).removeClass('fa-sort-alpha-down');
+                $(this).removeClass('fa-sort-amount-up');
+                $(this).removeClass('fa-sort-amount-down');
+                $(this).addClass('fa-sort');
+            });
+            switch (this.id) {
+                case 'serialNoSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=serialNo"
+                    } else if ($(this).hasClass('fa-sort-amount-down')) {
+                        $(this).removeClass('fa-sort-amount-down');
+                        $(this).addClass('fa-sort-amount-up');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=-serialNo"
+                    } else {
+                        $(this).removeClass('fa-sort-amount-up');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=serialNo"
+                    }
+                    break;
+
+                case 'nameSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=name"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=-name"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=name"
+                    }
+                    break;
+
+                case 'nationalitySortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=nationality"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=-nationality"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=nationality"
+                    }
+                    break;
+
+                case 'typeSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=type"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=-type"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=type"
+                    }
+                    break;
+
+                case 'ppExpirySortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=ppExpiry"
+                    } else if ($(this).hasClass('fa-sort-amount-down')) {
+                        $(this).removeClass('fa-sort-amount-down');
+                        $(this).addClass('fa-sort-amount-up');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=-ppExpiry"
+                    } else {
+                        $(this).removeClass('fa-sort-amount-up');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=ppExpiry"
+                    }
+                    break;
+
+                case 'statusSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=status"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=-status"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=status"
+                    }
+                    break;
+
+                case 'dateCreatedSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=dateCreated"
+                    } else if ($(this).hasClass('fa-sort-amount-down')) {
+                        $(this).removeClass('fa-sort-amount-down');
+                        $(this).addClass('fa-sort-amount-up');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=-dateCreated"
+                    } else {
+                        $(this).removeClass('fa-sort-amount-up');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_maid_list' %}?order-by=dateCreated"
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        })
+        $('#id_name, #id_status').on('change', function () {
+            console.log($(this).form);
+            this.form.submit();
+        });
+    })
+</script>
+{% endblock js%}

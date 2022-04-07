@@ -1,0 +1,49 @@
+{% extends 'dashboard-base.html' %}
+{% load crispy_forms_tags %}
+{% block dashboard_section %}
+<section>
+    <div class="container-fluid min-height-75">
+        <form method="post" enctype="multipart/form-data">
+            {% crispy form helper %}
+            <div class="row form-row">
+                <div class="col-24 my-2 text-center">
+                    <button class="btn btn-xs-lg custom-add-button w-50 mb-2" id="addButton">Add</button>
+                </div>
+                <div class="col-24 my-2 text-center">
+                    <input type="hidden" name="submitFlag" class="form-control" id="submitFlag">
+                    {% if url_name == 'dashboard_maid_employment_history_update' %}
+                    <a href="{% url 'dashboard_maid_experience_update' maid_id %}"
+                        class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
+                    {% elif url_name == 'dashboard_maid_loan_update' %}
+                    <a href="{% url 'dashboard_maid_about_fdw_update' maid_id %}"
+                        class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
+                    {% else %}
+                    <a href="#" class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
+                    {% endif %}
+                    {% if url_name == 'dashboard_maid_loan_update' %}
+                    <button type="submit" id="submitButton"
+                        class="btn btn-xs-lg btn-primary w-xs-40 w-25 mx-2">Submit</button>
+                    {% else %}
+                    <button type="submit" id="submitButton"
+                        class="btn btn-xs-lg btn-primary w-xs-40 w-25 mx-2">Next</button>
+                    {% endif %}
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function () {
+        $("#addButton").on('click', function (e) {
+            this.form.submit();
+        })
+        $("#submitButton").on('click', function (e) {
+            e.preventDefault();
+            $("#submitFlag").val('True');
+            this.form.submit();
+        })
+    })
+</script>
+{% endblock js %}

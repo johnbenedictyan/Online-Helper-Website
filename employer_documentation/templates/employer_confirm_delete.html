@@ -1,0 +1,9 @@
+{% extends 'dashboard-base.html' %}
+{% load crispy_forms_tags %}
+{% block dashboard_section %}
+<form method="post">
+    {% csrf_token %}
+    <p>Confirm deletion of {{ object }}</p>
+    <input type="submit" value="Delete">
+</form>
+{% endblock dashboard_section %}

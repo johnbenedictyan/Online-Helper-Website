@@ -1,0 +1,610 @@
+{% extends 'dashboard-base.html' %}
+{% load humanize %}
+{% block dashboard_section %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-24 mb-5">
+            <div class="row bg-dashboard-pagebar-color mb-2">
+                <div class="col my-auto">
+                    <h5 class="fs-16 mb-0">FDW Information</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Name of FDW</p>
+                    <h6 class="text-dark mb-3">{{ object.fdw.name }}</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Nationality</p>
+                    <h6 class="text-dark mb-3">{{ object.fdw.get_country_of_origin_display }}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Passport No</p>
+                    <h6 class="text-dark mb-3">{{ object.fdw.get_passport_number }}</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">FIN No</p>
+                    <h6 class="text-dark mb-3">{{ object.fdw.get_fin_number }}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24 mb-5">
+            <div class="row bg-dashboard-pagebar-color mb-2">
+                <div class="col my-auto">
+                    <h5 class="fs-16 mb-0">Employer Information</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Name of Employer</p>
+                    <h6 class="text-dark mb-3">{{ object.employer.employer_name }}</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">NRIC / FIN No</p>
+                    <h6 class="text-dark mb-3">{{ object.employer.get_employer_nric_full }}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Address Line 1</p>
+                    <h6 class="text-dark mb-3">{{ object.employer.employer_address_1 }}</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Address Line 2</p>
+                    <h6 class="text-dark mb-3">
+                        {% if object.employer.employer_address_2 %}{{ object.employer.employer_address_2 }}{% endif %}
+                    </h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Postal Code</p>
+                    <h6 class="text-dark mb-3">{{ object.employer.employer_post_code }}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24 mb-5">
+            <div class="row bg-dashboard-pagebar-color mb-2">
+                <div class="col my-auto">
+                    <h5 class="fs-16 mb-0">Case Information</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Case Reference Number</p>
+                    <h6 class="text-dark mb-3">{{ object.case_ref_no }}</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Contract Date</p>
+                    <h6 class="text-dark mb-3">{{ object.agreement_date }}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">Type of Application</p>
+                    <h6 class="text-dark mb-3">{{ object.employer.get_applicant_type_display }}</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">Assigned EA Personnel</p>
+                    <h6 class="text-dark mb-3">{{ object.employer.agency_employee.name }}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">FDW Basic Salary</p>
+                    <h6 class="text-dark mb-3">S$ {{ object.fdw_salary|intcomma }}</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">FDW Loan Amount</p>
+                    <h6 class="text-dark mb-3">S$ {{ object.fdw_loan|intcomma }}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="mb-1">FDW No of Off Days Per Month</p>
+                    <h6 class="text-dark mb-3">{{ object.fdw_off_days }} days</h6>
+                </div>
+                <div class="col">
+                    <p class="mb-1">FDW Per Off Day Compensation</p>
+                    <h6 class="text-dark mb-3">S$ {{ object.get_per_off_day_compensation|intcomma }}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24 mb-5">
+            <div class="row bg-dashboard-pagebar-color mb-2">
+                <div class="col my-2">
+                    <h5 class="fs-16 mb-0">Service Fee Schedule</h5>
+                </div>
+            </div>
+            {% if not object.rn_servicefeeschedule_ed.is_new_case %}
+            <div class="row mb-5">
+                <div class="col-md-12">
+                    <p class="mb-1">Name of FDW Replaced</p>
+                    <h6 class="text-dark mb-3">{{ object.rn_servicefeeschedule_ed.fdw_replaced_name }}</h6>
+                </div>
+                <div class="col-md-12">
+                    <p class="mb-1">Passport of FDW Replaced</p>
+                    <h6 class="text-dark mb-3">{{ object.rn_servicefeeschedule_ed.get_fdw_replaced_passport_full }}</h6>
+                </div>
+                <div class="col-md-12">
+                    <p class="mb-1">Balance Loan of FDW Replaced</p>
+                    <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b4_loan_transferred|intcomma }}
+                    </h6>
+                </div>
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="col mb-4">
+                    <div class="row">
+                        <div class="col mb-1">
+                            <h6>1. Service Fee</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <p class="mb-1">1. Service Fee</p>
+                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b1_service_fee|intcomma }}
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-4">
+                    <div class="row">
+                        <div class="col mb-1">
+                            <h6>2. Administrative Cost</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="mb-1">2a. Application / Collection of Work Permit</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2a_work_permit_application_collection|intcomma }}
+                            </h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">2b. Medical Examination Fee</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2b_medical_examination_fee|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">2c. Security Bond and Personal Accident Insurance</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2c_security_bond_accident_insurance|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">2d. Reimbursement of Indemnity Policy</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2d_indemnity_policy_reimbursement|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">2e. Home Services</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2e_home_service|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">2f. Settling-In-Programme (SIP)</p>
+                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b2g_sip|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">2g. Other Sevices Provided (i)</p>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_servicefeeschedule_ed.b2g1_other_services_description }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">2g. Other Service Fee (i)</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2g1_other_services_fee|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">2g. Other Sevices Provided (ii)</p>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_servicefeeschedule_ed.b2g2_other_services_description }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">2g. Other Service Fee (ii)</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2g2_other_services_fee|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">2g. Other Sevices Provided (iii)</p>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_servicefeeschedule_ed.b2g3_other_services_description }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">2g. Other Service Fee (iii)</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2g3_other_services_fee|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">2h. Cost of replacement within ___ month(s)</p>
+                            <h6 class="text-dark mb-3">{{ object.rn_servicefeeschedule_ed.b2h_replacement_months }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">2h. Cost for replacement</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2h_replacement_cost|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">2i. Renewal of Work Permit</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.b2i_work_permit_renewal|intcomma }}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-4">
+                    <div class="row">
+                        <div class="col mb-1">
+                            <h6>3. Placement Fee</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <p class="mb-1">3a. Agency Fee Charged on FDW</p>
+                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.b3_agency_fee|intcomma }}
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-4">
+                    <div class="row">
+                        <div class="col mb-1">
+                            <h6>Payment</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="mb-1">Deposit - Upon confirmation of FDW</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_servicefeeschedule_ed.ca_deposit_amount|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">Deposit Paid Date</p>
+                            <h6 class="text-dark mb-3">{{ object.rn_servicefeeschedule_ed.ca_deposit_date }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">Balance Payment - Upon Collection of FDW</p>
+                            <h6 class="text-dark mb-3">S$ {{ object.rn_servicefeeschedule_ed.get_balance|intcomma }}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24 mb-5">
+            <div class="row bg-dashboard-pagebar-color mb-2">
+                <div class="col my-2">
+                    <h5 class="fs-16 mb-0">Service Agreement</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-4">
+                    <div class="row">
+                        <div class="col mb-1">
+                            <h6>1. Appointment of Services</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <p class="mb-1">1.3 Handover FDW to Employer Within (Days) After IPA</p>
+                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c1_3_handover_days }}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-4">
+                    <div class="row">
+                        <div class="col mb-1">
+                            <h6>3. Replacement Policy Before FDW Deployment</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-24">
+                            <p class="mb-1">3.2 No Replacement Under The Following Circumstances (i)</p>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_serviceagreement_ed.c3_2_no_replacement_criteria_1|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-24">
+                            <p class="mb-1">3.2 No Replacement Under The Following Circumstances (ii)</p>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_serviceagreement_ed.c3_2_no_replacement_criteria_2|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-24">
+                            <p class="mb-1">3.2 No Replacement Under The Following Circumstances (iii)</p>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_serviceagreement_ed.c3_2_no_replacement_criteria_3|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-24">
+                            <p class="mb-1">3.4 Refund Amount If No Replacement Pursuant to Clause 3.1</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_serviceagreement_ed.c3_4_no_replacement_refund|intcomma }}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-4">
+                    <div class="row">
+                        <div class="col mb-1">
+                            <h6>4. Replacement Policy After FDW Deployment</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="mb-1">4.1 No of Replacement</p>
+                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c4_1_number_of_replacements }}
+                            </h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">4.1 Replacement Period (months)</p>
+                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c4_1_replacement_period }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">4.1 FDW Required to Worked For Minimum (Days)</p>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_serviceagreement_ed.c4_1_replacement_after_min_working_days }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">4.1 5 Replacement Within (Months) From FDW Returned Date</p>
+                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c4_1_5_replacement_deadline }}
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-4">
+                    <div class="row">
+                        <div class="col mb-1">
+                            <h6>5. Refund Policy for Service Fee and Placement Fee</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="mb-1">5.1.1 Deploy Within (Days) from Service Agreement Date</p>
+                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c5_1_1_deployment_deadline }}
+                            </h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">'5.1.1. Failed Deployment Refund Amount</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_serviceagreement_ed.c5_1_1_failed_deployment_refund|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">5.1.2 Refund Within (Days) If Employer Terminate Agreement</p>
+                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c5_1_2_refund_within_days }}
+                            </h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">5.1.2 Charges If Terminates BEFORE Arrival</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_serviceagreement_ed.c5_1_2_before_fdw_arrives_charge|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">5.1.2 Charges If Terminates AFTER Arrival</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_serviceagreement_ed.c5_1_2_after_fdw_arrives_charge|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">5.2.2 Refund Within (Weeks) If FDW Can Be Transferred</p>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_serviceagreement_ed.c5_2_2_can_transfer_refund_within }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">5.3.2 Refund Within (Weeks) If FDW Cannot Be Transferred</p>
+                            <h6 class="text-dark mb-3">
+                                {{ object.rn_serviceagreement_ed.c5_3_2_cannot_transfer_refund_within }}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-4">
+                    <div class="row">
+                        <div class="col mb-1">
+                            <h6>6. Special Provisions</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="mb-1">6.4 Food and Lodging cost per day</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_serviceagreement_ed.c6_4_per_day_food_accommodation_cost|intcomma }}</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">6.6 Counselling cost per day</p>
+                            <h6 class="text-dark mb-3">S$
+                                {{ object.rn_serviceagreement_ed.c6_6_per_session_counselling_cost|intcomma }}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-4">
+                    <div class="row">
+                        <div class="col mb-1">
+                            <h6>9. Dispute Resolution</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="mb-1">9.1 Independent Mediator #1</p>
+                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c9_1_independent_mediator_1 }}
+                            </h6>
+                        </div>
+                        <div class="col-md-12">
+                            <p class="mb-1">9.2 Independent Mediator #2</p>
+                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c9_2_independent_mediator_2 }}
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col mb-4">
+                    <div class="row">
+                        <div class="col mb-1">
+                            <h6>13. Termination of Agreement</h6>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p class="mb-1">Service Agreement Termination Notice (Days)</p>
+                            <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c13_termination_notice }}</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-24 mb-5">
+            <div class="row bg-dashboard-pagebar-color mb-2">
+                <div class="col my-2">
+                    <h5 class="fs-14 mb-0">Employment Contract</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="mb-1">3.5 FDW Sleeping Arrangement</p>
+                    <h6 class="text-dark mb-3">
+                        {{ object.rn_serviceagreement_ed.get_c3_5_fdw_sleeping_arrangement_display }}</h6>
+                </div>
+                <div class="col-md-12">
+                    <p class="mb-1">4.1 Employment Contract Termination Notice (Days)</p>
+                    <h6 class="text-dark mb-3">{{ object.rn_serviceagreement_ed.c4_1_termination_notice }}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if object.fdw.maid_type == 'NEW' %}
+    <div class="row">
+        <div class="col-24 mb-5">
+            <div class="row bg-dashboard-pagebar-color mb-2">
+                <div class="col my-2">
+                    <h5 class="fs-14 mb-0">Safety Agreement</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="mb-1">Residential Dwelling Type</p>
+                    <h6 class="text-dark mb-3">{{ object.rn_safetyagreement_ed.get_residential_dwelling_type_display }}
+                    </h6>
+                </div>
+                <div class="col-md-12">
+                    <p class="mb-1">Does Employer Required FDW to Clean Window Exterior?</p>
+                    <h6 class="text-dark mb-3">{{ object.rn_safetyagreement_ed.get_fdw_clean_window_exterior_display }}
+                    </h6>
+                </div>
+                <div class="col-md-12">
+                    <p class="mb-1">(i) Location of Window Exterior</p>
+                    <h6 class="text-dark mb-3">{{ object.rn_safetyagreement_ed.get_window_exterior_location_display }}
+                    </h6>
+                </div>
+                <div class="col-md-12">
+                    <p class="mb-1">(ii) Grills Installed on Windows required to Be Cleaned</p>
+                    <h6 class="text-dark mb-3">
+                        {{ object.rn_safetyagreement_ed.get_grilles_installed_require_cleaning_display }}</h6>
+                </div>
+                <div class="col-md-12">
+                    <p class="mb-1">(iii) Adult Supervision When Cleaning Window Exterior?</p>
+                    <h6 class="text-dark mb-3">{{ object.rn_safetyagreement_ed.get_adult_supervision_display }}</h6>
+                </div>
+                <div class="col-md-12">
+                    <p class="mb-1">Verify Employer Understands Window Cleaning Conditions</p>
+                    <h6 class="text-dark mb-3">
+                        {{ object.rn_safetyagreement_ed.get_verifiy_employer_understands_window_cleaning_display }}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="row">
+        <div class="col-24 mb-5">
+            <div class="row bg-dashboard-pagebar-color mb-2">
+                <div class="col my-2">
+                    <h5 class="fs-14 mb-0">View Documents</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 my-2"><a
+                        href="{% url 'archived_pdf_agency_service_fee_schedule' level_1_pk=object.pk %}">
+                        <p class="mb-1">Service Fee Schedule ({% if object.rn_servicefeeschedule_ed.is_new_case %}Form
+                            A{% else %}Form B{% endif %})</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a
+                        href="{% url 'archived_pdf_agency_handover_checklist' level_1_pk=object.pk %}">
+                        <p class="mb-1">Handover Checklist</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a
+                        href="{% url 'archived_pdf_agency_service_agreement' level_1_pk=object.pk %}">
+                        <p class="mb-1">Service Agreement</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a
+                        href="{% url 'archived_pdf_agency_transfer_consent' level_1_pk=object.pk %}">
+                        <p class="mb-1">Transfer Consent</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a
+                        href="{% url 'archived_pdf_agency_employment_contract' level_1_pk=object.pk %}">
+                        <p class="mb-1">Employment Contract</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a
+                        href="{% url 'archived_pdf_agency_work_pass_authorisation' level_1_pk=object.pk %}">
+                        <p class="mb-1">Work Pass Authorisation</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a
+                        href="{% url 'archived_pdf_agency_repayment_schedule' level_1_pk=object.pk %}">
+                        <p class="mb-1">Loan Repayment Schedule</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a
+                        href="{% url 'archived_pdf_agency_job_order_route' level_1_pk=object.pk %}">
+                        <p class="mb-1">Job Order</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a
+                        href="{% url 'archived_pdf_agency_rest_day_agreement' level_1_pk=object.pk %}">
+                        <p class="mb-1">Rest Day Agreement</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a href="{% url 'archived_pdf_agency_ipa_route' level_1_pk=object.pk %}">
+                        <p class="mb-1">IPA</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a
+                        href="{% url 'archived_pdf_agency_safety_agreement' level_1_pk=object.pk %}">
+                        <p class="mb-1">Safety Agreement</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a
+                        href="{% url 'archived_pdf_agency_income_tax_declaration' level_1_pk=object.pk %}">
+                        <p class="mb-1">Income Tax Declaration</p>
+                    </a></div>
+                <div class="col-md-12 my-2"><a
+                        href="{% url 'archived_pdf_agency_medical_report_route' level_1_pk=object.pk %}">
+                        <p class="mb-1">Medical Report</p>
+                    </a></div>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="signatureUrlSection">
+        <div class="col-24 mb-5">
+            <div class="row bg-dashboard-pagebar-color mb-2">
+                <div class="col my-2">
+                    <h5 class="fs-14 mb-0">Signature URL</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock dashboard_section %}

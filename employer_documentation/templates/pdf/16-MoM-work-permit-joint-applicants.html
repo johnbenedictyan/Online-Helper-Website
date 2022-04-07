@@ -1,0 +1,178 @@
+{% extends 'pdf/00-base.html' %}
+{% load static %}
+
+{% block title %}Joint Applicant Details{% endblock %}
+
+{% block css %}
+<style>
+    h5 {
+        word-spacing: 0.1rem;
+        letter-spacing: 0.2px;
+        line-height: 1.2rem;
+        margin: 0;
+        padding: 0;
+    }
+
+    p {
+        font-size: 12px;
+    }
+
+    .part-c {
+        background-color: green;
+        color: white;
+        margin: 0.5rem 0.3rem 0 0;
+        padding: 0.4rem 0.6rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+    }
+
+    .box-black-border {
+        border: solid 2px black;
+        padding: 0.5rem;
+    }
+
+    .answer {
+        font-weight: normal;
+        margin-left: 24px;
+    }
+</style>
+{% endblock css %}
+
+{% block pdf_content %}
+{% include 'pdf/00-MoM-logos-header-snippet.html' %}
+
+<section>
+    <span class="part-c">PART C</span>
+    <span style="font-size: 0.9rem; font-weight: bold;">Complete both Parts A and C if you are applying under the Joint
+        Income scheme</span>
+</section>
+
+<section style="margin: 1rem 0;">
+    <h5 style="border: solid 0.3rem #DAE3EA; padding: 0.5rem;">The person with the higher income must be the Employer
+        while the other will be the Joint applicant, who may be the Employer’s sibling, parent or child.</h5>
+</section>
+
+<section class="box-black-border">
+    <h3 style="font-size: 1.2rem; margin: 0 0 0.5rem 0;">Joint applicant's income details</h3>
+    <h5>Combined monthly income of Employer and Joint applicant (S$)<span
+            class="answer">{{ object.rn_jointapplicant_ed.combined_monthly_income }}</span></h5>
+    <p style="margin-top: 0.2rem; padding-left: 0; font-size: 10px;">(rounded to the nearest dollar)</p>
+    <br>
+    <br>
+    <h5>Have both the Employer and Joint applicant worked in Singapore for the last 2 years?</h5>
+    <p>{{ object.rn_jointapplicant_ed.get_worked_in_sg_display }}</p>
+    <br>
+    <h5 style="padding-right: 12px;">If the Employer and Joint applicant are agreeable for us to verify their incomes
+        directly with IRAS, please enter their tax reference numbers below. If not, please refer to Page 2 for the
+        additional documents you need to <a href="#">upload</a>.</h5>
+    <h5 style="margin: 0.5rem 0;">Employer's Singapore tax reference number (e.g. NRIC no./FIN):<span
+            class="answer">{{ object.employer.get_employer_nric_full }}</span></h5>
+    <h5>Joint applicant's Singapore tax reference number (e.g. NRIC no./FIN):<span
+            class="answer">{{ object.rn_jointapplicant_ed.get_joint_applicant_nric_full }}</span></h5>
+    <br>
+    <br>
+    <h3 style="font-size: 1.2rem; margin: 0 0 0.5rem 0;">About the Joint applicant</h3>
+    <br>
+    <h5>Relationship with Employer:</h5>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_relationship_display }}</p>
+    <br>
+    <h5>Name <span style="font-size: 10px; font-weight: normal;">(as on NRIC or passport):</span></h5>
+    <p>{{ object.rn_jointapplicant_ed.joint_applicant_name }}</p>
+    <br>
+    <h5>Gender:</h5>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_gender_display }}</p>
+    <br>
+    <h5>Date of birth:</h5>
+    <p>{{ object.rn_jointapplicant_ed.joint_applicant_date_of_birth|date:"d M Y" }}</p>
+    <br>
+    <h5>NRIC number:</h5>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_nric_full }}</p>
+    <br>
+    <h5>Nationality/Citizenship:</h5>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_nationality_display }}</p>
+    <br>
+</section>
+
+<div class="page-break">
+    {% include 'pdf/00-MoM-logos-header-snippet.html' %}
+</div>
+
+<section>
+    <span class="part-c">PART C</span>
+    <span style="font-size: 0.9rem; font-weight: bold;">Complete both Parts A and C if you are applying under the Joint
+        Income scheme</span>
+</section>
+<br>
+<section class="box-black-border">
+    <h3 style="font-size: 1.2rem; margin: 0 0 0.5rem 0;">About the Joint applicant</h3>
+    <h5>Residential status:</h5>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_residential_status_display }}</p>
+    <br>
+    <h5>Residential address:</h5>
+    <p>{{ object.rn_jointapplicant_ed.joint_applicant_address_1 }}</p>
+    <p>{{ object.rn_jointapplicant_ed.joint_applicant_address_2 }}</p>
+    <h5 style="padding-left: 400px;">Postal code:<span
+            class="answer">{{ object.rn_jointapplicant_ed.joint_applicant_post_code }}</span></h5>
+    <br>
+    <h5>Marital status:</h5>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_marital_status_display }}</p>
+    <br>
+    {% if object.rn_jointapplicant_ed.joint_applicant_marital_status == 'MARRIED' %}
+    <h5>If the Joint applicant is married, please enter the marriage and Spouse's details below:</h5>
+    <br>
+    <h5>Was the marriage registered in Singapore?</h5>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_marriage_sg_registered_display }}</p>
+    <br>
+    <h5>Spouse's name <span style="font-size: 10px; font-weight: normal;">(as on NRIC or passport):</span></h5>
+    <p>{{ object.rn_jointapplicant_ed.joint_applicant_name_spouse }}</p>
+    <br>
+    <h5>Spouse's gender:</h5>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_gender_spouse_display }}</p>
+    <br>
+    <h5>Spouse's date of birth:</h5>
+    <p>{{ object.rn_jointapplicant_ed.joint_applicant_date_of_birth_spouse|date:"d M Y" }}</p>
+    <br>
+    <table width=100%>
+        <col style="width:50%">
+        <col style="width:50%">
+        <tr>
+            <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's NRIC number <span
+                    style="font-size: 10px; font-weight: normal;">(if any):</span></th>
+            <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's FIN <span
+                    style="font-size: 10px; font-weight: normal;">(if any):</span></th>
+        </tr>
+        <tr>
+            <td style="margin: 0; padding: 0; font-size: 13px;">
+                {{ object.rn_jointapplicant_ed.get_joint_applicant_nric_spouse_full }}</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">
+                {{ object.rn_jointapplicant_ed.get_joint_applicant_fin_spouse_full }}</td>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <table width=100%>
+        <col style="width:50%">
+        <col style="width:50%">
+        <tr>
+            <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's passport number:</th>
+            <th style="margin: 0; padding: 0; font-size: 13px;">Spouse's passport expiry date:</th>
+        </tr>
+        <tr>
+            <td style="margin: 0; padding: 0; font-size: 13px;">
+                {{ object.rn_jointapplicant_ed.get_joint_applicant_passport_spouse_full }}</td>
+            <td style="margin: 0; padding: 0; font-size: 13px;">
+                {{ object.rn_jointapplicant_ed.joint_applicant_passport_date_spouse|date:"d M Y" }}</td>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <h5>Spouse's nationality/citizenship:</h5>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_nationality_spouse_display }}</p>
+    <br>
+    <h5>Spouse's residential status:</h5>
+    <p>{{ object.rn_jointapplicant_ed.get_joint_applicant_residential_status_spouse_display }}</p>
+    <br>
+    {% endif %}
+</section>
+
+{% endblock pdf_content %}

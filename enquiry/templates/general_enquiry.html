@@ -1,0 +1,17 @@
+{% extends 'enquiry-base.html' %}
+{% load crispy_forms_tags %}
+{% block enquiry_section %}
+{% include 'sections/title-banner.html' with page_name='General Enquiry' %}
+{% include 'components/crispy-form-error.html' %}
+{% include 'components/45-ws-section/start.html' with bg_color='bg-custom-ab' section_id='general-enquiry-section' %}
+{% include 'components/section-heading.html' with title='Let us help you find the most suitable Maid' %}
+<div class="row justify-content-center">
+    <div class="col-md-20 col-xl-24 my-md-3 my-lg-4">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% crispy form %}
+        </form>
+    </div>
+</div>
+{% include 'components/45-ws-section/end.html' %}
+{% endblock enquiry_section %}

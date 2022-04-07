@@ -1,0 +1,213 @@
+{% extends 'pdf/00-base.html' %}
+
+{% block title %}Handover Checklist{% endblock %}
+
+{% block pdf_content %}
+{% include 'pdf/00-header.html' %}
+<br>
+<h2 class="text-align-center">HANDLING AND TAKE OVER FORM</h2>
+<br>
+<div class="border--bottom">
+</div>
+<br>
+
+<table>
+    <col style="width:30%">
+    <col style="width:70%">
+    <tr>
+        <td class="text-bold--600">Employment Agency Ref No</td>
+        <td>: {{ object.case_ref_no }}</td>
+    </tr>
+    <tr>
+        <td>Hand Over Date</td>
+        <td>: {{ object.rn_casestatus_ed.fdw_work_commencement_date|date:"d M Y" }}</td>
+    </tr>
+</table>
+<br>
+<table>
+    <col style="width:5%">
+    <col style="width:45%">
+    <col style="width:50%">
+    <tr>
+        <td>(a)</td>
+        <td>Full Name of Employer</td>
+        <td>: {{ object.employer.employer_name }}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>NRIC/ Passport</td>
+        <td>: {{ object.employer.get_employer_nric_full }}</td>
+    </tr>
+    <tr>
+        <td></td>
+    </tr>
+    <tr>
+        <td>(b)</td>
+        <td>Full Name of Foreign Domestic Worker</td>
+        <td>: {{ object.fdw.name }}</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>Passport No.</td>
+        <td>: {{ object.fdw.get_passport_number }}</td>
+    </tr>
+</table>
+<br>
+<table>
+    <col style="width:5%">
+    <col style="width:5%">
+    <col style="width:90%">
+    <tr>
+        <td colspan="1" class="text-bold--600">A.</td>
+        <td colspan="2" class="text-bold--600">Documents to be handed to Maid personally</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>1)</td>
+        <td>Employment Contract (Incl Salary Schedule and Rest Day Agreement)</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>2)</td>
+        <td>Medical Report (third party)</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>3)</td>
+        <td>Insurance (third party)</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>4)</td>
+        <td>Maid Biodata</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>5)</td>
+        <td>Job Order</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>6)</td>
+        <td>Handover Checklist</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>7)</td>
+        <td>Maid’s Passport</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>8)</td>
+        <td>Maid’s Work Permit</td>
+    </tr>
+    <tr>
+        <td colspan="3"><br></td>
+    </tr>
+    <tr>
+        <td colspan="1" class="text-bold--600">B.</td>
+        <td colspan="2" class="text-bold--600">Documents to be handed to employer</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>1)</td>
+        <td>Employment Contract (Incl Salary Schedule and Rest Day Agreement)</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>2)</td>
+        <td>Service Agreement (employer only)</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>3)</td>
+        <td>Medical Report (third party)</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>4)</td>
+        <td>Insurance (third party)</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>5)</td>
+        <td>Service Fee Schedule (employer only)</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>6)</td>
+        <td>Maid Biodata</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>7)</td>
+        <td>Job Order</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>8)</td>
+        <td>Handover Checklist</td>
+    </tr>
+    <tr>
+        <td colspan="3"><br></td>
+    </tr>
+    <tr>
+        <td colspan="1" class="text-bold--600">C.</td>
+        <td colspan="2" class="text-bold--600">Maid Inventory</td>
+    </tr>
+    {% for inventory in object.rn_maid_inventory.all %}
+    <tr>
+        <td></td>
+        <td>{{ forloop.counter }})</td>
+        <td>{{ inventory }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<table>
+    <tr>
+        <td colspan="3">I, {{ object.employer.employer_name }}, hereby confirm that {{ object.fdw.name }} is the Maid
+            selected by me and I take custody and responsibility of the Maid from this date.</td>
+    </tr>
+    <tr>
+        <td width="40%" class="border--bottom"><img class="signature__img"
+                src="{{ object.rn_signatures_ed.employer_signature_2 }}"></td>
+        <td></td>
+        <td width="40%" class="border--bottom"><img class="signature__img"
+                src="{{ object.rn_signatures_ed.fdw_signature }}"></td>
+    </tr>
+    <tr>
+        <td class="text-bold--600">Employer’s Signature</td>
+        <td></td>
+        <td class="text-bold--600">Maid's Signature</td>
+    </tr>
+    <tr>
+        <td>{{ object.employer.employer_name }}</td>
+        <td></td>
+        <td>{{ object.fdw.name }}</td>
+    </tr>
+    <tr>
+        <td>{{ object.employer.get_employer_nric_full }}</td>
+        <td></td>
+        <td>{{ object.fdw.get_passport_number }}</td>
+    </tr>
+
+    <tr>
+        <td width="40%" class="border--bottom"><img class="signature__img"
+                src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td class="text-bold--600">Signed for and on behalf of Agency</td>
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td>{{ object.employer.agency_employee.name}}</td>
+        <td colspan="2"></td>
+    </tr>
+    <tr>
+        <td>{{ object.employer.agency_employee.ea_personnel_number }}</td>
+        <td colspan="2"></td>
+    </tr>
+</table>
+{% endblock pdf_content %}

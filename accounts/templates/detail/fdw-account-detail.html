@@ -1,0 +1,178 @@
+{% extends 'employer-base.html' %}
+{% block accounts_section %}
+{% include 'sections/title-banner.html' with page_name='Profile' %}
+{% include 'components/27-ws-section/start.html' with bg_color='bg-custom-ab' section_id='fdw-account-detail-section' %}
+{% include 'components/crispy-form-error.html' %}
+<div class="row">
+    <div class="col mb-3 ml-1">
+        <h4 class="fs-20">Available Jobs</h4>
+    </div>
+</div>
+<div class="row">
+    {% for job in jobs %}
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col pt-1">
+                        <h5 class="card-title mb-0">Job #{{job.pk}}</h5>
+                    </div>
+                    <div class="col-2">
+                        <a href="{% url 'reject_shortlisted_enquiry' pk=job.shortlisted_enquiry.pk maid_pk=job.maid.pk %}"
+                            class="close">
+                            <span aria-hidden="true">&times;</span></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-24 col-md-10">
+                        <p>Name:</p>
+                    </div>
+                    <div class="col-24 col-md">
+                        <p>{{job.shortlisted_enquiry.name}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-24 col-md-10">
+                        <p>House Type:</p>
+                    </div>
+                    <div class="col-24 col-md">
+                        <p>{{job.shortlisted_enquiry.get_property_type_display}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-24 col-md-10">
+                        <p>Number of family members:</p>
+                    </div>
+                    <div class="col-24 col-md">
+                        <p>{{job.shortlisted_enquiry.no_of_family_members}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-24 col-md-10">
+                        <p>Number of children below 5:</p>
+                    </div>
+                    <div class="col-24 col-md">
+                        <p>{{job.shortlisted_enquiry.no_of_below_5}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-24 col-md-10">
+                        <p>Remarks:</p>
+                    </div>
+                    <div class="col-24 col-md">
+                        <p>{{job.shortlisted_enquiry.remarks}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-center my-2">
+                        <a href="{% url 'accept_shortlisted_enquiry' pk=job.shortlisted_enquiry.pk maid_pk=job.maid.pk %}"
+                            class="btn btn-primary w-50">Accept</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<!-- <div class="row bg-primary text-light mx-half py-3 border d-none d-xl-flex">
+    <div class="col col-2">
+        <h6 class="dashboard-table-header">S/N</h6>
+    </div>
+    <div class="col-4">
+        <h6 class="dashboard-table-header">Employer</h6>
+    </div>
+    <div class="col">
+        <h6 class="dashboard-table-header">Maid</h6>
+    </div>
+    <div class="col">
+        <h6 class="dashboard-table-header">Remarks</h6>
+    </div>
+    <div class="col-1">
+        <h6 class="dashboard-table-header">Date</h6>
+    </div>
+    <div class="col-2 text-center">
+        <h6 class="dashboard-table-header">Actions</h6>
+    </div>
+</div>
+{% for enquiry in enquiries %}
+<div class="row {% cycle '' 'bg-light ' %} mx-half py-3 border border-top-0 d-none d-xl-flex">
+    <div class="col col-2">
+        <p class="mb-0">{{enquiry.pk}}</p>
+    </div>
+    <div class="col-4">
+        <p class="mb-1">Name: {{enquiry.name}}</p>
+        <p class="mb-1">Mobile: {{enquiry.mobile_number}}</p>
+        <p class="mb-0">Email: {{enquiry.email}}</p>
+    </div>
+    <div class="col">
+        <p class="mb-0">{{enquiry.remarks}}</p>
+    </div>
+</div>
+{% empty %}
+<div class="row mx-half py-3 border border-top-0 d-none d-xl-flex">
+    <div class="col text-center">
+        <p class="mb-0">No Available Jobs</p>
+    </div>
+</div>
+{% endfor %}
+{% include 'pagination.html' %}
+<div class="row d-xl-none">
+    {% for enquiry in enquiries %}
+    <div class="col col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col py-2">
+                        <h5 class="card-title fs-16">#{{enquiry.pk}}</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 col-lg-10">
+                        <p>Name:</p>
+                    </div>
+                    <div class="col">
+                        <p>{{enquiry.name}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 col-lg-10">
+                        <p>Mobile No:</p>
+                    </div>
+                    <div class="col">
+                        <p>{{enquiry.mobile_number}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 col-lg-10">
+                        <p>Email:</p>
+                    </div>
+                    <div class="col">
+                        <p>{{enquiry.email}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 col-lg-10">
+                        <p>Remarks:</p>
+                    </div>
+                    <div class="col">
+                        <p>{{enquiry.remarks}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 col-lg-10">
+                        <p>Date Published:</p>
+                    </div>
+                    <div class="col">
+                        <p>{{enquiry.date_published}}</p>
+                    </div>
+                </div>
+                <h6>Actions:</h6>
+                <a class="mx-1" href="#"><i class="far fa-edit"></i></a>
+                <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% include 'components/27-ws-section/end.html' %} -->
+{% endblock accounts_section %}

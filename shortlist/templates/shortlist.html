@@ -1,0 +1,58 @@
+{% extends 'shortlist-base.html' %}
+{% load crispy_forms_tags %}
+{% block shortlist_section %}
+{% if shortlist %}
+{% include 'sections/title-banner.html' with page_name='Shortlist' %}
+{% else %}
+{% include 'sections/title-banner.html' with page_name='Shortlist' empty_page=True %}
+{% endif %}
+<section class="flex-grow-1 d-flex flex-column">
+    <div class="container-fluid my-auto">
+        <div class="row justify-content-center">
+            <div class="col col-xl-11">
+                <div class="row">
+                    {% for maid in shortlist %}
+                    <div class="col col-md-8 col-lg-6 mb-4">
+                        <div class="card">
+                            <div class="maid-thumbnail"
+                                style="background-image:url({%if maid.photo%}{{maid.photo.url}}{%endif%});"></div>
+                            <div class="card-body">
+                                <h6 class="card-title mb-0">{{maid.name}}</h6>
+                                <p class="card-text mb-1">{{maid.get_country_of_origin_display}}</p>
+                                <p class="card-text mb-1">{{maid.age}} years old</p>
+                                <p class="card-text mb-1">{{maid.get_marital_status_display}}</p>
+                                <p class="card-text mb-1">{{maid.get_maid_type_display}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col text-center my-auto">
+                        <h6>No Maids Shortlisted Yet</h6>
+                        <a href="{% url 'maid_list' %}" class="btn btn-xs-lg btn-primary">Search Maids</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% if shortlist %}
+        <div class="row justify-content-center">
+            <div class="col col-xl-11">
+                {% include 'components/crispy-form-error.html' %}
+                <div class="row">
+                    <div class="col text-center mb-xl-5">
+                        <h5 class="fs-20">Send Shortlist Enquiry</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <form method="post" enctype="multipart/form-data">
+                            {% crispy form %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock shortlist_section %}

@@ -1,0 +1,263 @@
+{% extends 'dashboard-base.html' %}
+{% load crispy_forms_tags %}
+{% load dashboard_tags %}
+{% block dashboard_section %}
+<section>
+    <div class="container-fluid min-height-75">
+        <div class="row">
+            <div class="col mb-3 ml-md-1">
+                <h4 class="fs-20">Employers</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-24 col-md-18 mb-4 ml-md-1">
+                <form action="" method="get">
+                    <div class="row">
+                        <div class="col-24 col-md-10">
+                            {{filter.form.employer_name|as_crispy_field}}
+                        </div>
+                        <div class="col-24 col-md-10">
+                            {{filter.form.employer_birthday_month|as_crispy_field}}
+                        </div>
+                        <div class="col-24 col-md-3 mb-3 mt-auto">
+                            <a href="{% url 'dashboard_employers_list' %}"
+                                class="btn btn-outline-secondary form-control">Reset</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col">
+                <div class="row h-100">
+                    <div class="col text-right mt-auto mb-4 pb-3">
+                        <a href="{% url 'employer_create_route' %}" class="btn btn-xs-lg btn-primary mr-1">Add
+                            Employer</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row bg-primary text-light mx-half py-3 border d-none d-xl-flex">
+            <div class="col-2">
+                <h6 class="dashboard-table-header">S/N <i
+                        class="fas {% if order_by == 'serialNo' %}fa-sort-amount-down{% elif order_by == '-serialNo' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="serialNoSortToggle"></i></h6>
+            </div>
+            <div class="col-7">
+                <h6 class="dashboard-table-header">Employer <i
+                        class="fas {% if order_by == 'employerName' %}fa-sort-alpha-down{% elif order_by == '-employerName' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="employerNameSortToggle"></i></h6>
+            </div>
+            <div class="col-3">
+                <h6 class="dashboard-table-header">Mobile</h6>
+            </div>
+            <div class="col-3">
+                <h6 class="dashboard-table-header">Home No</h6>
+            </div>
+            <div class="col-3">
+                <h6 class="dashboard-table-header">Date of Birth <i
+                        class="fas {% if order_by == 'dateOfBirth' %}fa-sort-amount-down{% elif order_by == '-dateOfBirth' %}fa-sort-amount-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="dateOfBirthSortToggle"></i></h6>
+            </div>
+            <div class="col">
+                <h6 class="dashboard-table-header">EA Personnel <i
+                        class="fas {% if order_by == 'eaPersonnel' %}fa-sort-alpha-down{% elif order_by == '-eaPersonnel' %}fa-sort-alpha-up{% else %}fa-sort{% endif%} ml-1 sortToggle"
+                        id="eaPersonnelSortToggle"></i></h6>
+            </div>
+            <div class="col-2 text-center">
+                <h6 class="dashboard-table-header">Actions</h6>
+            </div>
+        </div>
+        {% for object in object_list %}
+        <div class="row {% cycle '' 'bg-light' %} text-dark mx-half py-3 border border-top-0 d-none d-xl-flex">
+            <div class="col-2">
+                <p class="mb-0">{{forloop.counter}}</p>
+            </div>
+            <div class="col-7">
+                <p class="mb-0">{{object.employer_name}}</p>
+            </div>
+            <div class="col-3">
+                <p class="mb-0">{{object.employer_mobile_number}}</p>
+            </div>
+            <div class="col-3">
+                <p class="mb-0">{{object.employer_home_number}}</p>
+            </div>
+            <div class="col-3">
+                <p class="mb-0">{{object.employer_date_of_birth}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{object.agency_employee}}</p>
+            </div>
+            <div class="col-2">
+                <div class="row justify-content-center">
+                    <a class="mx-1" href="{% url 'employer_update_route' level_0_pk=object.pk %}"><i class="far fa-edit"
+                            data-toggle="tooltip" data-placement="top" title="Update Employer Information"></i></a>
+                    <a class="mx-1" href="{% url 'employer_detail_route' level_0_pk=object.pk %}"><i
+                            class="far fa-file-image" data-toggle="tooltip" data-placement="top"
+                            title="View Employer Information"></i></a>
+                    <a class="mx-1" href="{% url 'employer_delete_route' level_0_pk=object.pk %}"><i
+                            class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
+                            title="Delete Employer Information"></i></a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="row mx-half py-3 border border-top-0 d-none d-xl-flex">
+            <div class="col text-center">
+                <p class="mb-0">No Employers</p>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="row d-xl-none">
+            {% for object in object_list %}
+            <div class="col-24 col-lg-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col py-2">
+                                <h5 class="card-title fs-16">{{object.employer_name}}</h5>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>Employer:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{object.employer_name}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>Mobile No:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{object.employer_mobile_number}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>Home No:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{object.employer_home_number}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>Date of Birth:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{object.employer_date_of_birth}}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8 col-lg-10">
+                                <p>EA Personnel:</p>
+                            </div>
+                            <div class="col">
+                                <p>{{object.agency_employee}}</p>
+                            </div>
+                        </div>
+                        <h6>Actions:</h6>
+                        <a class="mx-1" href="{% url 'employer_update_route' level_0_pk=object.pk %}"><i
+                                class="far fa-edit"></i></a>
+                        <a class="mx-1" href="{% url 'employer_detail_route' level_0_pk=object.pk %}"><i
+                                class="far fa-file-image"></i></a>
+                        <a class="mx-1" href="{% url 'employer_delete_route' level_0_pk=object.pk %}"><i
+                                class="far fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% include 'pagination.html' %}
+    </div>
+</section>
+{% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function () {
+        $('.sortToggle').on('click', function () {
+            $('.sortToggle').not(this).each(function () {
+                $(this).removeClass('fa-sort-alpha-up');
+                $(this).removeClass('fa-sort-alpha-down');
+                $(this).removeClass('fa-sort-amount-up');
+                $(this).removeClass('fa-sort-amount-down');
+                $(this).addClass('fa-sort');
+            });
+            switch (this.id) {
+                case 'serialNoSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=serialNo"
+                    } else if ($(this).hasClass('fa-sort-amount-down')) {
+                        $(this).removeClass('fa-sort-amount-down');
+                        $(this).addClass('fa-sort-amount-up');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=-serialNo"
+                    } else {
+                        $(this).removeClass('fa-sort-amount-up');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=serialNo"
+                    }
+                    break;
+
+                case 'employerNameSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=employerName"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=-employerName"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=employerName"
+                    }
+                    break;
+
+                case 'dateOfBirthSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=dateOfBirth"
+                    } else if ($(this).hasClass('fa-sort-amount-down')) {
+                        $(this).removeClass('fa-sort-amount-down');
+                        $(this).addClass('fa-sort-amount-up');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=-dateOfBirth"
+                    } else {
+                        $(this).removeClass('fa-sort-amount-up');
+                        $(this).addClass('fa-sort-amount-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=dateOfBirth"
+                    }
+                    break;
+
+                case 'eaPersonnelSortToggle':
+                    if ($(this).hasClass('fa-sort')) {
+                        $(this).removeClass('fa-sort');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=eaPersonnel"
+                    } else if ($(this).hasClass('fa-sort-alpha-down')) {
+                        $(this).removeClass('fa-sort-alpha-down');
+                        $(this).addClass('fa-sort-alpha-up');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=-eaPersonnel"
+                    } else {
+                        $(this).removeClass('fa-sort-alpha-up');
+                        $(this).addClass('fa-sort-alpha-down');
+                        location.href = "{% url 'dashboard_employers_list' %}?order-by=eaPersonnel"
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        })
+        $('#id_employer_name,#id_agency_employee,#id_employer_birthday_month').on(
+            'change',
+            function () {
+                this.form.submit();
+            }
+        )
+    })
+</script>
+{% endblock js%}

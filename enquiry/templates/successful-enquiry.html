@@ -1,0 +1,13 @@
+{% extends 'enquiry-base.html' %}
+{% block enquiry_section %}
+{% include 'sections/title-banner.html' with page_name='Successful Enquiry' %}
+<div class="container">
+    <div class="row my-5 py-5">
+        <div class="col text-center my-5 py-5">
+            <h1 class="display-4">Thank you for submitting an enquiry!</h1>
+            <p class="lead">The relevant employment agencies will be in contact with you shortly.</p>
+            <a href="{% url 'home' %}" class="btn btn-xs-lg btn-primary">Return Home</a>
+        </div>
+    </div>
+</div>
+{% endblock enquiry_section %}

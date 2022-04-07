@@ -1,0 +1,67 @@
+{% extends 'agency-base.html' %}
+{% load static %}
+{% load agency_tags %}
+{% block agency_section %}
+{% include 'sections/title-banner.html' with page_name='Agency Details' %}
+{% include 'components/27-ws-section/start.html' with bg_color='bg-custom-ab' section_id='agency-details-section' %}
+<div class="row my-4 my-md-0 mb-md-5">
+    <div class="col-10 d-none d-md-flex agency-thumbnail" style="background-image: url({{agency.logo.url}});">
+    </div>
+    <div class="col-24 d-md-none mb-2">
+        <img loading="lazy" src="{{agency.logo.url}}" alt="" class="img-fluid">
+    </div>
+    <div class="col-24 col-md-10 offset-md-4 pt-2 pt-md-4" id="agencyInformationGroup">
+        <h5 class="fs-16">{{agency.name}}</h5>
+        <p>License Number: {{agency.license_number}}</p>
+        {% if agency.website_uri %}<a href="{{agency.website_uri}}">{{agency.website_uri}}</a>{% endif %}
+    </div>
+</div>
+<hr class="d-none d-md-block my-5">
+<div class="row my-4 my-md-0">
+    {% include 'components/snippets/agency-outlet-details.html' with data_aos='zoom-in' data_aos_duration='3000' %}
+    {% include 'components/snippets/agency-opening-hours.html' with data_aos='zoom-in' data_aos_duration='3000' %}
+    {% include 'components/snippets/agency-profile.html' with data_aos='zoom-in' data_aos_duration='3000' %}
+    {% include 'components/snippets/agency-services.html' with data_aos='zoom-in' data_aos_duration='3000' %}
+</div>
+<div class="row" data-aos="zoom-in" data-aos-duration="3000">
+    <div class="col">
+        <div class="row">
+            <div class="col mb-5">
+                <h4 class="fs-14">Available Maids</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {% if request.user.is_authenticated %}
+                <div class="maid-carousel">
+                    {% for maid in agency.maid.all %}
+                    {% include 'components/maid-card.html' with maid=maid %}
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="row">
+                    <div class="col text-center">
+                        <img loading="lazy" src="{% static 'images/featured-maids.webp' %}" alt="Featured Maid Image"
+                            class="img-fluid blurred-image" onerror=`this.src="{% static 'images/featured-maids.png' %}"
+                            ;`>
+                        <div class="featured-maids-overlay">
+                            <div class="jumbotron jumbotron-fluid bg-transparent">
+                                <div class="container text-center">
+                                    <h3 class="display-4">Login to view biodata</h3>
+                                    <a href="{% url 'sign_in' %}" class="btn btn-xs-lg btn-primary">
+                                        <h5 class="mb-0">Login</h5>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'components/27-ws-section/end.html' %}
+{% include 'components/agency-maids-cta.html' %}
+{% include 'sections/cta-banner.html' %}
+{% endblock agency_section %}

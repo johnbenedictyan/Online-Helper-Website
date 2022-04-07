@@ -1,0 +1,15 @@
+{% extends 'dashboard-base.html' %}
+{% block dashboard_section %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <form method="post">
+                {% csrf_token %}
+                <p>Are you sure you want to delete "{{ object }}"?</p>
+                <a href="{{ back_url }}" class="btn btn-outline-secondary">Back</a>
+                <button type="submit" class="btn btn-primary">Confirm</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock dashboard_section %}

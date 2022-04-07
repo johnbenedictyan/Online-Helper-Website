@@ -1,0 +1,23 @@
+{% load agency_tags %}
+<div class="card agency-card hvr-grow w-100">
+    <div class="agency-thumbnail" style="background-image:url({%if agency.logo%}{{agency.logo.url}}{%endif%});"></div>
+    <div class="card-body pb-0 top-agency-card-body">
+        <h6 class="card-title">{{agency.name}}</h6>
+        <p class="card-text text-muted mb-0">{{agency.license_number}}</p>
+    </div>
+    <hr>
+    <div class="card-body pt-0 bottom-agency-card-body fs-11">
+        <address>
+            {{ agency.get_main_branch.address_1 }}<br />
+            {{ agency.get_main_branch.address_2 }}<br />
+            Singapore {{ agency.get_main_branch.postal_code }}
+        </address>
+        <p class="card-text">{{agency.get_main_branch_number|fcn}}</p>
+        <p class="card-text mb-0">{{agency.sales_email}}</p>
+        {% if agency.name_url %}
+        <a href="{% url 'agency_detail' pk=agency.name_url %}" class="card-link stretched-link"></a>
+        {% else %}
+        <a href="{% url 'agency_detail' pk=agency.pk %}" class="card-link stretched-link"></a>
+        {% endif %}
+    </div>
+</div>

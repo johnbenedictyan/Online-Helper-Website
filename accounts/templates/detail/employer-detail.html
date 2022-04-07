@@ -1,0 +1,147 @@
+{% extends 'employer-base.html' %}
+{% block accounts_section %}
+{% include 'sections/title-banner.html' with page_name='Profile' %}
+{% include 'components/27-ws-section/start.html' with bg_color='bg-custom-ab' section_id='fdw-account-detail-section' %}
+{% comment %} <div class="row">
+    <div class="col mb-3 ml-1">
+        <h4 class="fs-16">My Enquiries</h4>
+    </div>
+</div> {% endcomment %}
+<div class="row">
+    <div class="col mb-3 ml-1">
+        <h4 class="fs-16">My Documents</h4>
+    </div>
+</div>
+<div class="row bg-primary text-light mx-half py-3 border d-none d-xl-flex">
+    <div class="col-2">
+        <h6 class="dashboard-table-header">S/N</h6>
+    </div>
+    <div class="col-4">
+        <h6 class="dashboard-table-header">Contract Date</h6>
+    </div>
+    <div class="col-6">
+        <h6 class="dashboard-table-header">FDW</h6>
+    </div>
+    <div class="col-4">
+        <h6 class="dashboard-table-header">Agency</h6>
+    </div>
+    <div class="col-4">
+        <h6 class="dashboard-table-header">EA Personnel</h6>
+    </div>
+    <div class="col-2">
+        <h6 class="dashboard-table-header">Status</h6>
+    </div>
+    <div class="col-2 text-center">
+        <h6 class="dashboard-table-header">Actions</h6>
+    </div>
+</div>
+{% for doc in documents %}
+<div class="row {% cycle '' 'bg-light ' %}text-dark mx-half py-3 border border-top-0 d-none d-xl-flex">
+    <div class="col-2">
+        <p class="mb-0">{{ forloop.counter }}</p>
+    </div>
+    <div class="col-4">
+        <p class="mb-0">{{ doc.agreement_date }}</p>
+    </div>
+    <div class="col-6">
+        <p class="mb-0">{{ doc.fdw.name }}</p>
+    </div>
+    <div class="col-4">
+        <p class="mb-0">{{ doc.employer }}</p>
+    </div>
+    <div class="col-4">
+        <p class="mb-0">{{ doc.employer.agency_employee }}</p>
+    </div>
+    <div class="col-2">
+        <p class="mb-0">{{ doc.get_status_display }}</p>
+    </div>
+    <div class="col-2">
+        <div class="row justify-content-center">
+            {% if doc.is_wait_emp_sign %}
+            <a class="mx-1" href="{% url 'employer_form_view' level_1_pk=doc.pk %}"><i class="fas fa-signature"
+                    data-toggle="tooltip" data-placement="top" title="Sign Documents"></i></a>
+            {% endif %}
+            <a class="mx-1" href="{% url 'employer_document_detail' level_1_pk=doc.pk %}"><i class="far fa-file-image"
+                    data-toggle="tooltip" data-placement="top" title="View Document"></i></a>
+            <!-- <a class="mx-1" href="{% url 'case_delete_route' level_1_pk=doc.pk %}"><i
+                    class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
+                    title="Delete Document"></i></a> -->
+        </div>
+    </div>
+</div>
+{% empty %}
+<div class="row mx-half py-3 border border-top-0 d-none d-xl-flex">
+    <div class="col text-center">
+        <p class="mb-0">No Cases</p>
+    </div>
+</div>
+{% endfor %}
+{% include 'pagination.html' %}
+<div class="row d-xl-none">
+    {% for doc in doc_list %}
+    <div class="col col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col py-2">
+                        <h5 class="card-title fs-16">#{{doc.case_ref_no}}</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 col-lg-10">
+                        <p>Contract Date:</p>
+                    </div>
+                    <div class="col">
+                        <p>{{doc.agreement_date}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 col-lg-10">
+                        <p>Case No:</p>
+                    </div>
+                    <div class="col">
+                        <p>{{doc.case_ref_no}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 col-lg-10">
+                        <p>Employer:</p>
+                    </div>
+                    <div class="col">
+                        <p>{{doc.employer}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 col-lg-10">
+                        <p>Case Type:</p>
+                    </div>
+                    <div class="col">
+                        <p>{{doc.employer.get_applicant_type_display}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8 col-lg-10">
+                        <p>EA Personnel:</p>
+                    </div>
+                    <div class="col">
+                        <p>{{doc.employer.agency_employee}}</p>
+                    </div>
+                </div>
+                <h6>Actions:</h6>
+                {% if doc.is_wait_emp_sign %}
+                <a class="mx-1" href="{% url 'employer_form_view' level_1_pk=doc.pk %}"><i class="fas fa-signature"
+                        data-toggle="tooltip" data-placement="top" title="Sign Documents"></i></a>
+                {% endif %}
+                <a class="mx-1" href="{% url 'employer_document_detail' level_1_pk=doc.pk %}"><i
+                        class="far fa-file-image" data-toggle="tooltip" data-placement="top"
+                        title="View Document"></i></a>
+                <!-- <a class="mx-1" href="{% url 'case_delete_route' level_1_pk=doc.pk %}"><i
+                    class="far fa-trash-alt" data-toggle="tooltip" data-placement="top"
+                    title="Delete Document"></i></a> -->
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% include 'components/27-ws-section/end.html' %}
+{% endblock accounts_section %}

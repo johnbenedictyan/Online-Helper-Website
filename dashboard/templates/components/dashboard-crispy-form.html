@@ -1,0 +1,32 @@
+{% extends 'dashboard-base.html' %}
+{% load crispy_forms_tags %}
+{% block dashboard_section %}
+{% block title_banner_section %}
+{% endblock title_banner_section %}
+{% include 'components/crispy-form-error.html' %}
+<div class="container min-height-75">
+    <form method="post" enctype="multipart/form-data">
+        {% crispy form %}
+    </form>
+    {% block post_form_section %}
+    {% endblock post_form_section %}
+</div>
+{% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function () {
+        $("#toggle-password-visibility").on('click', function (event) {
+            event.preventDefault();
+            if ($('#id_password').attr("type") == "text") {
+                $('#id_password').attr('type', 'password');
+                $('#toggle-password-visibility i').addClass("fa-eye-slash");
+                $('#toggle-password-visibility i').removeClass("fa-eye");
+            } else if ($('#id_password').attr("type") == "password") {
+                $('#id_password').attr('type', 'text');
+                $('#toggle-password-visibility i').removeClass("fa-eye-slash");
+                $('#toggle-password-visibility i').addClass("fa-eye");
+            }
+        });
+    });
+</script>
+{% endblock js %}

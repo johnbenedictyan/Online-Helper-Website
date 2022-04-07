@@ -1,0 +1,22 @@
+<!-- Signature Pad -->
+<script>
+    var signaturePad1 = new SignaturePad(document.getElementById("{{signature_pad_1_id}}"));
+    var signaturePad2 = new SignaturePad(document.getElementById("{{signature_pad_2_id}}"));
+    var signaturePad3 = new SignaturePad(document.getElementById("{{signature_pad_3_id}}"));
+
+    function appendImageToForm() {
+        document.getElementById("{{signature_input_1_id}}").value = signaturePad1.toDataURL();
+        document.getElementById("{{signature_input_2_id}}").value = signaturePad2.toDataURL();
+        document.getElementById("{{signature_input_3_id}}").value = signaturePad3.toDataURL();
+        return true;
+    }
+    document.getElementById("{{signature_submit_button_id}}").addEventListener("click", function (event) {
+        appendImageToForm();
+        this.form.submit();
+    });
+    document.getElementById("{{signature_clear_button_id}}").addEventListener("click", function (event) {
+        signaturePad1.clear();
+        signaturePad2.clear();
+        signaturePad3.clear();
+    });
+</script>

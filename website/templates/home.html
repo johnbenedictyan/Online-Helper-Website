@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+
+{% include 'sections/main-banner.html' %}
+
+{% include 'sections/how-it-works.html' with start=True %}
+
+{% include 'sections/preferences.html' %}
+
+{% include 'sections/featured-maids.html' %}
+
+{% include 'sections/cta-banner.html' %}
+
+{% endblock main_content %}

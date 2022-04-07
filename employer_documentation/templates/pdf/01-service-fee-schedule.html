@@ -1,0 +1,281 @@
+{% extends 'pdf/00-base.html' %}
+{% load humanize %}
+
+{% block title %}{% if object.fdw_is_replacement %}Form B – Service &#38; Fees Schedule For Replacement
+Maid{% else %}Form A: Service and Fees Schedule{% endif %}{% endblock %}
+
+{% block pdf_content %}
+
+{% include 'pdf/00-header.html' %}
+<br>
+<h2 class="text-align-center">{% if object.fdw_is_replacement %}FORM B – SERVICE &#38; FEES SCHEDULE FOR REPLACEMENT
+    Maid{% else %}FORM A – SERVICE AND FEES SCHEDULE{% endif %}</h2>
+<br>
+<div class="border--bottom"></div>
+<div>
+    <table>
+        <tr>
+            <th class="text-bold--600" style="width:35%">Employment Agency Ref No</th>
+            <th class="text-bold--600">: {{ object.case_ref_no }}</th>
+        </tr>
+        <tr>
+            <td>Date</td>
+            <td>: {{ object.agreement_date|date:"d M Y" }}</td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+        </tr>
+        <tr>
+            <th class="text-bold--600" colspan="2">A. &nbsp;Particulars of Maid</th>
+        </tr>
+        <tr>
+            <td>Name of Maid</td>
+            <td>: {{ object.fdw.name }}</td>
+        </tr>
+        <tr>
+            <td>Nationality</td>
+            <td>: {{ object.fdw.get_country_of_origin_display }}</td>
+        </tr>
+        <tr>
+            <td>Passport No.</td>
+            <td>: {{ object.fdw.get_passport_number }}</td>
+        </tr>
+        <tr>
+            <td>Basic Salary</td>
+            <td>: S$ {{ object.fdw_salary|intcomma }}</td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+    </table>
+
+    <table width="90%">
+        <tr>
+            <th class="text-bold--600" width="2%">B.</th>
+            <th class="text-bold--600" colspan="3">Fees</th>
+            <th width="10%"></th>
+            <th class="text-bold--600 text-align-right">S$</th>
+        </tr>
+        <tr>
+            <td>1.</td>
+            <td colspan="3">Service Fee</td>
+            <td></td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b1_service_fee|intcomma }}</td>
+        </tr>
+        <tr>
+            <td colspan="5"></td>
+        </tr>
+        <tr>
+            <td>2.</td>
+            <td colspan="4">Administrative Costs</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td width="2%">a.</td>
+            <td colspan="2">Application / Collection of Work Permit</td>
+            <td></td>
+            <td class="text-align-right">
+                {{ object.rn_servicefeeschedule_ed.b2a_work_permit_application_collection|intcomma }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>b.</td>
+            <td colspan="2">Medical Examination Fee</td>
+            <td></td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b2b_medical_examination_fee|intcomma }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>c.</td>
+            <td colspan="2">Security Bond and the Personal Accident Insurance</td>
+            <td></td>
+            <td class="text-align-right">
+                {{ object.rn_servicefeeschedule_ed.b2c_security_bond_accident_insurance|intcomma }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>d.</td>
+            <td colspan="2">Reimbursement of Indemnity Policy</td>
+            <td></td>
+            <td class="text-align-right">
+                {{ object.rn_servicefeeschedule_ed.b2d_indemnity_policy_reimbursement|intcomma }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>e.</td>
+            <td colspan="2">Home Service</td>
+            <td></td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b2e_home_service|intcomma }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>f.</td>
+            <td colspan="2">Settling-In-Programme (SIP)</td>
+            <td></td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b2f_sip|intcomma }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>g.</td>
+            <td colspan="2">Other services provided</td>
+            <td></td>
+            <td class="text-align-right"></td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td width="2%">i.</td>
+            <td class="border--bottom" width="70%">
+                {% if object.rn_servicefeeschedule_ed.b2g1_other_services_description %}{{ object.rn_servicefeeschedule_ed.b2g1_other_services_description }}{% endif %}
+            </td>
+            <td></td>
+            <td class="text-align-right">
+                {% if object.rn_servicefeeschedule_ed.b2g1_other_services_fee %}{{ object.rn_servicefeeschedule_ed.b2g1_other_services_fee|intcomma }}{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td>ii.</td>
+            <td class="border--bottom">
+                {% if object.rn_servicefeeschedule_ed.b2g2_other_services_description %}{{ object.rn_servicefeeschedule_ed.b2g2_other_services_description }}{% endif %}
+            </td>
+            <td></td>
+            <td class="text-align-right">
+                {% if object.rn_servicefeeschedule_ed.b2g2_other_services_fee %}{{ object.rn_servicefeeschedule_ed.b2g2_other_services_fee|intcomma }}{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"></td>
+            <td>iii.</td>
+            <td class="border--bottom">
+                {% if object.rn_servicefeeschedule_ed.b2g3_other_services_description %}{{ object.rn_servicefeeschedule_ed.b2g3_other_services_description }}{% endif %}
+            </td>
+            <td></td>
+            <td class="text-align-right {% if object.fdw_is_replacement %} border--bottom{% endif %}">
+                {% if object.rn_servicefeeschedule_ed.b2g3_other_services_fee %}{{ object.rn_servicefeeschedule_ed.b2g3_other_services_fee|intcomma }}{% endif %}
+            </td>
+        </tr>
+        {% if not object.fdw_is_replacement %}
+        <tr>
+            <td></td>
+            <td>h.</td>
+            <td colspan="2">Cost for replacement within
+                {% if object.rn_servicefeeschedule_ed.b2h_replacement_months %}{{ object.rn_servicefeeschedule_ed.b2h_replacement_months }}{% else %}___{% endif %}
+                months</td>
+            <td></td>
+            <td class="text-align-right">
+                {% if object.rn_servicefeeschedule_ed.b2h_replacement_cost %}{{ object.rn_servicefeeschedule_ed.b2h_replacement_cost|intcomma }}{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>i.</td>
+            <td colspan="2">Renewal of Work Permit</td>
+            <td></td>
+            <td class="text-align-right border--bottom">
+                {% if object.rn_servicefeeschedule_ed.b2i_work_permit_renewal %}{{ object.rn_servicefeeschedule_ed.b2i_work_permit_renewal|intcomma }}{% endif %}
+            </td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td colspan="4">Total Administrative Cost</td>
+            <td></td>
+            <td class="text-align-right border--bottom">{{ object.rn_servicefeeschedule_ed.get_admin_cost|intcomma }}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>3.</td>
+            <td colspan="5">Placement Fee</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>a.</td>
+            <td colspan="2">Agency fee charged on the Maid by the Agency</td>
+            <td></td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.b3_agency_fee|intcomma }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>b.</td>
+            <td colspan="2">Personal loan incurred by Maid in overseas</td>
+            <td></td>
+            <td class="text-align-right border--bottom">{{ object.fdw_loan|intcomma }}</td>
+        </tr>
+        <tr>
+            <td colspan="4">Total Placement Fee</td>
+            <td></td>
+            <td class="text-align-right border--bottom">
+                {{ object.rn_servicefeeschedule_ed.get_placement_fee|intcomma }}</td>
+        </tr>
+        {% if object.rn_servicefeeschedule_ed.fdw_is_replacement %}
+        <tr>
+            <td></td>
+        </tr>
+        <tr>
+            <td>4.</td>
+            <td colspan="3">Loan Transfer from previous Maid</td>
+            <td></td>
+            <td class="text-align-right">
+                {% if object.rn_servicefeeschedule_ed.b4_loan_transferred %}{{ object.rn_servicefeeschedule_ed.b4_loan_transferred|intcomma }}{% else %}0.00{% endif %}
+            </td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
+
+<div class="page-break">
+    <table width="90%" class="main">
+        <tr>
+            <th class="text-bold--600" width="2%">C.</th>
+            <th class="text-bold--600" colspan="3">Payment Breakdown</th>
+        </tr>
+        <tr>
+            <td colspan="4">Payment of fee as agreed in the schedule shall be made as follows:</td>
+        </tr>
+        <tr>
+            <td colspan="3" width="85%">Total Amount</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.get_total_fee|intcomma }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td width="2%">a.</td>
+            <td>Deposit – upon confirmation of Maid</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.ca_deposit_amount|intcomma }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>b.</td>
+            <td>Balance payment</td>
+            <td class="text-align-right">{{ object.rn_servicefeeschedule_ed.get_balance|intcomma }}</td>
+        </tr>
+    </table>
+    <br>
+    <table>
+        <tr>
+            <td width="40%" class="border--bottom"><img class="signature__img"
+                    src="{{ object.rn_signatures_ed.get_employer_signature }}"></td>
+            <td></td>
+            <td width="40%" class="border--bottom"><img class="signature__img"
+                    src="{{ object.rn_signatures_ed.agency_staff_signature }}"></td>
+        </tr>
+        <tr>
+            <td class="text-bold--600">Employer’s Signature</td>
+            <td></td>
+            <td class="text-bold--600">Signed for and on behalf of Agency</td>
+        </tr>
+        <tr>
+            <td>{{ object.employer.employer_name }}</td>
+            <td></td>
+            <td>{{ object.employer.agency_employee.name}}</td>
+        </tr>
+        <tr>
+            <td>{{ object.employer.get_employer_nric_full }}</td>
+            <td></td>
+            <td>{{ object.employer.agency_employee.ea_personnel_number }}</td>
+        </tr>
+    </table>
+</div>
+
+{% endblock pdf_content %}

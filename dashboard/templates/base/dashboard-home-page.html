@@ -1,0 +1,893 @@
+{% extends 'dashboard-base.html' %}
+{% block dashboard_section %}
+<section class="my-3">
+    {% comment %} <div class="container d-none">
+        <div class="row">
+            <div class="col-md-12 col-lg-8 col-xl-6 mb-3">
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h3>Account Management</h3>
+                            <i class="fas fa-user fa-5x my-3"></i>
+                            <h3 class="card-title">{{accounts.current}} &#47; {{accounts.max}}</h3>
+                            <h5><a href="{% url 'dashboard_agency_employee_create' %}" class="card-link">Add Account</a>
+                            </h5>
+                            <h5><a href="{% url 'dashboard_account_list' %}" class="card-link">View Accounts</a></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-8 col-xl-6 mb-3">
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h3>Agency <br />Management</h3>
+                            <i class="fas fa-building fa-5x my-3"></i>
+                            <h3 class="card-title">{{branches.current}}</h3>
+                            <h5><a href="{% url 'dashboard_branches_list' %}" class="card-link">View Branches</a></h5>
+                            <h5><a href="{% url 'dashboard_agency_detail' %}" class="card-link">View Agency Details</a>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-8 col-xl-6 mb-3">
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h3>FDW <br />Biodata</h3>
+                            <i class="fas fa-portrait fa-5x my-3"></i>
+                            <h3 class="card-title">{{biodata.current}} &#47; {{biodata.max}}</h3>
+                            <h5><a href="{% url 'dashboard_maid_information_create' %}" class="card-link">Add
+                                    Biodata</a></h5>
+                            <h5><a href="{% url 'dashboard_maid_list' %}" class="card-link">View Biodata</a></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-8 col-xl-6 mb-3">
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center mt-4 mb-2">
+                            <h3 class="mb-4">Subscriptions</h3>
+                            <i class="fas fa-file-invoice-dollar fa-5x my-3"></i>
+                            <h3 class="card-title">{{subscriptions.current}}</h3>
+                            <h5><a href="{% url 'dashboard_agency_plan_list' %}" class="card-link">View
+                                    Subscriptions</a></h5>
+                            <h5>&nbsp;</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-8 col-xl-6 mb-3">
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h3>Employer <br />Summary</h3>
+                            <i class="fas fa-users fa-5x my-3"></i>
+                            <h3 class="card-title">{{employers.current}}</h3>
+                            <h5><a href="{% url 'employer_create_route' %}" class="card-link">Add Employer</a></h5>
+                            <h5><a href="{% url 'dashboard_employers_list' %}" class="card-link">View Employers</a></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-8 col-xl-6 mb-3">
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center mt-4 mb-2">
+                            <h3 class="mb-4">Enquiries</h3>
+                            <i class="fas fa-search fa-5x my-3"></i>
+                            <h3 class="card-title">{{enquiries.current}}</h3>
+                            <h5><a href="#" class="card-link">View Enquiries</a></h5>
+                            <h5>&nbsp;</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-8 col-xl-6 mb-3">
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h3>Sales <br />Summary</h3>
+                            <i class="fas fa-money-check fa-5x my-3"></i>
+                            <h3 class="card-title">{{sales.current}}</h3>
+                            <h5><a href="{% url 'dashboard_sales_list' %}" class="card-link">View Sales</a></h5>
+                            <h5>&nbsp;</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-8 col-xl-6 mb-3">
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h3>Status <br />Summary</h3>
+                            <i class="fas fa-signal fa-5x my-3"></i>
+                            <h3 class="card-title">&nbsp;</h3>
+                            <h5><a href="{% url 'dashboard_status_list' %}" class="card-link">View Status</a></h5>
+                            <h5>&nbsp;</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-8 col-xl-6 mb-3">
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center my-2">
+                            <h3>Billing <br />History</h3>
+                            <i class="fas fa-history fa-5x my-3"></i>
+                            <h3 class="card-title">&nbsp;</h3>
+                            <h5><a href="#" class="card-link">View History</a></h5>
+                            <h5>&nbsp;</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> {% endcomment %}
+    <div class="container-fluid">
+        {% comment %} <div class="row d-none">
+            <div class="col-md-12 col-xl-6">
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col text-center">
+                            <h3>$100</h3>
+                            <p class="text-success mb-0">100% up from last month</p>
+                            <p class="text-danger mb-0">20% down from this month last year</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> {% endcomment %}
+        <div class="row">
+            {% if authority == 'Agency Owners' %}
+            <div class="col-xl-24 mb-xl-5">
+                <h5 class="ml-1 mb-3">Sales based on collection</h5>
+                <div class="card custom-card card-wrapper-chart">
+                    <div class="row justify-content-end">
+                        <div class="col-md-6 offset-md-9 pr-4">
+                            <label for="year-select-chart">Year</label>
+                            <select name="year" id="year-select-chart" class="form-control">
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                                <option value="2029">2029</option>
+                                <option value="2030">2030</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="min-height:35vh;">
+                        <div class="col">
+                            <div id="chart">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-24 mb-xl-5">
+                <h5 class="ml-1 mb-3">Staff Performance</h5>
+                <div class="card custom-card card-wrapper-chart">
+                    <div class="row justify-content-end">
+                        <div class="col-md-6 mb-2">
+                            <label for="sales-staff-performance-chart-type">Type</label>
+                            <select name="type" id="sales-staff-performance-chart-type"
+                                class="form-control sales-staff-performance-chart-controls">
+                                <option value="Sales">Sales</option>
+                                <option value="Cases">Cases</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label for="sales-staff-performance-chart-year">Staff</label>
+                            <select name="year" id="sales-staff-performance-chart-staff"
+                                class="form-control sales-staff-performance-chart-controls">
+                                <option value="john">John</option>
+                                <option value="jane">Jane</option>
+                                <option value="dave">Dave</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label for="sales-staff-performance-chart-year">Year</label>
+                            <select name="year" id="sales-staff-performance-chart-year"
+                                class="form-control sales-staff-performance-chart-controls">
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                                <option value="2029">2029</option>
+                                <option value="2030">2030</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row" style="min-height:35vh;">
+                        <div class="col">
+                            <div id="salesStaffPerformanceChart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12 mb-xl-5">
+                <h5 class="ml-1 mb-3">Plan Subscribed</h5>
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col-16">
+                            <h6>Description</h6>
+                        </div>
+                        <div class="col-8 text-center">
+                            <h6>Expiry Date</h6>
+                        </div>
+                    </div>
+                    {% comment %} <div class="row py-2">
+                        <div class="col-16">
+                            <p class="mb-0">Biodata &#38; CRM - Basic Plan</p>
+                        </div>
+                        <div class="col-8 text-center">
+                            <p class="mb-0">31 May 2021</p>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-16">
+                            <p class="mb-0">Featured Maid</p>
+                        </div>
+                        <div class="col-8 text-center">
+                            <p class="mb-0">31 May 2021</p>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-16">
+                            <p class="mb-0">Advert - Main Page</p>
+                        </div>
+                        <div class="col-8 text-center">
+                            <p class="mb-0">31 July 2021</p>
+                        </div>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+            <div class="col-xl-12 mb-xl-5">
+                <h5 class="ml-1 mb-3">FDW Biodata</h5>
+                <div class="card custom-card">
+                    <div class="row">
+                        <div class="col-16">
+                            <h6>Description</h6>
+                        </div>
+                        <div class="col-8 text-center">
+                            <h6>No of Biodata</h6>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-16">
+                            <p class="mb-0">Featured</p>
+                        </div>
+                        <div class="col-8 text-center">
+                            <p class="mb-0">{{ agency.get_number_of_featured_fdw }}</p>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-16">
+                            <p class="mb-0">Published</p>
+                        </div>
+                        <div class="col-8 text-center">
+                            <p class="mb-0">{{ agency.get_number_of_published_fdw }}</p>
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-16">
+                            <p class="mb-0">Unpublished</p>
+                        </div>
+                        <div class="col-8 text-center">
+                            <p class="mb-0">{{ agency.get_number_of_unpublished_fdw }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <!-- <div class="col-xl-12">
+                <div class="card custom-card card-wrapper-chart">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="pl-md-1 pl-lg-3">Branch Performance</h3>
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="col-md-6 mb-2">
+                            <label for="branch-performance-chart-type-option-1">Type</label>
+                            <select name="type" id="branch-performance-chart-type-option-1" class="form-control branch-performance-chart-option-1-controls">
+                                <option value="sales">Sales</option>
+                                <option value="cases">Cases</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label for="branch-performance-group-by-option-1">Group By</label>
+                            <select name="year" id="branch-performance-group-by-option-1" class="form-control branch-performance-chart-option-1-controls">
+                                <option value="month">Month</option>
+                                <option value="year">Year</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 pr-4 mb-2">
+                            <label for="branch-performance-chart-year-option-1">Year</label>
+                            <select name="year" id="branch-performance-chart-year-option-1" class="form-control branch-performance-chart-option-1-controls">
+                                <option value="2010">2010</option>
+                                <option value="2011">2011</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div id="branchPerformanceChartOption1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12">
+                <div class="card custom-card card-wrapper-chart">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="pl-md-1 pl-lg-3">Branch Performance</h3>
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="col-md-6 mb-2">
+                            <label for="branch-performance-chart-type-option-2">Type</label>
+                            <select name="type" id="branch-performance-chart-type-option-2" class="form-control branch-performance-chart-option-2-controls">
+                                <option value="sales">Sales</option>
+                                <option value="cases">Cases</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-2">
+                            <label for="branch-performance-group-by-option-2">Group By</label>
+                            <select name="year" id="branch-performance-group-by-option-2" class="form-control branch-performance-chart-option-2-controls">
+                                <option value="month">Month</option>
+                                <option value="year">Year</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 pr-4 mb-2">
+                            <label for="branch-performance-chart-year-option-2">Year</label>
+                            <select name="year" id="branch-performance-chart-year-option-2" class="form-control branch-performance-chart-option-2-controls">
+                                <option value="2010">2010</option>
+                                <option value="2011">2011</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div id="branchPerformanceChartOption2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12">
+                <div class="card custom-card card-wrapper-chart">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="pl-md-1 pl-lg-3">Agency Performance</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div id="agencyTimelinePerformanceChart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-24">
+                <div class="card custom-card card-wrapper-chart">
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="pl-md-1 pl-lg-3">FDW Timeline</h3>
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="col-md-6 pr-4 mb-2">
+                            <label for="fdw-timeline-chart-group-by">Year</label>
+                            <select id="fdw-timeline-chart-group-by" class="form-control fdw-timeline-chart-controls">
+                                <option value="week">Week</option>
+                                <option value="month">Month</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div id="fdwTimelineChart"></div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</section>
+{% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function () {
+        class ChartManager {
+            constructor(chartNode, chartProperties, chartAuthority, chartType) {
+                this.chartNode = chartNode;
+                this.chartProperties = chartProperties;
+                this.chartAuthority = chartAuthority;
+                this.chartType = chartType;
+                this.chart = new ApexCharts(document.querySelector(chartNode), chartProperties);
+                this.chart.render();
+            }
+
+            static dataUrl = '/dashboard/data/';
+
+            categoriesManager(type, res) {
+                let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
+                    "Dec"
+                ];
+                let years = ['2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029',
+                    '2030'
+                ];
+                let categories = months;
+                if (type == 'month') {
+                    categories = months;
+                } else if (type == 'year') {
+                    categories = years;
+                }
+                let max = 0
+                res.data.data.forEach(el => {
+                    if (el.data.length > max) {
+                        max = el.data.length
+                    }
+                });
+                if (max != 12) {
+                    categories = categories.slice(0, max);
+                }
+                return categories
+            }
+
+            chartPropertiesManager(categoriesType, categories, chartProperties) {
+                if (categoriesType == 'xaxis') {
+                    chartProperties = {
+                        ...chartProperties,
+                        ...{
+                            xaxis: {
+                                categories: categories
+                            }
+                        }
+                    }
+                }
+                return chartProperties
+            }
+
+            update(newDataSelectors, newChartProperties, csrftoken, requestorAuthority, categoriesAxis) {
+                axios({
+                    method: 'post',
+                    mode: 'same-origin',
+                    headers: {
+                        'X-CSRFToken': csrftoken,
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    url: ChartManager.dataUrl,
+                    data: {
+                        'authority': requestorAuthority,
+                        'chart': newDataSelectors
+                    }
+                }).then((res) => {
+                    if (this.chartType == 'timeline') {
+                        res.data.data.forEach((el) => {
+                            el.data.forEach((x) => {
+                                x.y.forEach((o, i, a) => {
+                                    a[i] = new Date(o).getTime();
+                                })
+                            });
+                        });
+                    }
+                    this.chart.updateSeries(res.data.data);
+                    this.chart.updateOptions(
+                        this.chartPropertiesManager(
+                            categoriesAxis,
+                            this.categoriesManager(
+                                newDataSelectors['group_by'],
+                                res
+                            ),
+                            newChartProperties
+                        )
+                    )
+                });
+            }
+        }
+
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            maximumFractionDigits: 0
+        });
+
+        var branchSalesChartOptions = {
+            series: [],
+            chart: {
+                height: '100%',
+                type: 'bar',
+                toolbar: {
+                    show: false
+                }
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 3,
+                    dataLabels: {
+                        position: 'top', // top, center, bottom
+                    },
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                formatter: function (val) {
+                    return formatter.format(val);
+                },
+                offsetY: -10,
+                style: {
+                    fontSize: '10px',
+                    fontWeight: '400',
+                    colors: ["#304758"]
+                }
+            },
+            xaxis: {
+                categories: [],
+                position: 'bottom',
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            colorFrom: '#D8E3F0',
+                            colorTo: '#BED1E6',
+                            stops: [0, 100],
+                            opacityFrom: 0.4,
+                            opacityTo: 0.5,
+                        }
+                    }
+                },
+                tooltip: {
+                    enabled: true,
+                }
+            },
+            yaxis: {
+                max: function (max) {
+                    return max * 1.1
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false,
+                },
+                labels: {
+                    show: true,
+                    formatter: function (val) {
+                        val = Math.round((val + Number.EPSILON) * 100) / 100
+                        return `$${val}`;
+                    }
+                }
+            },
+            title: {
+                text: '',
+                floating: true,
+                offsetY: 635,
+                align: 'center',
+                style: {
+                    color: '#444'
+                }
+            },
+            noData: {
+                text: 'Loading...'
+            }
+        };
+        const branchSalesChartManager = new ChartManager('#chart', branchSalesChartOptions, 'any');
+
+        var salesStaffPerformanceChartOptions = {
+            series: [],
+            chart: {
+                height: '100%',
+                type: 'bar',
+                toolbar: {
+                    show: false
+                }
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 3,
+                    dataLabels: {
+                        position: 'top', // top, center, bottom
+                    },
+                }
+            },
+            dataLabels: {
+                enabled: false,
+                formatter: function (val) {
+                    return `$${val}`;
+                },
+                offsetY: -10,
+                style: {
+                    fontSize: '.6rem',
+                    colors: ["#304758"]
+                }
+            },
+            xaxis: {
+                categories: [],
+                position: 'bottom',
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                crosshairs: {
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            colorFrom: '#D8E3F0',
+                            colorTo: '#BED1E6',
+                            stops: [0, 100],
+                            opacityFrom: 0.4,
+                            opacityTo: 0.5,
+                        }
+                    }
+                },
+                tooltip: {
+                    enabled: true,
+                }
+            },
+            yaxis: {
+                min: function (min) {
+                    return min * 0.9
+                },
+                max: function (max) {
+                    return max * 1.1
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false,
+                },
+                labels: {
+                    show: true,
+                    formatter: function (val) {
+                        val = Math.round((val + Number.EPSILON) * 100) / 100
+                        return `$${val}`;
+                    }
+                }
+            },
+            stroke: {
+                curve: 'smooth',
+            },
+            title: {
+                text: '',
+                floating: true,
+                offsetY: 610,
+                align: 'center',
+                style: {
+                    color: '#444'
+                }
+            },
+            noData: {
+                text: 'Loading...'
+            }
+        }
+        const salesStaffPerformanceChartManager = new ChartManager('#salesStaffPerformanceChart',
+            salesStaffPerformanceChartOptions, 'any');
+
+        const csrftoken = Cookies.get('csrftoken');
+        const authority = '{{authority}}'
+
+        let salesStaffPerformanceStaff = $('#sales-staff-performance-chart-staff').find(':selected').val();
+        let salesStaffPerformanceType = $('#sales-staff-performance-chart-type').find(':selected').val();
+        let salesStaffPerformanceChartYear = $('#sales-staff-performance-chart-year').find(':selected').val();
+
+        let salesChartProperties = {
+            responsive: [{
+                    breakpoint: 768,
+                    options: {
+                        dataLabels: {
+                            offsetY: -10,
+                            style: {
+                                fontSize: '.6rem',
+                            }
+                        },
+                    }
+                },
+                {
+                    breakpoint: 992,
+                    options: {
+                        dataLabels: {
+                            offsetY: -10,
+                            style: {
+                                fontSize: '.65rem',
+                            }
+                        },
+                    }
+                },
+                {
+                    breakpoint: 1200,
+                    options: {
+                        dataLabels: {
+                            offsetY: -10,
+                            style: {
+                                fontSize: '1rem',
+                            }
+                        },
+                    }
+                },
+                {
+                    breakpoint: 1400,
+                    options: {
+                        dataLabels: {
+                            offsetY: -10,
+                            style: {
+                                fontSize: '1.2rem',
+                            }
+                        },
+                    }
+                },
+                {
+                    breakpoint: 1978,
+                    options: {
+                        dataLabels: {
+                            offsetY: -10,
+                            style: {
+                                fontSize: '1rem',
+                            }
+                        },
+                    }
+                },
+                {
+                    breakpoint: 2600,
+                    options: {
+                        dataLabels: {
+                            offsetY: -10,
+                            style: {
+                                fontSize: '1.15rem',
+                            }
+                        },
+                    }
+                }
+            ]
+        }
+        let salesChartDataSelectors = {
+            'name': 'salesChart',
+            'group_by': 'month',
+            'year': $('#year-select-chart').find(":selected").text()
+        }
+        branchSalesChartManager.update(salesChartDataSelectors, salesChartProperties, csrftoken,
+            'Agency Managers', 'xaxis');
+
+        let salesStaffPerformanceDataSelectors = {
+            'name': 'salesStaffPerformance' + salesStaffPerformanceType,
+            'group_by': 'month',
+            'year': salesStaffPerformanceChartYear,
+            'staff': salesStaffPerformanceStaff
+        }
+        salesStaffPerformanceChartManager.update(salesStaffPerformanceDataSelectors, null, csrftoken,
+            'Agency Managers', 'xaxis');
+
+        $('#year-select-chart').on('change', function (event) {
+            salesChartYear = $(this).find(":selected").text()
+            let max = 0;
+            axios({
+                method: 'post',
+                mode: 'same-origin',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                url: '/dashboard/data/',
+                data: {
+                    'authority': authority,
+                    'chart': {
+                        'name': 'salesChart',
+                        'year': salesChartYear
+                    }
+                }
+            }).then(function (res) {
+                if (res) {
+                    branchSalesChartManager.chart.updateSeries(res.data.data);
+                    let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+                    ];
+                    let categories = months;
+                    res.data.data.forEach(el => {
+                        if (el.data.length > max) {
+                            max = el.data.length
+                        }
+                    });
+                    if (max != 12) {
+                        categories = months.slice(0, max);
+                    }
+                    branchSalesChartManager.chart.updateOptions({
+                        xaxis: {
+                            categories: categories
+                        }
+                    })
+                }
+            })
+        });
+
+        $('.sales-staff-performance-chart-controls').on('change', function (event) {
+            let salesStaffPerformanceStaff = $('#sales-staff-performance-chart-staff').find(':selected')
+                .val();
+            salesStaffPerformanceType = $('#sales-staff-performance-chart-type').find(':selected')
+                .val();
+            salesStaffPerformanceChartYear = $('#sales-staff-performance-chart-year').find(':selected')
+                .val();
+            var salesStaffPerformanceChartUpdatedProperties = {}
+            switch (salesStaffPerformanceType) {
+                case 'Cases':
+                    salesStaffPerformanceChartUpdatedProperties = {
+                        dataLabels: {
+                            formatter: function (val) {
+                                return `$${val}`;
+                            }
+                        },
+                        yaxis: {
+                            min: 0,
+                            max: function (max) {
+                                return max + 1
+                            },
+                            labels: {
+                                show: true,
+                                formatter: function (val) {
+                                    val = Math.round(val)
+                                    return val;
+                                }
+                            }
+                        }
+                    }
+                    break;
+
+                case 'Sales':
+                    salesStaffPerformanceChartUpdatedProperties = {
+                        dataLabels: {
+                            formatter: function (val) {
+                                return val;
+                            }
+                        },
+                        yaxis: {
+                            min: function (min) {
+                                return min * 0.9
+                            },
+                            max: function (max) {
+                                return max * 1.1
+                            },
+                            labels: {
+                                show: true,
+                                formatter: function (val) {
+                                    val = Math.round((val + Number.EPSILON) * 100) / 100
+                                    return `$${val}`;
+                                }
+                            }
+                        }
+                    }
+
+                default:
+                    break;
+            }
+            salesStaffPerformanceDataSelectors = {
+                'name': 'salesStaffPerformance' + salesStaffPerformanceType,
+                'group_by': 'month',
+                'year': salesStaffPerformanceChartYear,
+                'staff': salesStaffPerformanceStaff
+            }
+            salesStaffPerformanceChartManager.update(salesStaffPerformanceDataSelectors,
+                salesStaffPerformanceChartUpdatedProperties, csrftoken, 'Agency Managers', 'xaxis');
+        });
+    })
+</script>
+{% endblock js%}

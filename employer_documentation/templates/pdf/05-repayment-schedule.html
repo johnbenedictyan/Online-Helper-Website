@@ -1,0 +1,75 @@
+{% extends 'pdf/00-base.html' %}
+{% load humanize %}
+
+{% block title %}Repayment Schedule{% endblock %}
+{% block pdf_content %}
+{% include 'pdf/00-header.html' %}
+<h2 class="text-align-center">ANNEX B - SCHEDULE OF SALARY AND PLACEMENT FEE REPAYMENT</h2>
+<div class="border--bottom"></div>
+<table>
+    <tr>
+        <th class="text-bold--600">Employment Agency Case #</th>
+        <th class="text-bold--600">{{ object.case_ref_no }}</th>
+        <td></td>
+        <td>Date</td>
+        <td>{{ object.agreement_date|date:"d M Y" }}</td>
+    </tr>
+    <tr>
+        <td>Name of Employer</td>
+        <td>{{ object.employer.employer_name }} </td>
+        <td></td>
+        <td>Name of Maid</td>
+        <td>{{ object.fdw.name }}</td>
+    </tr>
+    <tr>
+        <td>Placement Fee</td>
+        <td>S$ {{ object.fdw_loan|intcomma }}</td>
+        <td></td>
+        <td>Work Commencement Date</td>
+        <td>{{ object.rn_maidstatus_ed.fdw_work_commencement_date|date:"d M Y" }}</td>
+    </tr>
+    <tr>
+        <td>Monthly Basic Salary</td>
+        <td>S$ {{ object.fdw_salary|intcomma }}</td>
+        <td></td>
+        <td>Per Off Day Compensation</td>
+        <td>S$ {{ object.get_per_off_day_compensation|intcomma }}</td>
+    </tr>
+</table>
+<br>
+<table class="border--all">
+    <tr class="text-align-center">
+        <td width="5%"></td>
+        <td width="10%">Salary Date</td>
+        <td width="12%">Basic Salary</td>
+        <td width="10%">Balance Off Day Compensation</td>
+        <td width="12%">Total Salary</td>
+        <td></td>
+        <td width="10%">Loan Repayment</td>
+        <td width="12%">Salary Received</td>
+        <td width="12%">Employer's Signature</td>
+        <td width="12%">Maid's Signature</td>
+    </tr>
+    {% for k,v in repayment_table.items %}
+    <tr>
+        <td>{{ k }}</td>
+        <td>{{ v.salary_date }}</td>
+        <td>{{ v.basic_salary|intcomma }}</td>
+        <td>{{ v.off_day_compensation|intcomma }}</td>
+        <td>{{ v.total_salary|intcomma }}</td>
+        <td></td>
+        <td>{% if v.loan_repaid %}({{ v.loan_repaid|intcomma }}){% else %}{{ v.loan_repaid|intcomma }}{% endif %}</td>
+        <td>{{ v.salary_received|intcomma }}</td>
+        <td>{% comment %}Employer's Signature{% endcomment %}</td>
+        <td>{% comment %}Maid's Signature{% endcomment %}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p>I hereby acknowledge that I understand and agree to the above schedule.</p>
+
+<table>
+    {% include 'pdf/00-signatures-employer-fdw.html' %}
+</table>
+
+{% endblock pdf_content %}

@@ -1,0 +1,99 @@
+{% extends 'employer_form.html' %}
+{% load crispy_forms_tags %}
+{% block form %}
+{% if url_name == 'employer_householddetails_route' or url_name == 'maid_inventory_route' %}
+<form method="post" enctype="multipart/form-data">
+    {% crispy form helper %}
+    <div class="row form-row">
+        <div class="col-24 my-2 text-center">
+            <button class="btn btn-xs-lg custom-add-button w-50 mb-2" id="addButton">Add</button>
+        </div>
+        <div class="col-24 my-2 text-center">
+            <input type="hidden" name="submitFlag" class="form-control" id="submitFlag">
+            {% if url_name == 'employer_householddetails_route' %}
+            {% if income_obj %}
+            <a href="{% url 'employer_incomedetails_update_route' level_0_pk %}"
+                class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
+            {% else %}
+            <a href="{% url 'employer_incomedetails_create_route' level_0_pk %}"
+                class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
+            {% endif %}
+            {% elif url_name == 'maid_inventory_route' %}
+            <a href="{% url 'safetyagreement_update_route' level_1_pk %}"
+                class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
+            {% else %}
+            <a href="#" class="btn btn-xs-lg btn-outline-primary w-xs-40 w-25 mx-2">Back</a>
+            {% endif %}
+            <button type="submit" id="submitButton" class="btn btn-xs-lg btn-primary w-xs-40 w-25 mx-2">Submit</button>
+        </div>
+    </div>
+</form>
+{% else %}
+{% crispy form %}
+{% endif %}
+{% endblock form %}
+{% block extra_js %}
+<script>
+    $(function () {
+        $("#addButton").on('click', function (e) {
+            this.form.submit();
+        })
+        $("#submitButton").on('click', function (e) {
+            e.preventDefault();
+            $("#submitFlag").val('True');
+            this.form.submit();
+        })
+    })
+    $(function () {
+        let fdw_clean_window_exterior = $('#id_fdw_clean_window_exterior').val();
+        let window_exterior_location = $('#id_window_exterior_location').val();
+        let grilles_installed_require_cleaning = $('#id_grilles_installed_require_cleaning').val();
+        if (fdw_clean_window_exterior == 'True') {
+            $('#id_window_exterior_location').parent().parent().parent().removeClass('d-none');
+        };
+        if (window_exterior_location == 'OTHER') {
+            $('#id_grilles_installed_require_cleaning').parent().parent().parent().removeClass('d-none');
+        };
+        if (grilles_installed_require_cleaning == 'True') {
+            $('#id_adult_supervision').parent().parent().parent().removeClass('d-none');
+        }
+
+        $("#id_fdw_clean_window_exterior").on('change', function (e) {
+            fdw_clean_window_exterior = $(this).val();
+            if (fdw_clean_window_exterior == 'True') {
+                $('#id_window_exterior_location').parent().parent().parent().removeClass('d-none');
+            } else {
+                $('#id_window_exterior_location').val('');
+                $('#id_window_exterior_location').parent().parent().parent().addClass('d-none');
+                $('#id_grilles_installed_require_cleaning').val('');
+                $('#id_grilles_installed_require_cleaning').parent().parent().parent().addClass(
+                    'd-none');
+                $('#id_adult_supervision').val('');
+                $('#id_adult_supervision').parent().parent().parent().addClass('d-none');
+            }
+        });
+        $("#id_window_exterior_location").on('change', function (e) {
+            window_exterior_location = $(this).val();
+            if (window_exterior_location == 'OTHER') {
+                $('#id_grilles_installed_require_cleaning').parent().parent().parent().removeClass(
+                    'd-none');
+            } else {
+                $('#id_grilles_installed_require_cleaning').val('');
+                $('#id_grilles_installed_require_cleaning').parent().parent().parent().addClass(
+                    'd-none');
+                $('#id_adult_supervision').val('');
+                $('#id_adult_supervision').parent().parent().parent().addClass('d-none');
+            }
+        });
+        $("#id_grilles_installed_require_cleaning").on('change', function (e) {
+            grilles_installed_require_cleaning = $(this).val();
+            if (grilles_installed_require_cleaning == 'True') {
+                $('#id_adult_supervision').parent().parent().parent().removeClass('d-none');
+            } else {
+                $('#id_adult_supervision').val('');
+                $('#id_adult_supervision').parent().parent().parent().addClass('d-none');
+            }
+        });
+    })
+</script>
+{% endblock extra_js %}

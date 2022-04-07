@@ -1,0 +1,71 @@
+{% extends 'employer-base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block accounts_section %}
+{% include 'sections/title-banner.html' with page_name=page_name %}
+{% include 'components/45-ws-section/start.html' with bg_color='bg-custom-ab' section_id='account-section' %}
+{% include 'components/crispy-form-error.html' %}
+{% if social_login %}
+<div class="row">
+    <div class="col-24 col-md py-md-4">
+        <div class="row">
+            <div class="col mb-md-2 mb-lg-3 mb-xl-4">
+                <h5 class="fs-16">{% if page_name == 'User Sign Up' %}Sign Up{%else%}Login{% endif %} With Email</h5>
+            </div>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% crispy form %}
+        </form>
+    </div>
+    <div class="col col-3 justify-content-center d-none d-md-flex">
+        <span class="d-flex my-auto custom-vertical-divider"></span>
+    </div>
+    <div class="col-24 col-md pb-md-4 my-5 my-md-auto">
+        {% include 'components/social-login.html' %}
+    </div>
+</div>
+{% else %}
+<div class="row justify-content-center">
+    <div class="col-24 col-md-16 py-md-4">
+        <div class="row">
+            <div class="col mb-md-2 mb-lg-3 mb-xl-4">
+                <h5 class="fs-16">{% if page_name == 'User Sign Up' %}Sign Up{%else%}Login{% endif %} With Email</h5>
+            </div>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% crispy form %}
+        </form>
+    </div>
+</div>
+{% endif %}
+{% if page_name == 'User Sign Up' %}
+<div class="row">
+    <div class="col my-4">
+        <p class="text-dark">
+            As per directive by Ministry of Manpower, users are requested to login to view information of Maids.
+            Alternatively, users may send in their enquiries, which does not require a sign up.
+        </p>
+    </div>
+</div>
+{% endif %}
+{% include 'components/form-footer.html' with page_name=page_name %}
+{% include 'components/45-ws-section/end.html' %}
+{% endblock accounts_section %}
+{% block js %}
+<script>
+    $(function () {
+        $("#toggle-password-visibility").on('click', function (event) {
+            event.preventDefault();
+            if ($('#id_password').attr("type") == "text") {
+                $('#id_password').attr('type', 'password');
+                $('#toggle-password-visibility i').addClass("fa-eye-slash");
+                $('#toggle-password-visibility i').removeClass("fa-eye");
+            } else if ($('#id_password').attr("type") == "password") {
+                $('#id_password').attr('type', 'text');
+                $('#toggle-password-visibility i').removeClass("fa-eye-slash");
+                $('#toggle-password-visibility i').addClass("fa-eye");
+            }
+        });
+    });
+</script>
+{% endblock js %}

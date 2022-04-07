@@ -1,0 +1,90 @@
+{% load static %}
+{% include 'components/27-ws-section/start.html' with bg_color='bg-custom-ab' section_id='featured-maids-section' %}
+{% include 'components/section-heading.html' with title='Featured Maids' end=True %}
+<div class="row bg-featured-maids mb-3 mb-md-4">
+    <div class="col-md-12 offset-md-12 py-5">
+        <div class="row mb-3">
+            <div class="col-20 col-lg-16 col-xl-12 offset-2 offset-md-0 py-2 py-md-0">
+                <label for="nationalitySelect" class="ml-1">Nationality</label>
+                <select class="form-control" id="nationalitySelect">
+                    <option value="ANY">No Preference</option>
+                    <option value="BGD">Bangladesh</option>
+                    <option value="KHM">Cambodia</option>
+                    <option value="IND">India</option>
+                    <option value="IDN">Indonesia</option>
+                    <option value="MMR">Myanmar</option>
+                    <option value="PHL">Philippines</option>
+                    <option value="LKA">Sri Lanka</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col offset-2 offset-md-0 ">
+                <h5 class="ml-1">Browse our featured maids</h5>
+            </div>
+        </div>
+    </div>
+</div>
+{% if request.user.is_authenticated %}
+<div id="featured-maids-wrapper">
+    <div class="row">
+        <div class="col my-5 text-center">
+            <div class="jumbotron jumbotron-fluid my-5">
+                <div class="container my-5">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="maid-carousel">
+    {% for maid in featured_maids %}
+    {% include 'components/maid-card.html' with maid=maid %}
+    {% endfor %}
+</div>
+{% else %}
+<div class="row">
+    <div class="col text-center">
+        <img loading="lazy" src="{% static 'images/featured-maids.webp' %}" alt="Featured Maid Image (No Logo)"
+            class="img-fluid blurred-image" onerror=`this.src="{% static 'images/featured-maids.png' %}" ;`>
+        <div class="featured-maids-overlay">
+            <div class="jumbotron jumbotron-fluid bg-transparent">
+                <div class="container text-center">
+                    <h3 class="display-4">Login to view biodata</h3>
+                    <a href="{% url 'sign_in' %}" class="btn btn-xs-lg btn-primary w-25">
+                        <h5 class="mb-0">Login</h5>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% include 'components/27-ws-section/end.html' %}
+{% block js %}
+<script>
+    function populateFeaturedMaids(nationality = 'ANY') {
+        let csrftoken = Cookies.get('csrftoken');
+        axios({
+            method: 'post',
+            mode: 'same-origin',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            url: '/maids/view/featured/',
+            data: {
+                'nationality': nationality
+            }
+        }).then(function (res) {
+            if (res.data.count == 0) {
+                displayEmptyContent();
+            } else {
+                displayContent(res);
+            }
+        })
+    }
+</script>
+{% endblock js %}

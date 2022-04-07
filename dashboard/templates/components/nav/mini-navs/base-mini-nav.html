@@ -1,0 +1,30 @@
+<div class="col d-flex flex-column">
+    <div class="row">
+        <div class="col d-flex flex-column justify-content-center min-height-mini-nav">
+            <a class="text-reset ml-2" data-toggle="collapse" href="#dashboardSideNavWrapper" role="button"
+                aria-expanded="true" aria-controls="dashboardSideNavWrapper" id="miniNavbarMainSideNavbarToggler">
+                <i id="miniNavbarMainSideNavbarTogglerIcon" class="fas nav-fa fa-chevron-left fa-lg"></i>
+            </a>
+        </div>
+    </div>
+    {% block mini_nav_section %}
+    {% endblock mini_nav_section %}
+</div>
+
+<script>
+    $(function () {
+        $(".mini-side-nav-link").on("click", function () {
+            $(".mini-side-nav-link").removeClass("active");
+            $(this).addClass("active");
+        })
+        $("#miniNavbarMainSideNavbarToggler").on("click", (event) => {
+            if ($("#miniNavbarMainSideNavbarTogglerIcon").hasClass("fa-chevron-left")) {
+                $("#miniNavbarMainSideNavbarTogglerIcon").removeClass("fa-chevron-left");
+                $("#miniNavbarMainSideNavbarTogglerIcon").addClass("fa-chevron-right");
+            } else {
+                $("#miniNavbarMainSideNavbarTogglerIcon").removeClass("fa-chevron-right");
+                $("#miniNavbarMainSideNavbarTogglerIcon").addClass("fa-chevron-left");
+            }
+        });
+    })
+</script>

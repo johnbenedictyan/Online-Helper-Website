@@ -1,0 +1,271 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+{% include 'components/head_section.html' %}
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-custom-ab d-lg-none">
+            <a class="logo-image-wrapper" rel="canonical" href="{% url 'home' %}">
+                <div>&nbsp;</div>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbarMobile"
+                aria-controls="mainNavbarMobile" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbarMobile">
+                <ul class="navbar-nav mr-auto">
+                    {% with request.resolver_match.url_name as url_name %}
+                    <li class="mx-2 nav-item {% if url_name == 'home' %}active{% endif %}">
+                        <a class="nav-link custom-nav-link" href="{% url 'home' %}">
+                            <p class="mb-0">Home</p>
+                            {% if url_name == 'home' %}
+                            <span class="sr-only">(current)</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="mx-2 nav-item {% if url_name == 'about_us' %}active{% endif %}">
+                        <a class="nav-link custom-nav-link" href="{% url 'about_us' %}">
+                            <p class="mb-0">About Us</p>
+                            {% if url_name == 'about_us' %}
+                            <span class="sr-only">(current)</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="mx-2 nav-item {% if url_name == 'maid_list' %}active{% endif %}">
+                        <a class="nav-link custom-nav-link" href="{% url 'maid_list' %}">
+                            <p class="mb-0">Search Maid</p>
+                            {% if url_name == 'maid_list' %}
+                            <span class="sr-only">(current)</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="mx-2 nav-item {% if url_name == 'agency_list' %}active{% endif %}">
+                        <a class="nav-link custom-nav-link" href="{% url 'agency_list' %}">
+                            <p class="mb-0">Maid Agencies</p>
+                            {% if url_name == 'agency_list' %}
+                            <span class="sr-only">(current)</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="mx-2 nav-item {% if url_name == 'faq' %}active{% endif %}">
+                        <a class="nav-link custom-nav-link" href="{% url 'faq' %}">
+                            <p class="mb-0">FAQ</p>
+                            {% if url_name == 'faq' %}
+                            <span class="sr-only">(current)</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="mx-2 nav-item {% if url_name == 'view_shortlist' %}active{% endif %}">
+                        <a class="nav-link custom-nav-link" href="{% url 'view_shortlist' %}">
+                            <p class="mb-0">View Shortlist</p>
+                            {% if url_name == 'view_shortlist' %}
+                            <span class="sr-only">(current)</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="mx-2 nav-item {% if url_name == 'general_enquiry' %}active{% endif %}">
+                        <a class="nav-link custom-nav-link" href="{% url 'general_enquiry' %}">
+                            <p class="mb-0">Enquiry</p>
+                            {% if url_name == 'general_enquiry' %}
+                            <span class="sr-only">(current)</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    {% endwith %}
+                    {% if user.is_authenticated %}
+                    <li class="mx-2 nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="userActionDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            {{user.email}}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="userActionDropdown">
+                            {% if authority == 'Employers' %}
+                            <a class="fs-11 dropdown-item" href="{% url 'potential_employer_detail' %}">Profile</a>
+                            <a class="fs-11 dropdown-item" href="{% url 'view_shortlist' %}">Shortlist</a>
+                            <a class="fs-11 dropdown-item" href="{% url 'enquiry_list' %}">My Enquiries</a>
+                            {% elif authority == 'Foreign Domestic Workers' %}
+                            <a class="dropdown-item" href="{% url 'fdw_account_detail' %}">Profile</a>
+                            {% elif request.user.is_superuser %}
+                            <a class="fs-11 dropdown-item" href="{% url 'admin_panel' %}">Admin Panel</a>
+                            {% else %}
+                            <a class="fs-11 dropdown-item" href="#">Profile</a>
+                            <a class="fs-11 dropdown-item" href="{% url 'dashboard_home' %}">Dashboard</a>
+                            {% endif %}
+                            <a class="fs-11 dropdown-item" href="{% url 'sign_out' %}">Sign Out</a>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="mx-2 nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="signUpDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Sign Up
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="signUpDropdown">
+                            <a class="fs-11 dropdown-item" href="{% url 'potential_employer_create' %}">Users</a>
+                            <a class="fs-11 dropdown-item" href="{% url 'agency_sign_up' %}">Agencies</a>
+                            <a class="fs-11 dropdown-item" href="{% url 'fdw_account_create' %}">FDW</a>
+                        </div>
+                    </li>
+                    <li class="mx-2 nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="signInDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Login
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="signInDropdown">
+                            <a class="fs-11 dropdown-item" href="{% url 'sign_in' %}">Users</a>
+                            <a class="fs-11 dropdown-item" href="{% url 'agency_sign_in' %}">Agencies</a>
+                        </div>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+        <nav class="navbar navbar-expand-lg d-none d-lg-flex">
+            <a class="logo-image-wrapper" rel="canonical" href="{% url 'home' %}">
+                <div>&nbsp;</div>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar"
+                aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav mr-auto">
+                    {% with request.resolver_match.url_name as url_name %}
+                    <li class="mx-2 nav-item {% if url_name == 'home' %}active{% endif %}">
+                        <a class="nav-link custom-nav-link" href="{% url 'home' %}">
+                            <p class="mb-0">Home</p>
+                            {% if url_name == 'home' %}
+                            <span class="sr-only">(current)</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="mx-2 nav-item {% if url_name == 'about_us' %}active{% endif %}">
+                        <a class="nav-link custom-nav-link" href="{% url 'about_us' %}">
+                            <p class="mb-0">About Us</p>
+                            {% if url_name == 'about_us' %}
+                            <span class="sr-only">(current)</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="mx-2 nav-item {% if url_name == 'maid_list' %}active{% endif %}">
+                        <a class="nav-link custom-nav-link" href="{% url 'maid_list' %}">
+                            <p class="mb-0">Search Maid</p>
+                            {% if url_name == 'maid_list' %}
+                            <span class="sr-only">(current)</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="mx-2 nav-item {% if url_name == 'agency_list' %}active{% endif %}">
+                        <a class="nav-link custom-nav-link" href="{% url 'agency_list' %}">
+                            <p class="mb-0">Maid Agencies</p>
+                            {% if url_name == 'agency_list' %}
+                            <span class="sr-only">(current)</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="mx-2 nav-item {% if url_name == 'faq' %}active{% endif %}">
+                        <a class="nav-link custom-nav-link" href="{% url 'faq' %}">
+                            <p class="mb-0">FAQ</p>
+                            {% if url_name == 'faq' %}
+                            <span class="sr-only">(current)</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="mx-2 nav-item {% if url_name == 'view_shortlist' %}active{% endif %}">
+                        <a class="nav-link custom-nav-link" href="{% url 'view_shortlist' %}">
+                            <p class="mb-0">View Shortlist</p>
+                            {% if url_name == 'view_shortlist' %}
+                            <span class="sr-only">(current)</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="mx-2 nav-item {% if url_name == 'general_enquiry' %}active{% endif %}">
+                        <a class="nav-link custom-nav-link" href="{% url 'general_enquiry' %}">
+                            <p class="mb-0">Enquiry</p>
+                            {% if url_name == 'general_enquiry' %}
+                            <span class="sr-only">(current)</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                    {% endwith %}
+                </ul>
+                <ul class="navbar-nav ml-auto">
+                    {% if user.is_authenticated %}
+                    {% if authority == 'Agency Owners' %}
+                    <li class="nav-item">
+                        <a class="nav-link custom-nav-link" href="{% url 'view_cart' %}">
+                            <i class="fas fa-shopping-cart"></i>
+                            &#40;{{cart_count}}&#41;
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="userActionDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            {{user.email}}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="userActionDropdown">
+                            {% if authority == 'Employers' %}
+                            <a class="fs-11 dropdown-item" href="{% url 'potential_employer_detail' %}">Profile</a>
+                            <a class="fs-11 dropdown-item" href="{% url 'view_shortlist' %}">Shortlist</a>
+                            <a class="fs-11 dropdown-item" href="{% url 'enquiry_list' %}">My Enquiries</a>
+                            {% elif authority == 'Foreign Domestic Workers' %}
+                            <a class="dropdown-item" href="{% url 'fdw_account_detail' %}">Profile</a>
+                            {% elif request.user.is_superuser %}
+                            <a class="fs-11 dropdown-item" href="{% url 'admin_panel' %}">Admin Panel</a>
+                            {% else %}
+                            <a class="fs-11 dropdown-item" href="#">Profile</a>
+                            <a class="fs-11 dropdown-item" href="{% url 'dashboard_home' %}">Dashboard</a>
+                            {% endif %}
+                            <a class="fs-11 dropdown-item" href="{% url 'sign_out' %}">Sign Out</a>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="signUpDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Sign Up
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="signUpDropdown">
+                            <a class="fs-11 dropdown-item" href="{% url 'potential_employer_create' %}">Users</a>
+                            <a class="fs-11 dropdown-item" href="{% url 'agency_sign_up' %}">Agencies</a>
+                            <a class="fs-11 dropdown-item" href="{% url 'fdw_account_create' %}">FDW</a>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="signInDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Login
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="signInDropdown">
+                            <a class="fs-11 dropdown-item" href="{% url 'sign_in' %}">Users</a>
+                            <a class="fs-11 dropdown-item" href="{% url 'agency_sign_in' %}">Agencies</a>
+                        </div>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        {% include 'messages.html' %}
+        {% block main_content %}
+        {% endblock main_content %}
+    </main>
+    {% with request.resolver_match.url_name as url_name %}
+    {% if url_name == 'sign_in' or url_name == 'agency_sign_in' or url_name == 'password_reset' or url_name == 'potential_employer_create' or url_name == 'agency_sign_up' %}
+    {% include 'components/mini-footer.html' %}
+    {% else %}
+    {% include 'components/main-footer.html' %}
+    {% endif %}
+    {% endwith %}
+    {% include 'components/js_section.html' %}
+    {% include 'components/non_critical_css.html' %}
+    {% block js %}
+    {% endblock js %}
+</body>
+
+</html>

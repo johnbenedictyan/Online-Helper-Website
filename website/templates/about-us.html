@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block main_content %}
+{% include 'sections/title-banner.html' with page_name='About Us' %}
+{% include 'sections/easiest-way-banner.html' with start=True%}
+{% include 'sections/mini-why-us.html' %}
+{% include 'sections/how-it-works.html' %}
+{% include 'sections/mini-faq.html' with end=True %}
+{% include 'sections/cta-banner.html' %}
+{% endblock main_content %}

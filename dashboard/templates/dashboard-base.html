@@ -1,0 +1,141 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+{% include 'components/dashboard_head_section.html' %}
+
+<body class="dashboard-body">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand fs-16 ml-md-2 ml-lg-3 ml-xl-4"
+                href="{% url 'dashboard_home' %}">{{agency_name|title}}</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar"
+                aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" id="userActionDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{user.email}}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="userActionDropdown">
+                            <a class="dropdown-item" href="{% url 'user_email_update' %}">Change Email</a>
+                            <a class="dropdown-item" href="{% url 'home' %}">Website</a>
+                            <a class="dropdown-item" href="{% url 'sign_out' %}">Sign Out</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main>
+        {% include 'messages.html' %}
+        <section>
+            <div class="container-fluid">
+                <div class="row min-height-90">
+                    {% with request.resolver_match.url_name as url_name %}
+                    {% if url_name in dashboard_side_nav_list %}
+                    <div id="dashboardSideNavWrapper"
+                        class="col col-md-5 col-lg-5 col-xl-4 bg-dashboard-navbar-color text-dashboard-text-color collapse show">
+                        {% include 'components/nav/dashboard-side-nav.html' with authority=authority %}
+                    </div>
+                    <div id="dashboardPageNavWrapper"
+                        class="col-24 col-md-5 col-lg-5 col-xl-4 bg-dashboard-pagebar-color text-dashboard-text-color mb-5 mb-md-0">
+                        {% if url_name == 'dashboard_maid_information_create' or url_name == 'dashboard_maid_language_spoken_update' or url_name == 'dashboard_maid_languages_and_fhpdr_update' or url_name == 'dashboard_maid_experience_update' or url_name == 'dashboard_maid_about_fdw_update' or url_name == 'dashboard_maid_information_update' or url_name == 'dashboard_maid_loan_update' or url_name == 'dashboard_maid_employment_history_update' %}
+                        <div class="row sticky-top">
+                            {% include 'components/nav/mini-navs/maid-create-mini-nav.html' %}
+                        </div>
+                        {% endif %}
+                        {% if url_name == 'dashboard_agency_detail' %}
+                        <div class="row sticky-top">
+                            {% include 'components/nav/mini-navs/agency-profile-mini-nav.html' %}
+                        </div>
+                        {% endif %}
+                        {% if url_name == 'dashboard_agency_update' %}
+                        <div class="row sticky-top">
+                            {% include 'components/nav/mini-navs/agency-profile-mini-nav.html' %}
+                        </div>
+                        {% endif %}
+                        {% if url_name == 'dashboard_agency_information_update' or url_name == 'dashboard_agency_opening_hours_update' or url_name == 'dashboard_agency_outlet_details_update' %}
+                        <div class="row sticky-top">
+                            {% include 'components/nav/mini-navs/agency-update-mini-nav.html' %}
+                        </div>
+                        {% endif %}
+                        {% if url_name == 'dashboard_agency_employee_create' or url_name == 'dashboard_agency_employee_update' %}
+                        <div class="row sticky-top">
+                            {% include 'components/nav/mini-navs/agency-employee-mini-nav.html' %}
+                        </div>
+                        {% endif %}
+                        {% if url_name in employer_crud_pagebar_urls %}
+                        <div class="row sticky-top">
+                            {% include 'components/nav/mini-navs/employer-mini-nav.html' %}
+                        </div>
+                        {% endif %}
+                        {% if url_name in case_crud_pagebar_urls %}
+                        <div class="row sticky-top">
+                            {% include 'components/nav/mini-navs/case-mini-nav.html' %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <div id="dashboardSideNavWrapper" class="col-24 col-md-6 col-xl-4 bg-dashboard-navbar-color text-dark mb-5 mb-md-0">
+                        {% include 'components/nav/dashboard-side-nav.html' with authority=authority %}
+                    </div>
+                    {% endif %}
+                    <div id="dashboardMainContentWrapper" class="{% if url_name in dashboard_side_nav_list %}col-md-14 col-xl-16{% else %}col-md-18 col-xl-20{% endif %} p-3 p-md-4 p-lg-5 py-xl-6">
+                        {% block dashboard_section %}
+                        {% endblock dashboard_section %}
+                    </div>
+                    {% endwith %}
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container-fluid bg-primary text-light">
+            <div class="row">
+                <div class="col my-3 text-center">
+                    <p class="fs-10 mb-1">© 2020 Copyright OnlineMaid</p>
+                    <p class="fs-10 mb-0">All Rights Reserved</p>
+                    <a href="https://storyset.com/web" class="text-reset small d-none">Illustration by Freepik
+                        Storyset</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    {% include 'components/dashboard_js_section.html' %}
+    <script>
+        $(function () {
+            MO({
+                    "nodeName": document.getElementById('dashboardMainSideNavbar'),
+                    "settings": {
+                        attributes: true,
+                        attributeFilter: ['style', 'className']
+                    }
+                },
+                (mutations) => {
+                    if (mutations[0].target.id == "dashboardSideNavWrapper") {
+                        if ($("#dashboardSideNavWrapper").hasClass("show")) {
+                            $("#dashboardSideNavWrapper").removeClass("show");
+                        } else {
+                            $("#dashboardSideNavWrapper").addClass("show");
+                        }
+                    }
+                },
+                true
+            );
+        });
+        $(function () {
+            $(".navToggler").on('click', function () {
+                $(this).find('i').toggleClass('fa-chevron-right fa-chevron-down');
+            });
+            $('[data-toggle="tooltip"]').tooltip()
+        });
+    </script>
+    {% block js %}
+    {% endblock js %}
+</body>
+
+</html>

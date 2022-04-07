@@ -1,0 +1,131 @@
+{% load dashboard_tags %}
+
+<div class="card bg-custom-lab text-dark">
+    <div class="card-body text-center">
+        <h5 class="card-title fs-16 my-3 mb-4">{{name}}</h5>
+        <p class="fs-20">S${{price}}/ mth</p>
+        <p class="card-text fs-12 mb-4">{{slots}} limited slots</p>
+        <button type="button" class="btn btn-xs-lg btn-primary w-50 my-4" data-toggle="modal"
+            data-target="#{{plan_id}}Modal">Select</button>
+    </div>
+</div>
+
+<div class="modal fade" id="{{plan_id}}Modal" tabindex="-1" aria-labelledby="{{plan_id}}ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="{{plan_id}}ModalLabel">{% if plan_id == 'featured_maids_ad' %}Featured Maids
+                    Advertisement{% elif plan_id == 'home_page_ad' %}Advertisement on Home
+                    Page{% elif plan_id == 'search_maid_ad' %}Advertisement on Search Maid
+                    Page{% elif plan_id == 'maid_profile_ad' %}Advertisement on Maid Profile
+                    Page{% elif plan_id == 'faq_ad' %}Advertisement on FAQ
+                    Page{% elif plan_id == 'maid_agencies_ad' %}Advertisement on Maid Agencies
+                    Page{% elif plan_id == 'about_us_ad' %}Advertisement on About Us
+                    Page{% elif plan_id == 'enquiry_ad' %}Advertisement on Enquiry Page{% endif %}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'add_to_cart' %}" class="advertisementPlanForm" method="POST">
+                    {% csrf_token %}
+                    {% if plan_id == 'enquiry_ad' %}
+                    {% define advertisement_map.enquiry_ad as ad_obj %}
+                    {% elif plan_id == 'featured_maids_ad' %}
+                    {% define advertisement_map.featured_maids_ad as ad_obj %}
+                    {% elif plan_id == 'search_maid_ad' %}
+                    {% define advertisement_map.search_maid_ad as ad_obj %}
+                    {% elif plan_id == 'home_page_ad' %}
+                    {% define advertisement_map.home_page_ad as ad_obj %}
+                    {% elif plan_id == 'maid_profile_ad' %}
+                    {% define advertisement_map.maid_profile_ad as ad_obj %}
+                    {% elif plan_id == 'faq_ad' %}
+                    {% define advertisement_map.faq_ad as ad_obj %}
+                    {% elif plan_id == 'maid_agencies_ad' %}
+                    {% define advertisement_map.maid_agencies_ad as ad_obj %}
+                    {% elif plan_id == 'about_us_ad' %}
+                    {% define advertisement_map.about_us_ad as ad_obj %}
+                    {% endif %}
+                    <div class="row border-bottom text-center">
+                        <div class="col-6"></div>
+                        <div class="col">{{ad_obj.slots_open.0.1}}</div>
+                        <div class="col">{{ad_obj.slots_open.1.1}}</div>
+                        <div class="col">{{ad_obj.slots_open.2.1}}</div>
+                        <div class="col">{{ad_obj.slots_open.3.1}}</div>
+                    </div>
+                    <div class="row my-3 text-center">
+                        <div class="col-6">
+                            <p>Select Slot</p>
+                        </div>
+                        <div class="col">
+                            <div class="form-check form-check-inline mr-0">
+                                <input class="form-check-input mr-0" type="checkbox" value="{{ad_obj.slots_open.0.3}}" name="advertisementPlanQuarter" id="defaultCheck1" {% if ad_obj.slots_open.0.2 %}disabled{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check form-check-inline mr-0">
+                                <input class="form-check-input mr-0" type="checkbox" value="{{ad_obj.slots_open.1.3}}" name="advertisementPlanQuarter" id="defaultCheck2" {% if ad_obj.slots_open.1.2 %}disabled{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check form-check-inline mr-0">
+                                <input class="form-check-input mr-0" type="checkbox" value="{{ad_obj.slots_open.2.3}}" name="advertisementPlanQuarter" id="defaultCheck3" {% if ad_obj.slots_open.2.2 %}disabled{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-check form-check-inline mr-0">
+                                <input class="form-check-input mr-0" type="checkbox" value="{{ad_obj.slots_open.3.3}}" name="advertisementPlanQuarter" id="defaultCheck4" {% if ad_obj.slots_open.3.2 %}disabled{% endif %}>
+                            </div>
+                        </div>
+                        <input type="hidden" class="form-control" name="advertisementPlan" value="{{ad_obj.stripe_price_id}}">
+                        <input type="hidden" class="form-control" name="advertisementPlanLocation" value="{{plan_id}}">
+                    </div>
+                    <div class="row my-3 text-center">
+                        <div class="col-6">
+                            <p>Slots Available</p>
+                        </div>
+                        {% if ad_obj.no_of_cols == 1 %}
+                        <div class="col">
+                            <p>{{ ad_obj.slots_open.0.0}}</p>
+                        </div>
+                        {% elif ad_obj.no_of_cols == 2 %}
+                        <div class="col">
+                            <p>{{ ad_obj.slots_open.0.0 }}</p>
+                        </div>
+                        <div class="col">
+                            <p>{{ ad_obj.slots_open.1.0 }}</p>
+                        </div>
+                        {% elif ad_obj.no_of_cols == 3 %}
+                        <div class="col">
+                            <p>{{ ad_obj.slots_open.0.0 }}</p>
+                        </div>
+                        <div class="col">
+                            <p>{{ ad_obj.slots_open.1.0 }}</p>
+                        </div>
+                        <div class="col">
+                            <p>{{ ad_obj.slots_open.2.0 }}</p>
+                        </div>
+                        {% elif ad_obj.no_of_cols == 4 %}
+                        <div class="col">
+                            <p>{{ ad_obj.slots_open.0.0 }}</p>
+                        </div>
+                        <div class="col">
+                            <p>{{ ad_obj.slots_open.1.0 }}</p>
+                        </div>
+                        <div class="col">
+                            <p>{{ ad_obj.slots_open.2.0 }}</p>
+                        </div>
+                        <div class="col">
+                            <p>{{ ad_obj.slots_open.3.0 }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-xs-lg btn btn-xs-lg-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-xs-lg btn-primary adSubmitButton">Add to Cart</button>
+            </div>
+        </div>
+    </div>
+</div>

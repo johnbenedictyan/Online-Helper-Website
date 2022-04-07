@@ -1,0 +1,115 @@
+{% extends 'dashboard-base.html' %}
+{% load dashboard_tags %}
+{% block dashboard_section %}
+<section>
+    <div class="container-fluid min-height-75">
+        <div class="row">
+            <div class="col text-dark mb-3">
+                <h5 class="fs-16">Branch Management</h5>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Recipient's username"
+                        aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-xs-lg btn-outline-secondary" type="button"
+                            id="button-addon2">Button</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 offset-4">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Recipient's username"
+                        aria-label="Recipient's username" aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-xs-lg btn-outline-secondary" type="button"
+                            id="button-addon2">Button</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-right mb-3">
+                <a href="{% url 'agency_branch_create' %}" class="btn btn-xs-lg-success mr-5 py-3">Add Branch</a>
+            </div>
+        </div>
+        <div class="row bg-primary text-light mx-half py-3 border">
+            <div class="col">
+                <h6 class="dashboard-table-header">S/N</h6>
+            </div>
+            <div class="col">
+                <h6 class="dashboard-table-header">Name</h6>
+            </div>
+            <div class="col">
+                <h6 class="dashboard-table-header">Address</h6>
+            </div>
+            <div class="col">
+                <h6 class="dashboard-table-header">Postal Code</h6>
+            </div>
+            <div class="col">
+                <h6 class="dashboard-table-header">Area</h6>
+            </div>
+            <div class="col">
+                <h6 class="dashboard-table-header">Office Number</h6>
+            </div>
+            <div class="col">
+                <h6 class="dashboard-table-header">Mobile Number</h6>
+            </div>
+            <div class="col">
+                <h6 class="dashboard-table-header">Branch Type</h6>
+            </div>
+            <div class="col-2 text-center">
+                <h6 class="dashboard-table-header">Actions</h6>
+            </div>
+        </div>
+        {% for branch in branches %}
+        <div class="row {% cycle '' 'bg-light' %} text-dark mx-half py-3 border border-top-0">
+            <div class="col">
+                <p class="mb-0">{{branch.pk}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{branch.name}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{branch.address_1}} {{branch.address_2}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{branch.postal_code}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{branch.get_area_display}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{branch.office_number}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">{{branch.mobile_number}}</p>
+            </div>
+            <div class="col">
+                <p class="mb-0">
+                    {% if branch.main_branch == True %}
+                    Main Branch
+                    {% else %}
+                    Side Branch
+                    {% endif %}
+                </p>
+            </div>
+            <div class="col-2">
+                <div class="row justify-content-center">
+                    <a class="mx-1" href="{% url 'agency_branch_update' branch.pk %}"><i class="far fa-edit"></i></a>
+                    <a class="mx-1" href="#"><i class="far fa-trash-alt"></i></a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="row mx-half py-3 border border-top-0">
+            <div class="col text-center">
+                <p class="mb-0">No Agency Branches</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock dashboard_section %}

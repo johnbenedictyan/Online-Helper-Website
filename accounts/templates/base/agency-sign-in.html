@@ -1,0 +1,35 @@
+{% extends 'employer-base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block accounts_section %}
+{% include 'sections/title-banner.html' with page_name='Agency Login' %}
+{% include 'components/45-ws-section/start.html' with bg_color='bg-custom-ab' section_id='account-section' %}
+{% include 'components/crispy-form-error.html' %}
+<div class="row">
+    <div class="col py-md-4">
+        <form method="post" enctype="multipart/form-data">
+            {% crispy form %}
+        </form>
+    </div>
+</div>
+{% include 'components/form-footer.html' with page_name='Agency Login' %}
+{% include 'components/45-ws-section/end.html' %}
+{% endblock accounts_section %}
+{% block js %}
+<script>
+    $(function () {
+        $("#toggle-password-visibility").on('click', function (event) {
+            event.preventDefault();
+            if ($('#id_password').attr("type") == "text") {
+                $('#id_password').attr('type', 'password');
+                $('#toggle-password-visibility i').addClass("fa-eye-slash");
+                $('#toggle-password-visibility i').removeClass("fa-eye");
+            } else if ($('#id_password').attr("type") == "password") {
+                $('#id_password').attr('type', 'text');
+                $('#toggle-password-visibility i').removeClass("fa-eye-slash");
+                $('#toggle-password-visibility i').addClass("fa-eye");
+            }
+        });
+    });
+</script>
+{% endblock js %}

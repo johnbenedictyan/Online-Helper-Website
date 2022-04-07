@@ -1,0 +1,96 @@
+{% extends 'dashboard-base.html' %}
+{% block dashboard_section %}
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col mb-5">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="fs-20 mb-4">Subscription Plans</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mb-5">
+                        {% include 'components/plan-card.html' with plan_type='Basic' plan_name='Biodata &#38; CRM Solution Plan' price='200' feature1='100 Biodata Plan' feature2='100 Employer E-document' feature3='5 Sub Account User' plan_id='BasicPlan' %}
+                    </div>
+                    <div class="col mb-5">
+                        {% include 'components/plan-card.html' with plan_type='Standard' plan_name='Biodata &#38; CRM Solution Plan' price='250' feature1='200 Biodata Plan' feature2='200 Employer E-document' feature3='10 Sub Account User' banner=True plan_id='StandardPlan' %}
+                    </div>
+                    <div class="col mb-5">
+                        {% include 'components/plan-card.html' with plan_type='Premium' plan_name='Biodata &#38; CRM Solution Plan' price='300' feature1='300 Biodata Plan' feature2='300 Employer E-document' feature3='10 Sub Account User' plan_id='PremiumPlan' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="fs-18 mb-4">Advertisement</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-8 mb-5">
+                        {% include 'components/advertisement-card.html' with name='Per Featured Maid' price='30' slots='32' plan_id='featured_maids_ad' %}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-8 mb-5">
+                        {% include 'components/advertisement-card.html' with name='Home Page' price='500' slots='4' plan_id='home_page_ad' %}
+                    </div>
+                    <div class="col-xl-8 mb-5">
+                        {% include 'components/advertisement-card.html' with name='Search Maid Page' price='400' slots='4' plan_id='search_maid_ad' %}
+                    </div>
+                    <div class="col-xl-8 mb-5">
+                        {% include 'components/advertisement-card.html' with name='Maid Profile Page' price='400' slots='4' plan_id='maid_profile_ad' %}
+                    </div>
+                    <div class="col-xl-8 mb-5">
+                        {% include 'components/advertisement-card.html' with name='FAQs' price='200' slots='2' plan_id='faq_ad' %}
+                    </div>
+                    <div class="col-xl-8 mb-5">
+                        {% include 'components/advertisement-card.html' with name='Maid Agencies' price='200' slots='2' plan_id='maid_agencies_ad' %}
+                    </div>
+                    <div class="col-xl-8 mb-5">
+                        {% include 'components/advertisement-card.html' with name='About Us' price='200' slots='2' plan_id='about_us_ad' %}
+                    </div>
+                    <div class="col-xl-8 mb-5">
+                        {% include 'components/advertisement-card.html' with name='Enquiry' price='200' slots='2' plan_id='enquiry_ad' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <h6>** Subscription and Advertisement Discount</h6>
+                <p class="ml-3">5% Discount for 6 months</p>
+                <p class="ml-3">10% Discount for 12 months</p>
+                <p class="ml-3">Plans and Advertisement (except for featured Maid) are available in 3, 6 and 12 months
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col my-4 text-right">
+                <a href="{% url 'view_cart' %}" class="btn btn-xs-lg btn-primary">View Shopping Cart</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock dashboard_section %}
+{% block js %}
+<script>
+    $(function () {
+        $('.planSubmitButton').on(
+            'click',
+            function () {
+                $(this).parent().parent().find('.subscriptionPlanForm').submit();
+            }
+        );
+        $('.adSubmitButton').on(
+            'click',
+            function () {
+                $(this).parent().parent().find('.advertisementPlanForm').submit();
+            }
+        );
+    });
+</script>
+{% endblock js %}
